@@ -10,7 +10,11 @@ SRC	=	src/main.c			\
 		src/sys_render.c		\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
-		src/sys_player.c
+		src/sys_player.c	\
+		src/map_loading/parsing.c	\
+		src/map_loading/init_tilesets.c	\
+		src/lib/my_str_to_word_array.c	\
+		src/lib/my_strcat.c
 
 OBJ	=	$(SRC:.c=.o)
 

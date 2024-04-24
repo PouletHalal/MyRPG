@@ -1,0 +1,168 @@
+/*
+** EPITECH PROJECT, 2024
+** test
+** File description:
+** parsing
+*/
+
+#include <stdlib.h>
+#include <stddef.h>
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+#include "maps.h"
+#include "tilesets.h"
+
+static void draw_tile(map_t *map, char *sep, sfIntRect *rect,
+    tileset_t *tileset)
+{
+    sfSprite *temp = sfSprite_create();
+    int nb_tiles_per_line = (tileset->size.x / tileset->tile_size.x);
+
+    sfSprite_setTexture(temp, map->spritesheet, sfTrue);
+    rect->left = TILE_WIDTH * ((atoi(sep)) % nb_tiles_per_line);
+    rect->top = TILE_HEIGHT * ((atoi(sep)) / nb_tiles_per_line);
+    sfSprite_setTextureRect(temp, *rect);
+    sfSprite_setPosition(temp, (sfVector2f)
+    {map->sprite.pos.x, map->sprite.pos.y});
+    sfRenderTexture_drawSprite(map->map, temp, NULL);
+    sfRenderTexture_display(map->map);
+    sfSprite_destroy(temp);
+}
+
+static void update_pos(map_t *map)
+{
+    map->sprite.pos.x += TILE_WIDTH;
+    if (map->sprite.pos.x >= MAP_WIDTH) {
+        map->sprite.pos.x = 0;
+        map->sprite.pos.y += TILE_HEIGHT;
+    }
+}
+
+void read_line(map_t *map, char *line, tileset_t *tileset)
+{
+    char *sep = NULL;
+    sfIntRect rect = {0, 0, TILE_WIDTH, TILE_HEIGHT};
+
+    sep = strtok(line, ",");
+    while (sep != NULL) {
+        if (atoi(sep) != -1) {
+            draw_tile(map, sep, &rect, tileset);
+        }
+        update_pos(map);
+        sep = strtok(NULL, ",");
+    }
+}
+
+void parse_map(map_t *map, char const *name, tileset_t *tileset)
+{
+    FILE *stream = fopen(name, "r");
+    sfSprite *sprite = sfSprite_create();
+    char *line = NULL;
+    size_t size = 0;
+    int nb_lines = 0;
+
+    if (stream == NULL)
+        return;
+    while (getline(&line, &size, stream) > 0) {
+        nb_lines += 1;
+        map->csv_map = realloc(map->csv_map, sizeof(char *) * (nb_lines + 1));
+        map->csv_map[nb_lines - 1] = strdup(line);
+        read_line(map, line, tileset);
+    }
+    sfSprite_destroy(sprite);
+    map->csv_map[nb_lines] = NULL;
+    free(line);
+    fclose(stream);
+}
+
+static sfTexture *get_texture(tileset_t *tileset_list, char *name)
+{
+    for (int i = 0; i < tileset_list->nb_tileset; ++i) {
+        if (strcmp(tileset_list[i].name, name) == 0)
+            return tileset_list[i].tileset;
+    }
+    return NULL;
+}
+
+static tileset_t *get_tileset(tileset_t *tileset_list, char *name)
+{
+    for (int i = 0; i < tileset_list->nb_tileset; ++i) {
+        if (strcmp(tileset_list[i].name, name) == 0)
+            return &(tileset_list[i]);
+    }
+    return NULL;
+}
+
+static map_t add_map(char **args, tileset_t *tileset_list)
+{
+    map_t map = {0};
+
+    map.name = strdup(args[1]);
+    map.size = (sfVector2f) {atoi(args[2]), atoi(args[3])};
+    map.map = sfRenderTexture_create(map.size.x, map.size.y, sfFalse);
+    map.sprite.sprite = sfSprite_create();
+    map.sprite.texture = sfRenderTexture_getTexture(map.map);
+    map.sprite.scale = (sfVector2f) {map.size.x / (16 * 32), map.size.y / (16 * 32)};
+    map.sprite.pos = (sfVector2f) {0, 0};
+    sfSprite_setTexture(map.sprite.sprite, map.sprite.texture, sfFalse);
+    map.spritesheet = get_texture(tileset_list, args[4]);
+    parse_map(&map, args[0], (get_tileset(tileset_list, args[4])));
+    sfSprite_setScale(map.sprite.sprite, map.sprite.scale);
+    return map;
+}
+
+static int len_array(char **array)
+{
+    int i = 0;
+
+    for (; array[i] != NULL; ++i);
+    return i;
+}
+
+static map_list_t *get_map(char *line, FILE *stream, tileset_t *tileset_list)
+{
+    char **split = my_str_to_word_array(line, ":\n");
+    map_list_t *map = malloc(sizeof(map_list_t));
+    size_t size = 0;
+
+    if (len_array(split) != 2)
+        return NULL;
+    map->name = split[0];
+    map->nb_layer = atoi(split[1]);
+    if (map->nb_layer <= 0)
+        return NULL;
+    map->maps = malloc(sizeof(map_t) * map->nb_layer);
+    for (int i = 0; i < map->nb_layer; ++i) {
+        if (getline(&line, &size, stream) < 0)
+            return NULL;
+        split = my_str_to_word_array(line, ":\n");
+        if (len_array(split) != 5)
+            return NULL;
+        map->maps[i] = add_map(split, tileset_list);
+    }
+    return map;
+}
+
+map_list_t **init_map(char const *map_file, tileset_t *tileset_list)
+{
+    FILE *stream = fopen(map_file, "r");
+    char *line = NULL;
+    size_t size = 0;
+    map_list_t **map = NULL;
+
+    if (stream == NULL || getline(&line, &size, stream) < 0)
+        return NULL;
+    if (atoi(line) <= 0)
+        return NULL;
+    map = malloc(sizeof(map_list_t *) * (atoi(line) + 1));
+    map[atoi(line)] = NULL;
+    for (int i = 0; map[i] != NULL; ++i) {
+        if (getline(&line, &size, stream) < 0)
+            return NULL;
+        map[i] = get_map(line, stream, tileset_list);
+        if (map[i] == NULL)
+            return NULL;
+    }
+    return map;
+}
