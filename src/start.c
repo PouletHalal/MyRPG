@@ -26,13 +26,16 @@ void create_perso_style_insane(entity_t *entity,
     sfSprite_setTextureRect(entity->comp_render.sprite, mob->text_rect);
     entity->mask = COMP_RENDER | COMP_POSITION | COMP_INPUT | COMP_PLAYER;
     entity->comp_render.is_visible = true;
-    entity->comp_render.does_loop = false;
+    entity->comp_render.does_loop = true;
     entity->comp_render.frame_count = mob->frame_count;
     entity->comp_render.clock = 0;
     entity->comp_render.frame_size = mob->frame_size;
-    entity->comp_render.frame_rate = 60 / (7 + rand() % 6);
+    entity->comp_render.frame_rate = 60 / mob->frame_rate;
     entity->comp_input.key_pressed = world->key_pressed;
     entity->comp_position.position = position;
     entity->comp_position.velocity.x = 5;
     entity->comp_position.velocity.y = 5;
+    entity->comp_render.starting_rect = mob->text_rect;
+    sfSprite_setScale(entity->comp_render.sprite, mob->scale);
+    sfSprite_setOrigin(entity->comp_render.sprite, (sfVector2f) {mob->text_rect.width / 2, mob->text_rect.height / 2});
 }

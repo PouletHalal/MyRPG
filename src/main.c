@@ -31,7 +31,7 @@ static win_t *create_win(void)
 static void refresh_world(world_t *world, sfClock *clock, win_t *window)
 {
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
-       return;
+        return;
     sfClock_restart(clock);
     sys_input_and_event(world, window);
     sys_position(world);
@@ -53,16 +53,13 @@ int main(void)
     world_t world = {0};
     win_t *window = create_win();
     sfClock *clock = sfClock_create();
-    int ran = 0;
+    int ran = 17;
 
     for (int i = 0; i < TXT_END; ++i)
         world.texture_list[i] = sfTexture_createFromFile(texture_file[i], NULL);
     srand(time(NULL));
+    create_perso_style_insane(&world.entity[0], world.texture_list[ran], &mob_list[ran], &world);
     while (sfRenderWindow_isOpen(window->window)) {
-        for (int i = find_empty(&world); i >= 0; i = find_empty(&world)) {
-            ran = rand() % TXT_END;
-            create_perso_style_insane(&world.entity[i], world.texture_list[ran], &mob_list[ran], &world);
-        }
         refresh_world(&world, clock, window);
         render_window(window, &world);
     }
