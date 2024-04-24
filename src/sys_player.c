@@ -30,13 +30,18 @@ static void update_speedy(entity_t *entity, int offset)
     entity->comp_position.velocity.y = offset;
 }
 
-static void next_frame(entity_t *entity)
+static void update_sprite_animation(entity_t *entity)
 {
     entity->comp_position.velocity.x = 0;
     entity->comp_position.velocity.y = 0;
     entity->comp_render.starting_rect.top = 0;
     entity->comp_render.frame_count = 2;
     entity->comp_render.frame_rate = 60 / 2;
+}
+
+static void next_frame(entity_t *entity)
+{
+    update_sprite_animation(entity);
     if (is_key_pressed(entity, sfKeyD))
         update_speedx(entity, 5);
     if (is_key_pressed(entity, sfKeyQ))
