@@ -19,12 +19,12 @@ static const char *MAP_FILE = "maps/map.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080
-    #define MAP_WIDTH 2880
-    #define MAP_HEIGHT 1920
     #define TILE_WIDTH 32
     #define TILE_HEIGHT TILE_WIDTH
     #define SPRITESHEET_WIDTH 1952
     #define SPRITESHEET_HEIGHT 1088
+    #define THRESHOLD 10
+    #define MAP_CONF_NB_ARGS 6
 
 typedef struct sprite_s {
     const sfTexture *texture;
@@ -36,7 +36,8 @@ typedef struct sprite_s {
 typedef struct map_s {
     int nb_layers;
     char *name;
-    char **csv_map;
+    int **csv_map;
+    int priority;
     sfVector2f size;
     sfRenderTexture *map;
     sfTexture *spritesheet;
@@ -47,12 +48,11 @@ typedef struct map_list_s {
     map_t *maps;
     char *name;
     int nb_layer;
-}  map_list_t;
+} map_list_t;
 
 tileset_t *init_tilesets(void);
 map_list_t **init_map(char const *map_file, tileset_t *tileset_list);
 char **my_str_to_word_array(char const *str, char const *separators);
-void read_maps(map_list_t *map_list);
 void free_array(char **array);
 int array_len(char **array);
 

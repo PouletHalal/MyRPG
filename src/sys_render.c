@@ -15,8 +15,10 @@ static void update_texture_rect(comp_render_t *c_render)
     sfVector2u sheet_size = sfTexture_getSize(c_render->texture);
     int frame_per_line = sheet_size.x / c_render->frame_size.x;
 
-    rect.left = c_render->starting_rect.left + c_render->frame_size.x * (c_render->frame % frame_per_line);
-    rect.top = c_render->starting_rect.top + c_render->frame_size.y * (c_render->frame / frame_per_line);
+    rect.left = c_render->starting_rect.left + c_render->frame_size.x *
+    (c_render->frame % frame_per_line);
+    rect.top = c_render->starting_rect.top + c_render->frame_size.y *
+    (c_render->frame / frame_per_line);
     rect.width = c_render->frame_size.x;
     rect.height = c_render->frame_size.y;
     sfSprite_setTextureRect(c_render->sprite, rect);

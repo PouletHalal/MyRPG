@@ -33,24 +33,27 @@ static void draw_tile(map_t *map, char *sep, sfIntRect *rect,
 static void update_pos(map_t *map)
 {
     map->sprite.pos.x += TILE_WIDTH;
-    if (map->sprite.pos.x >= MAP_WIDTH) {
+    if (map->sprite.pos.x >= map->size.x) {
         map->sprite.pos.x = 0;
         map->sprite.pos.y += TILE_HEIGHT;
     }
 }
 
-void read_line(map_t *map, char *line, tileset_t *tileset)
+void read_line(map_t *map, char *line, tileset_t *tileset, int line_id)
 {
     char *sep = NULL;
     sfIntRect rect = {0, 0, TILE_WIDTH, TILE_HEIGHT};
+    int tile_id = 0;
 
     sep = strtok(line, ",");
     while (sep != NULL) {
+        map->csv_map[line_id][tile_id] = atoi(sep);
         if (atoi(sep) != -1) {
             draw_tile(map, sep, &rect, tileset);
         }
         update_pos(map);
         sep = strtok(NULL, ",");
+        tile_id += 1;
     }
 }
 
@@ -64,11 +67,12 @@ void parse_map(map_t *map, char const *name, tileset_t *tileset)
 
     if (stream == NULL)
         return;
+    map->csv_map = malloc(sizeof(int *) * ((int) (map->size.y / TILE_WIDTH)));
     while (getline(&line, &size, stream) > 0) {
+        map->csv_map[nb_lines] = malloc(sizeof(int) *
+        map->size.x / TILE_WIDTH);
+        read_line(map, line, tileset, nb_lines);
         nb_lines += 1;
-        map->csv_map = realloc(map->csv_map, sizeof(char *) * (nb_lines + 1));
-        map->csv_map[nb_lines - 1] = strdup(line);
-        read_line(map, line, tileset);
     }
     sfSprite_destroy(sprite);
     map->csv_map[nb_lines] = NULL;
@@ -88,8 +92,9 @@ static sfTexture *get_texture(tileset_t *tileset_list, char *name)
 static tileset_t *get_tileset(tileset_t *tileset_list, char *name)
 {
     for (int i = 0; i < tileset_list->nb_tileset; ++i) {
-        if (strcmp(tileset_list[i].name, name) == 0)
+        if (strcmp(tileset_list[i].name, name) == 0) {
             return &(tileset_list[i]);
+        }
     }
     return NULL;
 }
@@ -103,12 +108,12 @@ static map_t add_map(char **args, tileset_t *tileset_list)
     map.map = sfRenderTexture_create(map.size.x, map.size.y, sfFalse);
     map.sprite.sprite = sfSprite_create();
     map.sprite.texture = sfRenderTexture_getTexture(map.map);
-    map.sprite.scale = (sfVector2f) {map.size.x / (16 * 32), map.size.y / (16 * 32)};
+    map.sprite.scale = (sfVector2f) {1, 1};
     map.sprite.pos = (sfVector2f) {0, 0};
+    map.priority = atoi(args[5]);
     sfSprite_setTexture(map.sprite.sprite, map.sprite.texture, sfFalse);
     map.spritesheet = get_texture(tileset_list, args[4]);
     parse_map(&map, args[0], (get_tileset(tileset_list, args[4])));
-    sfSprite_setScale(map.sprite.sprite, map.sprite.scale);
     return map;
 }
 
@@ -137,7 +142,7 @@ static map_list_t *get_map(char *line, FILE *stream, tileset_t *tileset_list)
         if (getline(&line, &size, stream) < 0)
             return NULL;
         split = my_str_to_word_array(line, ":\n");
-        if (len_array(split) != 5)
+        if (len_array(split) != MAP_CONF_NB_ARGS)
             return NULL;
         map->maps[i] = add_map(split, tileset_list);
     }
@@ -150,14 +155,15 @@ map_list_t **init_map(char const *map_file, tileset_t *tileset_list)
     char *line = NULL;
     size_t size = 0;
     map_list_t **map = NULL;
+    int nb_maps = 0;
 
     if (stream == NULL || getline(&line, &size, stream) < 0)
         return NULL;
-    if (atoi(line) <= 0)
+    nb_maps = atoi(line);
+    if (nb_maps <= 0)
         return NULL;
-    map = malloc(sizeof(map_list_t *) * (atoi(line) + 1));
-    map[atoi(line)] = NULL;
-    for (int i = 0; map[i] != NULL; ++i) {
+    map = calloc(nb_maps + 1, sizeof(map_list_t *));
+    for (int i = 0; i < nb_maps; ++i) {
         if (getline(&line, &size, stream) < 0)
             return NULL;
         map[i] = get_map(line, stream, tileset_list);
