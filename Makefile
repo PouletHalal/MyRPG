@@ -5,19 +5,13 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c			\
-		src/start.c			\
-		src/sys_render.c		\
+SRC	=	src/main.c					\
+		src/start.c					\
+		src/animation.c				\
+		src/sys_render.c			\
 		src/sys_input_and_event.c	\
-		src/sys_position.c		\
-		src/camera/view.c	\
-		src/player/sys_player.c	\
-		src/player/player_movements.c	\
-		src/player/player_collisions.c	\
-		src/map_loading/parsing.c	\
-		src/map_loading/init_tilesets.c	\
-		src/lib/my_str_to_word_array.c	\
-		src/lib/my_strcat.c
+		src/sys_position.c			\
+		src/sys_player.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -38,7 +32,7 @@ $(NAME):	$(OBJ)
 
 test:
 	make re
-	./my_rpg
+	./$(NAME)
 	make clean > /dev/null
 
 debuger: $(OBJ)
@@ -59,6 +53,5 @@ re:     fclean all
 
 style:	fclean
 	coding-style . .
-	clear
 	cat coding-style-reports.log
 	rm -f coding-style-reports.log

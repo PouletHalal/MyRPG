@@ -18,7 +18,6 @@ static void next_frame(entity_t *entity)
 void sys_position(world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if (world->entity[i].mask & COMP_POSITION == COMP_POSITION) {
+        if (world->entity[i].mask & COMP_POSITION == COMP_POSITION)
             next_frame(&world->entity[i]);
-        }
 }
