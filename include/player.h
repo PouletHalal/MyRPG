@@ -11,6 +11,7 @@
     #include "temp.h"
     #include "maps.h"
 
+void sys_player(win_t *window, world_t *world, map_list_t *map_list);
 void update_cam(win_t *window, entity_t *entity,
     map_list_t *map_list, sfVector2f offset);
 void player_movements(win_t *window, entity_t *entity,

@@ -11,6 +11,7 @@
 #include "maps.h"
 #include "tilesets.h"
 #include "error_handling.h"
+#include "temp.h"
 
 int add_node(tileset_t *tileset, char *line, int nb_tileset)
 {
@@ -33,6 +34,14 @@ int add_node(tileset_t *tileset, char *line, int nb_tileset)
     free_array(args);
     *tileset = new;
     return 0;
+}
+
+void init_textures(world_t *world)
+{
+    world->map_id = MAIN_WORLD;
+    for (int i = 0; i < TXT_END; ++i)
+        world->texture_list[i] =
+        sfTexture_createFromFile(texture_file[i], NULL);
 }
 
 tileset_t *init_tilesets(void)

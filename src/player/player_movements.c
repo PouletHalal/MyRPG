@@ -43,7 +43,6 @@ void update_sprite_animation(entity_t *entity,
     entity->comp_render.frame_rate = 60 / framerate;
 }
 
-
 static void move_player(win_t *window, entity_t *entity, map_list_t *map_list)
 {
     if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ) &&

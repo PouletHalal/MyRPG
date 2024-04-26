@@ -9,6 +9,7 @@
     #define TILESETS_H_
 
     #include <SFML/Graphics.h>
+    #include "temp.h"
 
     #define NAME_MAX 256
     #define NB_ARGS 6
@@ -22,5 +23,6 @@ typedef struct tileset_s {
     sfVector2f size;
     sfVector2f tile_size;
 } tileset_t;
+
 
 #endif /* !TILESETS_H_ */

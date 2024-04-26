@@ -12,6 +12,7 @@
 #include "maps.h"
 #include "tilesets.h"
 #include "temp.h"
+#include "error_handling.h"
 
 void *display_and_return(void *ptr, int nb, ...)
 {

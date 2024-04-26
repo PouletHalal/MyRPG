@@ -42,8 +42,6 @@ void init_entity(entity_t *entity,
     init_comp_render(entity, texture, position, mob);
     entity->comp_input.key_pressed = world->key_pressed;
     entity->comp_position.position = position;
-    entity->comp_position.velocity.x = mob->speed.x;
-    entity->comp_position.velocity.y = mob->speed.y;
     entity->comp_render.starting_rect = mob->text_rect;
     sfSprite_setScale(entity->comp_render.sprite, mob->scale);
 }
