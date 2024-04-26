@@ -10,8 +10,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
+#include <errno.h>
 #include "maps.h"
 #include "tilesets.h"
+#include "error_handling.h"
 
 static void draw_tile(map_t *map, char *sep, sfIntRect *rect,
     tileset_t *tileset)
@@ -60,21 +62,19 @@ void read_line(map_t *map, char *line, tileset_t *tileset, int line_id)
 void parse_map(map_t *map, char const *name, tileset_t *tileset)
 {
     FILE *stream = fopen(name, "r");
-    sfSprite *sprite = sfSprite_create();
     char *line = NULL;
     size_t size = 0;
     int nb_lines = 0;
 
-    if (stream == NULL || tileset == NULL)
+    if (test_open(stream, name) == -1 || tileset == NULL)
         return;
-    map->csv_map = malloc(sizeof(int *) * ((int) (map->size.y / TILE_WIDTH)));
+    map->csv_map = malloc(sizeof(int *) * (map->size.y / TILE_WIDTH) + 1);
     while (getline(&line, &size, stream) > 0) {
         map->csv_map[nb_lines] = malloc(sizeof(int) *
         map->size.x / TILE_WIDTH);
         read_line(map, line, tileset, nb_lines);
         nb_lines += 1;
     }
-    sfSprite_destroy(sprite);
     map->csv_map[nb_lines] = NULL;
     free(line);
     fclose(stream);
@@ -86,7 +86,7 @@ static sfTexture *get_texture(tileset_t *tileset_list, char *name)
         if (strcmp(tileset_list[i].name, name) == 0)
             return tileset_list[i].tileset;
     }
-    return NULL;
+    return display_and_return(NULL, 2, "Unable to find texture -->", name);
 }
 
 static tileset_t *get_tileset(tileset_t *tileset_list, char *name)
@@ -96,7 +96,7 @@ static tileset_t *get_tileset(tileset_t *tileset_list, char *name)
             return &(tileset_list[i]);
         }
     }
-    return NULL;
+    return display_and_return(NULL, 2, "Unable to find tileset ->", name);
 }
 
 static map_t add_map(char **args, tileset_t *tileset_list)
@@ -106,6 +106,7 @@ static map_t add_map(char **args, tileset_t *tileset_list)
     map.name = strdup(args[1]);
     map.size = (sfVector2f) {atoi(args[2]), atoi(args[3])};
     map.map = sfRenderTexture_create(map.size.x, map.size.y, sfFalse);
+    sfRenderTexture_clear(map.map, sfTransparent);
     map.sprite.sprite = sfSprite_create();
     map.sprite.texture = sfRenderTexture_getTexture(map.map);
     map.sprite.scale = (sfVector2f) {1, 1};
@@ -117,14 +118,6 @@ static map_t add_map(char **args, tileset_t *tileset_list)
     return map;
 }
 
-static int len_array(char **array)
-{
-    int i = 0;
-
-    for (; array[i] != NULL; ++i);
-    return i;
-}
-
 static map_list_t *get_map(char *line, FILE *stream, tileset_t *tileset_list)
 {
     char **split = my_str_to_word_array(line, ":\n");
@@ -132,18 +125,18 @@ static map_list_t *get_map(char *line, FILE *stream, tileset_t *tileset_list)
     size_t size = 0;
 
     if (len_array(split) != 2)
-        return NULL;
+        return display_and_return(NULL, 2, "Invalid nbr of args ->", line);
     map->name = split[0];
     map->nb_layer = atoi(split[1]);
     if (map->nb_layer <= 0)
-        return NULL;
+        return display_and_return(NULL, 2, "Invalid nbr of layers ->", line);
     map->maps = malloc(sizeof(map_t) * map->nb_layer);
     for (int i = 0; i < map->nb_layer; ++i) {
         if (getline(&line, &size, stream) < 0)
-            return NULL;
+            return display_and_return(NULL, 1, "Fail reading line\n");
         split = my_str_to_word_array(line, ":\n");
         if (len_array(split) != MAP_CONF_NB_ARGS)
-            return NULL;
+            return display_and_return(NULL, 2, "Invalid nbr of args ->", line);
         map->maps[i] = add_map(split, tileset_list);
     }
     return map;
@@ -157,15 +150,15 @@ map_list_t **init_map(char const *map_file, tileset_t *tileset_list)
     map_list_t **map = NULL;
     int nb_maps = 0;
 
-    if (stream == NULL || getline(&line, &size, stream) < 0)
+    if (openning_and_reading(stream, map_file, &line) || !tileset_list)
         return NULL;
     nb_maps = atoi(line);
     if (nb_maps <= 0)
-        return NULL;
+        return display_and_return(NULL, 2, "Invalid nbr of maps ->", line);
     map = calloc(nb_maps + 1, sizeof(map_list_t *));
     for (int i = 0; i < nb_maps; ++i) {
         if (getline(&line, &size, stream) < 0)
-            return NULL;
+            return display_and_return(NULL, 1, "Fail reading line\n");
         map[i] = get_map(line, stream, tileset_list);
         if (map[i] == NULL)
             return NULL;

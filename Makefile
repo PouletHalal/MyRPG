@@ -11,11 +11,14 @@ SRC	=	src/main.c			\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
 		src/camera/view.c	\
+		src/error_handling/parsing_handling.c	\
 		src/player/sys_player.c	\
 		src/player/player_movements.c	\
 		src/player/player_collisions.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
+		src/rendering/map_rendering.c	\
+		src/rendering/window_rendering.c	\
 		src/lib/my_str_to_word_array.c	\
 		src/lib/my_strcat.c
 
@@ -23,11 +26,11 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_rpg
 
-CFLAGS =	-I include
+CFLAGS +=	-I include
 
-CPPFLGS = 	-W -Wall -Wextra
+CPPFLGS += 	-W -Wall -Wextra
 
-DBFLAGS = 	-g -g3 -ggdb
+DBFLAGS = 	-g -g3 -fsanitize=address
 
 LDFLAGS = 	-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -lm
 
