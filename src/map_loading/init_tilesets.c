@@ -39,7 +39,8 @@ tileset_t *init_tilesets(void)
     if (getline(&line, &size, stream) < 0)
         return NULL;
     nb_tileset = atoi(line);
-    tileset_list = malloc(sizeof(tileset_t) * nb_tileset);
+    tileset_list = malloc(sizeof(tileset_t) * (nb_tileset));
+    tileset_list->nb_tileset = nb_tileset;
     for (int i = 0; getline(&line, &size, stream) > 0 && i < nb_tileset; ++i) {
         if (add_node(&(tileset_list[i]), line, nb_tileset) < 0)
             return NULL;

@@ -65,7 +65,7 @@ void parse_map(map_t *map, char const *name, tileset_t *tileset)
     size_t size = 0;
     int nb_lines = 0;
 
-    if (stream == NULL)
+    if (stream == NULL || tileset == NULL)
         return;
     map->csv_map = malloc(sizeof(int *) * ((int) (map->size.y / TILE_WIDTH)));
     while (getline(&line, &size, stream) > 0) {
