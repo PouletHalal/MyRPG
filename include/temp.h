@@ -99,7 +99,7 @@ static const sprite_info_t mob_list[] = {
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5, {2., 2.}},
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5, {2., 2.}},
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5, {2., 2.}},
-    {{0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5, {2., 2.}},
+    {{0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5, {1.5, 1.5}},
 };
 
 typedef struct comp_render_s {
@@ -159,5 +159,6 @@ void init_entity(entity_t *entity,
     sfTexture *texture, sprite_info_t *mob, world_t *world);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 void sys_player(win_t *window, world_t *world, map_list_t *map_list);
+int len_array(char **array);
 
 #endif /* !TEMP_H_ */

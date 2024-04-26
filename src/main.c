@@ -91,7 +91,7 @@ static void render_window(win_t *window, world_t *world, map_list_t *map_list)
 
 static void init_textures(world_t *world)
 {
-    world->map_id = HOUSE1;
+    world->map_id = MAIN_WORLD;
     for (int i = 0; i < TXT_END; ++i)
         world->texture_list[i] =
         sfTexture_createFromFile(texture_file[i], NULL);
@@ -106,6 +106,8 @@ int main(void)
     tileset_t *tileset_list = init_tilesets();
     map_list_t **map_list = init_map(MAP_FILE, tileset_list);
 
+    if (map_list == NULL)
+        return close_and_return(window, 84);
     srand(time(NULL));
     init_textures(&world);
     init_entity(&world.entity[0], world.texture_list[ran],
@@ -115,7 +117,5 @@ int main(void)
         refresh_world(&world, clock, window, map_list[world.map_id]);
         render_window(window, &world, map_list[world.map_id]);
     }
-    sfRenderWindow_destroy(window->window);
-    free(window);
-    return 0;
+    return close_and_return(window, 0);
 }

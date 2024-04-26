@@ -12,6 +12,7 @@ SRC	=	src/main.c			\
 		src/sys_position.c		\
 		src/camera/view.c	\
 		src/player/sys_player.c	\
+		src/error_handling/parsing_handling.c	\
 		src/player/player_movements.c	\
 		src/player/player_collisions.c	\
 		src/map_loading/parsing.c	\
@@ -23,11 +24,11 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_rpg
 
-CFLAGS =	-I include
+CFLAGS +=	-I include
 
-CPPFLGS = 	-W -Wall -Wextra
+CPPFLGS += 	-W -Wall -Wextra
 
-DBFLAGS = 	-g -g3 -ggdb
+DBFLAGS = 	-g -g3 -fsanitize=address
 
 LDFLAGS = 	-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -lm
 

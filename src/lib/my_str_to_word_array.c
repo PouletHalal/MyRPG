@@ -52,15 +52,14 @@ static void get_array(char **res, char const *str, char const *sep)
     return;
 }
 
-int array_len(char **array)
+int len_array(char **array)
 {
-    int len = 0;
+    int i = 0;
 
     if (array == NULL)
         return 0;
-    while (array[len] != NULL)
-        len += 1;
-    return len;
+    for (; array[i] != NULL; ++i);
+    return i;
 }
 
 void free_array(char **array)
