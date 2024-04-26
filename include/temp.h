@@ -10,8 +10,16 @@
 
     #include <SFML/Graphics.h>
     #include <stdbool.h>
+    #include <stdio.h>
+    #include "maps.h"
 
     #define ENTITY_COUNT 10000
+    #define NB_KEYS 120
+
+enum map_ids {
+    MAIN_WORLD,
+    HOUSE1,
+};
 
 enum comp_list {
     COMP_NONE = 0,
@@ -90,7 +98,7 @@ static const sprite_info_t mob_list[] = {
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},
+    {{0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
 };
 
 typedef struct comp_render_s {
@@ -123,23 +131,32 @@ typedef struct entity_s {
 } entity_t;
 
 typedef struct world_s {
+    enum map_ids map_id;
     sfTexture *texture_list[TXT_END];
     entity_t entity[ENTITY_COUNT];
-    sfBool key_pressed[120];
+    sfBool key_pressed[NB_KEYS];
 } world_t;
+
+typedef struct cam_s {
+    sfFloatRect view_rect;
+    sfView *view;
+} cam_t;
 
 typedef struct window_s {
     sfVideoMode mode;
     sfRenderWindow *window;
     sfEvent event;
     sfVector2f windows_scale;
+    cam_t cam;
 } win_t;
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world);
-void sys_player(world_t *world);
+void sys_player(win_t *window, world_t *world, map_list_t *map_list);
 void sys_render(world_t *world);
-
+void init_entity(entity_t *entity,
+    sfTexture *texture, sprite_info_t *mob, world_t *world);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
+void sys_player(win_t *window, world_t *world, map_list_t *map_list);
 
 #endif /* !TEMP_H_ */

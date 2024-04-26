@@ -10,7 +10,10 @@ SRC	=	src/main.c			\
 		src/sys_render.c		\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
-		src/sys_player.c	\
+		src/camera/view.c	\
+		src/player/sys_player.c	\
+		src/player/player_movements.c	\
+		src/player/player_collisions.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
 		src/lib/my_str_to_word_array.c	\
@@ -35,7 +38,7 @@ $(NAME):	$(OBJ)
 
 test:
 	make re
-	./my_rpg 
+	./my_rpg
 	make clean > /dev/null
 
 debuger: $(OBJ)
@@ -56,5 +59,6 @@ re:     fclean all
 
 style:	fclean
 	coding-style . .
+	clear
 	cat coding-style-reports.log
 	rm -f coding-style-reports.log
