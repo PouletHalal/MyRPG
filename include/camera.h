@@ -15,5 +15,7 @@ void init_view(win_t *window);
 void init_cam(win_t *window, world_t *world);
 void update_cam(win_t *window, entity_t *entity,
     map_list_t *map_list, sfVector2f offset);
+void resize_cam(win_t *window, map_list_t *map);
+void move_cam(win_t *window, map_list_t *map);
 
 #endif /* !CAMERA_H_ */

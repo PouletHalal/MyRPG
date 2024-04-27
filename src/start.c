@@ -37,7 +37,7 @@ static void init_comp_render(entity_t *entity, sfTexture *texture,
 void init_entity(entity_t *entity,
     sfTexture *texture, sprite_info_t *mob, world_t *world)
 {
-    sfVector2f position = {64, 64};
+    sfVector2f position = {96, 96};
 
     init_comp_render(entity, texture, position, mob);
     entity->comp_input.key_pressed = world->key_pressed;
