@@ -42,33 +42,40 @@ void resize_cam(win_t *window, map_list_t *map)
     window->cam.view_rect.height = cam_size.y;
 }
 
+static int is_right_size(sfVector2f cam_center, sfVector2f cam_size,
+    sfVector2f map_size)
+{
+    if (cam_center.x - cam_size.x / 2 >= 0
+        && cam_center.x + cam_size.x / 2 <= map_size.x
+        && cam_center.y - cam_size.y / 2 >= 0
+        && cam_center.y + cam_size.y / 2 <= map_size.y)
+        return 1;
+    return 0;
+}
+
+static void move_and_update(sfView *view, sfVector2f offset,
+    sfVector2f *cam_center)
+{
+    sfView_move(view, offset);
+    *cam_center = sfView_getCenter(view);
+}
+
 void move_cam(win_t *window, map_list_t *map)
 {
     sfVector2f cam_size = sfView_getSize(window->cam.view);
     sfVector2f cam_center = sfView_getCenter(window->cam.view);
     sfVector2f map_size = map->maps->size;
 
-    if (cam_center.x - cam_size.x / 2 >= 0
-        && cam_center.x + cam_size.x / 2 <= map_size.x
-        && cam_center.y - cam_size.y / 2 >= 0
-        && cam_center.y + cam_size.y / 2 <= map_size.y)
+    if (is_right_size(cam_center, cam_size, map_size))
             return;
-    while (cam_center.x - cam_size.x / 2 < 0) {
-        sfView_move(window->cam.view, (sfVector2f) {1, 0});
-        cam_center = sfView_getCenter(window->cam.view);
-    }
-    while (cam_center.x + cam_size.x / 2 > map_size.x) {
-        sfView_move(window->cam.view, (sfVector2f) {-1, 0});
-        cam_center = sfView_getCenter(window->cam.view);
-    }
-    while (cam_center.y - cam_size.y / 2 < 0) {
-        sfView_move(window->cam.view, (sfVector2f) {0, 1});
-        cam_center = sfView_getCenter(window->cam.view);
-    }
-    while (cam_center.y - cam_size.y / 2 > map_size.y) {
-        sfView_move(window->cam.view, (sfVector2f) {0, -1});
-        cam_center = sfView_getCenter(window->cam.view);
-    }
+    while (cam_center.x - cam_size.x / 2 < 0)
+        move_and_update(window->cam.view, (sfVector2f) {1, 0}, &cam_center);
+    while (cam_center.x + cam_size.x / 2 > map_size.x)
+        move_and_update(window->cam.view, (sfVector2f) {-1, 0}, &cam_center);
+    while (cam_center.y - cam_size.y / 2 < 0)
+        move_and_update(window->cam.view, (sfVector2f) {0, 1}, &cam_center);
+    while (cam_center.y - cam_size.y / 2 > map_size.y)
+        move_and_update(window->cam.view, (sfVector2f) {0, -1}, &cam_center);
 }
 
 void update_cam(win_t *window, entity_t *entity,

@@ -50,7 +50,7 @@ static bool tile_collision(sfFloatRect bounds, int **collision_map,
     int x_right = round((bounds.left - bounds.width / 2) / TILE_WIDTH);
 
     if (offset.y < 0 && (collision_map[y_top + ((int) offset.y)][x_left] != -1
-        || collision_map[y_top + ((int) offset.y)][x_right] != -1)) 
+        || collision_map[y_top + ((int) offset.y)][x_right] != -1))
         return true;
     if (offset.y > 0 && (collision_map[y_bot + ((int) offset.y)][x_right] != -1
         || collision_map[y_bot + ((int) offset.y)][x_left] != -1))
