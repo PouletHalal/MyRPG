@@ -20,5 +20,6 @@ void update_sprite_animation(entity_t *entity,
     int anim_id, int count, int framerate);
 sfBool is_colliding(entity_t *entity,
     map_list_t *map_list, sfVector2f offset);
+int find_player(world_t *world);
 
 #endif /* !PLAYER_H_ */

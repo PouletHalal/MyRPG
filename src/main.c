@@ -37,7 +37,6 @@ int main(void)
     world_t world = {0};
     win_t *window = create_win();
     sfClock *clock = sfClock_create();
-    int ran = 17;
     tileset_t *tileset_list = init_tilesets();
     map_list_t **map_list = init_map(MAP_FILE, tileset_list);
 
@@ -45,8 +44,9 @@ int main(void)
         return close_and_return(window, 84);
     srand(time(NULL));
     init_textures(&world);
-    init_entity(&world.entity[0], world.texture_list[ran],
-        &mob_list[ran], &world);
+    init_entity(&world.entity[0], world.texture_list[TXT_PROTA],
+        &mob_list[TXT_PROTA], &world);
+    init_mob(&world.entity[1], TXT_FDP, &world, (sfVector2f) {150., 150.});
     init_cam(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window, map_list[world.map_id]);

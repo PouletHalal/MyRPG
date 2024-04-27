@@ -27,6 +27,7 @@ enum comp_list {
     COMP_POSITION = 1 << 1,
     COMP_INPUT = 1 << 2,
     COMP_PLAYER = 1 << 3,
+    COMP_MOB = 1 << 4,
 };
 
 enum texture_list {
@@ -82,7 +83,7 @@ typedef struct sprite_info_s {
 
 static const sprite_info_t mob_list[] = {
     {{0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {{0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
+    {{0, 0, 192, 192}, 12, {192, 192}, {0.5, 0.5}, 5},
     {{0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {{0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
     {{0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
@@ -123,11 +124,20 @@ typedef struct comp_input_s {
     sfBool *key_pressed;
 } comp_input_t;
 
+typedef struct comp_mob_s {
+    bool is_alive;
+    bool does_follow;
+    double range;
+    size_t speed;
+    bool does_take_damage;
+} comp_mob_t;
+
 typedef struct entity_s {
     int mask;
     comp_render_t comp_render;
     comp_position_t comp_position;
     comp_input_t comp_input;
+    comp_mob_t comp_mob;
 } entity_t;
 
 typedef struct world_s {
@@ -152,9 +162,12 @@ typedef struct window_s {
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world);
+void sys_mob(world_t *world);
 void sys_render(world_t *world);
 void init_entity(entity_t *entity,
-    sfTexture *texture, sprite_info_t *mob, world_t *world);
+    sfTexture *texture, const sprite_info_t *mob, world_t *world);
+void init_mob(entity_t *entity, enum texture_list mob, world_t *world,
+    sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);

@@ -33,6 +33,7 @@ void refresh_world(world_t *world, sfClock *clock,
         return;
     sfClock_restart(clock);
     sys_input_and_event(world, window);
+    sys_mob(world);
     sys_position(world);
     sys_player(window, world, map_list);
     sys_render(world);
@@ -43,11 +44,11 @@ void render_window(win_t *window, world_t *world, map_list_t *map_list)
     sfRenderWindow_clear(window->window, sfBlack);
     display_map(window, map_list, 1);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
-        if (world->entity[i].mask & COMP_RENDER == COMP_RENDER &&
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true)
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
-        if (world->entity[i].mask & COMP_PLAYER == COMP_PLAYER)
+        if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             draw_hitbox(window, &world->entity[i]);
     }
     display_map(window, map_list, 2);
