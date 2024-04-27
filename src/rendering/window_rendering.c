@@ -9,6 +9,7 @@
 #include "maps.h"
 #include "player.h"
 #include "rendering.h"
+#include "camera.h"
 
 void draw_hitbox(win_t *window, entity_t *entity)
 {
@@ -41,6 +42,8 @@ void refresh_world(world_t *world, sfClock *clock,
 void render_window(win_t *window, world_t *world, map_list_t *map_list)
 {
     sfRenderWindow_clear(window->window, sfBlack);
+    resize_cam(window, map_list);
+    move_cam(window, map_list);
     display_map(window, map_list, 1);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if (world->entity[i].mask & COMP_RENDER == COMP_RENDER &&

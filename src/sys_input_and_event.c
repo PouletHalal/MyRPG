@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <SFML/Window.h>
 #include "temp.h"
+#include "camera.h"
 
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code)
 {
@@ -32,4 +33,12 @@ void sys_input_and_event(world_t *world, win_t *window)
 {
     while (sfRenderWindow_pollEvent(window->window, &(window->event)))
         analyse_events(window, world);
+    if (world->key_pressed[sfKeyK] == sfTrue) {
+        world->map_id = MAIN_WORLD;
+        init_cam(window, world);
+    }
+    if (world->key_pressed[sfKeyL] == sfTrue) {
+        world->map_id = HOUSE1;
+        init_cam(window, world);
+    }
 }
