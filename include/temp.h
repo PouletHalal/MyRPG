@@ -28,6 +28,7 @@ enum comp_list {
     COMP_INPUT = 1 << 2,
     COMP_PLAYER = 1 << 3,
     COMP_MOB = 1 << 4,
+    COMP_HITBOX = 1 << 5,
 };
 
 enum texture_list {
@@ -132,12 +133,19 @@ typedef struct comp_mob_s {
     bool does_take_damage;
 } comp_mob_t;
 
+typedef struct comp_hitbox_s {
+    sfBool do_collide;
+    sfFloatRect hitbox;
+} comp_hitbox_t;
+
 typedef struct entity_s {
     int mask;
+    int entity;
     comp_render_t comp_render;
     comp_position_t comp_position;
     comp_input_t comp_input;
     comp_mob_t comp_mob;
+    comp_hitbox_t comp_hitbox;
 } entity_t;
 
 typedef struct world_s {
@@ -166,10 +174,11 @@ void sys_mob(world_t *world);
 void sys_render(world_t *world);
 void init_entity(entity_t *entity,
     sfTexture *texture, const sprite_info_t *mob, world_t *world);
-void init_mob(entity_t *entity, enum texture_list mob, world_t *world,
+void init_mob(enum texture_list mob, world_t *world,
     sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
+int find_empty(world_t *world);
 
 #endif /* !TEMP_H_ */
