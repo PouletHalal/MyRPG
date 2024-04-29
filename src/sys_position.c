@@ -42,7 +42,7 @@ sfVector2f velocity)
     return sfFalse;
 }
 
-static sfBool check_collision(entity_t *entity, world_t *world,
+sfBool check_collision(entity_t *entity, world_t *world,
     sfVector2f velocity)
 {
     sfFloatRect hitbox = entity->comp_hitbox.hitbox;
@@ -62,10 +62,12 @@ static void next_frame(entity_t *entity, world_t *world)
 {
     if (!check_collision(entity, world,
         (sfVector2f) {entity->comp_position.velocity.x, 0.}))
-            entity->comp_position.position.x += entity->comp_position.velocity.x;
+            entity->comp_position.position.x +=
+            entity->comp_position.velocity.x;
     if (!check_collision(entity, world,
         (sfVector2f) {0., entity->comp_position.velocity.y}))
-            entity->comp_position.position.y += entity->comp_position.velocity.y;
+            entity->comp_position.position.y +=
+            entity->comp_position.velocity.y;
 }
 
 void sys_position(world_t *world)
