@@ -100,3 +100,16 @@ void update_cam(win_t *window, entity_t *entity,
         && abs(player_pos.y - cam_pos.y) < THRESHOLD)
         sfView_move(window->cam.view, (sfVector2f) {0, offset.y});
 }
+
+bool is_in_cam_range(win_t *window, entity_t *entity)
+{
+    sfVector2f cam_pos = sfView_getCenter(window->cam.view);
+    sfVector2f cam_size = sfView_getSize(window->cam.view);
+    sfVector2f pos = entity->comp_position.position;
+
+    if (pos.x < cam_pos.x - cam_size.x / 2|| pos.x > cam_pos.x + cam_size.x / 2)
+        return false;
+    if (pos.y < cam_pos.y - cam_size.y / 2|| pos.y > cam_pos.y + cam_size.y / 2)
+        return false;
+    return true;
+}

@@ -23,5 +23,7 @@ sfBool is_colliding(entity_t *entity,
 int find_player(world_t *world);
 sfBool check_collision(entity_t *entity, world_t *world,
     sfVector2f velocity);
+void player_movements(win_t *window, entity_t *entity, world_t *world,
+    map_list_t *map_list);
 
 #endif /* !PLAYER_H_ */
