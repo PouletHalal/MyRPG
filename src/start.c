@@ -60,8 +60,11 @@ void init_mob(enum texture_list mob, world_t *world,
 {
     sfFloatRect rect;
     int free = find_empty(world);
-    entity_t *entity = &world->entity[free];
+    entity_t *entity;
 
+    if (free == -1)
+        return;
+    entity = &world->entity[free];
     *entity = (entity_t) {0};
     entity->entity = free;
     init_comp_render(entity, world->texture_list[mob],
