@@ -35,7 +35,7 @@ void refresh_world(world_t *world, sfClock *clock,
     sfClock_restart(clock);
     sys_input_and_event(world, window);
     sys_mob(world);
-    sys_position(world);
+    sys_position(world, window);
     sys_player(window, world, map_list);
     sys_render(world);
 }

@@ -84,7 +84,7 @@ typedef struct sprite_info_s {
 
 static const sprite_info_t mob_list[] = {
     {{0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {{0, 0, 192, 192}, 12, {192, 192}, {0.5, 0.5}, 5},
+    {{0, 0, 192, 192}, 12, {192, 192}, {0.1, 0.1}, 5},
     {{0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {{0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
     {{0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
@@ -169,7 +169,7 @@ typedef struct window_s {
 } win_t;
 
 void sys_input_and_event(world_t *world, win_t *window);
-void sys_position(world_t *world);
+void sys_position(world_t *world, win_t *window);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
 void init_entity(entity_t *entity,

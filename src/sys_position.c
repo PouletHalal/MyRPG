@@ -8,6 +8,7 @@
 #include <SFML/Graphics.h>
 #include <stdlib.h>
 #include "temp.h"
+#include "camera.h"
 
 static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
 {
@@ -43,7 +44,7 @@ sfVector2f velocity)
 }
 
 sfBool check_collision(entity_t *entity, world_t *world,
-    sfVector2f velocity)
+    sfVector2f velocity, win_t *window)
 {
     sfFloatRect hitbox = entity->comp_hitbox.hitbox;
     sfVector2f position = entity->comp_position.position;
@@ -52,27 +53,28 @@ sfBool check_collision(entity_t *entity, world_t *world,
     || !entity->comp_hitbox.do_collide)
         return sfFalse;
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if (entity->entity != i &&
+        if (entity->entity != i && is_in_cam_range(window, &world->entity[i]) &&
         collide_entity(entity, &world->entity[i], velocity))
             return sfTrue;
     return sfFalse;
 }
 
-static void next_frame(entity_t *entity, world_t *world)
+static void next_frame(entity_t *entity, world_t *world, win_t *window)
 {
     if (!check_collision(entity, world,
-        (sfVector2f) {entity->comp_position.velocity.x, 0.}))
+        (sfVector2f) {entity->comp_position.velocity.x, 0.}, window))
             entity->comp_position.position.x +=
             entity->comp_position.velocity.x;
     if (!check_collision(entity, world,
-        (sfVector2f) {0., entity->comp_position.velocity.y}))
+        (sfVector2f) {0., entity->comp_position.velocity.y}, window))
             entity->comp_position.position.y +=
             entity->comp_position.velocity.y;
 }
 
-void sys_position(world_t *world)
+void sys_position(world_t *world, win_t *window)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_POSITION) == COMP_POSITION)
-            next_frame(&world->entity[i], world);
+        if ((world->entity[i].mask & COMP_POSITION) == COMP_POSITION
+        && is_in_cam_range(window, &world->entity[i]))
+            next_frame(&world->entity[i], world, window);
 }
