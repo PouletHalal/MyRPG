@@ -12,6 +12,7 @@ SRC	=	src/main.c			\
 		src/sys_position.c		\
 		src/sys_mob.c	\
 		src/camera/view.c	\
+		src/camera/camera_movements.c	\
 		src/error_handling/parsing_handling.c	\
 		src/player/sys_player.c	\
 		src/player/player_movements.c	\

@@ -46,24 +46,43 @@ void init_entity(entity_t *entity,
     entity->comp_input.key_pressed = world->key_pressed;
     entity->comp_position.position = position;
     entity->comp_hitbox.do_collide = sfTrue;
+    entity->comp_render.starting_rect = mob->text_rect;
+    sfSprite_setScale(entity->comp_render.sprite, mob->scale);
     rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
     entity->comp_hitbox.hitbox = (sfFloatRect)
     {rect.left + rect.width / 4. - position.x,
     rect.top + rect.height / 4. - position.y,
     rect.width / 2., rect.height / 2.};
-    entity->comp_render.starting_rect = mob->text_rect;
-    sfSprite_setScale(entity->comp_render.sprite, mob->scale);
+}
+
+static void init_comp_mob(entity_t *entity, enum texture_list mob)
+{
+    entity->comp_mob.is_alive = sfTrue;
+    entity->comp_mob.range = 200.;
+    entity->comp_mob.speed = 1.;
+    entity->comp_mob.does_follow = sfTrue;
+    entity->comp_render.starting_rect = mob_list[mob].text_rect;
+}
+
+static void init_hitbox(entity_t *entity, sfVector2f position)
+{
+    sfFloatRect rect;
+
+    rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
+    entity->comp_hitbox.hitbox = (sfFloatRect)
+    {rect.left + rect.width / 4. - position.x,
+    rect.top + rect.height / 4. - position.y,
+    rect.width / 2., rect.height / 2.};
 }
 
 void init_mob(enum texture_list mob, world_t *world,
     sfVector2f position)
 {
-    sfFloatRect rect;
     int free = find_empty(world);
     entity_t *entity;
 
     if (free == -1)
-        return; 
+        return;
     entity = &world->entity[free];
     *entity = (entity_t) {0};
     entity->entity = free;
@@ -73,14 +92,6 @@ void init_mob(enum texture_list mob, world_t *world,
     entity->comp_position.position = position;
     entity->comp_hitbox.do_collide = sfTrue;
     sfSprite_setScale(entity->comp_render.sprite, mob_list[mob].scale);
-    rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
-    entity->comp_hitbox.hitbox = (sfFloatRect)
-    {rect.left + rect.width / 4. - position.x,
-    rect.top + rect.height / 4. - position.y,
-    rect.width / 2., rect.height / 2.};
-    entity->comp_mob.is_alive = sfTrue;
-    entity->comp_mob.range = 200.;
-    entity->comp_mob.speed = 1.;
-    entity->comp_mob.does_follow = sfTrue;
-    entity->comp_render.starting_rect = mob_list[mob].text_rect;
+    init_hitbox(entity, position);
+    init_comp_mob(entity, mob);
 }

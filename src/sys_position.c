@@ -25,7 +25,7 @@ static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
 }
 
 static sfBool collide_entity(entity_t *entity, entity_t *bis,
-sfVector2f velocity)
+    sfVector2f velocity)
 {
     sfFloatRect entity_hitbox = entity->comp_hitbox.hitbox;
     sfFloatRect bis_hitbox = bis->comp_hitbox.hitbox;
@@ -39,8 +39,9 @@ sfVector2f velocity)
     entity_hitbox.top += velocity.y;
     bis_hitbox.left += bis->comp_position.position.x;
     bis_hitbox.top += bis->comp_position.position.y;
-    if (do_rect_collide(entity_hitbox, bis_hitbox))
+    if (do_rect_collide(entity_hitbox, bis_hitbox)) {
         return sfTrue;
+    }
     return sfFalse;
 }
 
@@ -56,8 +57,8 @@ static sfBool check_collision(entity_t *entity, world_t *world,
     if (is_colliding(entity, world->map_list[world->map_id], velocity))
         return true;
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if (entity->entity != i && is_in_cam_range(window, &world->entity[i]) &&
-        collide_entity(entity, &world->entity[i], velocity))
+        if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
+        && collide_entity(entity, &world->entity[i], velocity))
             return sfTrue;
     return sfFalse;
 }
