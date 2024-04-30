@@ -20,9 +20,10 @@ int find_player(world_t *world)
     return -1;
 }
 
-void player_events(win_t *window, entity_t *entity, map_list_t *map_list)
+void player_events(win_t *window, entity_t *entity, world_t *world,
+    map_list_t *map_list)
 {
-    player_movements(window, entity, map_list);
+    player_movements(window, entity, world, map_list);
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
@@ -30,5 +31,5 @@ void sys_player(win_t *window, world_t *world, map_list_t *map_list)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            player_events(window, &(world->entity[i]), map_list);
+            player_events(window, &(world->entity[i]), world, map_list);
 }

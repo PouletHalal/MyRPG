@@ -35,17 +35,26 @@ void refresh_world(world_t *world, sfClock *clock,
     sfClock_restart(clock);
     sys_input_and_event(world, window);
     sys_mob(world);
-    sys_position(world);
+    sys_position(world, window);
     sys_player(window, world, map_list);
     sys_render(world);
 }
 
 void render_window(win_t *window, world_t *world, map_list_t *map_list)
 {
+    sfRectangleShape *shape = sfRectangleShape_create();
+    sfFloatRect rect = world->entity[1].comp_hitbox.hitbox;
+
+    sfRectangleShape_setPosition(shape, (sfVector2f) {rect.left + world->entity[1].comp_position.position.x, rect.top + world->entity[1].comp_position.position.y});
+    sfRectangleShape_setSize(shape, (sfVector2f) {rect.width, rect.height});
+    sfRectangleShape_setFillColor(shape, sfTransparent);
+    sfRectangleShape_setOutlineThickness(shape, 1.);
+    sfRectangleShape_setOutlineColor(shape, sfBlack);
     sfRenderWindow_clear(window->window, sfBlack);
     resize_cam(window, map_list);
     move_cam(window, map_list);
     display_map(window, map_list, 1);
+    sfRenderWindow_drawRectangleShape(window->window, shape, NULL);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true)
