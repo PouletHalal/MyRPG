@@ -150,6 +150,7 @@ typedef struct entity_s {
 
 typedef struct world_s {
     enum map_ids map_id;
+    map_list_t **map_list;
     sfTexture *texture_list[TXT_END];
     entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];

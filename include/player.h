@@ -21,8 +21,6 @@ void update_sprite_animation(entity_t *entity,
 sfBool is_colliding(entity_t *entity,
     map_list_t *map_list, sfVector2f offset);
 int find_player(world_t *world);
-sfBool check_collision(entity_t *entity, world_t *world,
-    sfVector2f velocity);
 void player_movements(win_t *window, entity_t *entity, world_t *world,
     map_list_t *map_list);
 

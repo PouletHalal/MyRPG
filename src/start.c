@@ -63,7 +63,7 @@ void init_mob(enum texture_list mob, world_t *world,
     entity_t *entity;
 
     if (free == -1)
-        return;
+        return; 
     entity = &world->entity[free];
     *entity = (entity_t) {0};
     entity->entity = free;

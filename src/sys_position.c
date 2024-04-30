@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "temp.h"
 #include "camera.h"
+#include "player.h"
 
 static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
 {
@@ -43,7 +44,7 @@ sfVector2f velocity)
     return sfFalse;
 }
 
-sfBool check_collision(entity_t *entity, world_t *world,
+static sfBool check_collision(entity_t *entity, world_t *world,
     sfVector2f velocity, win_t *window)
 {
     sfFloatRect hitbox = entity->comp_hitbox.hitbox;
@@ -52,6 +53,8 @@ sfBool check_collision(entity_t *entity, world_t *world,
     if (((entity->mask & COMP_HITBOX) != COMP_HITBOX)
     || !entity->comp_hitbox.do_collide)
         return sfFalse;
+    if (is_colliding(entity, world->map_list[world->map_id], velocity))
+        return true;
     for (int i = 0; i < ENTITY_COUNT; ++i)
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i]) &&
         collide_entity(entity, &world->entity[i], velocity))
@@ -61,14 +64,22 @@ sfBool check_collision(entity_t *entity, world_t *world,
 
 static void next_frame(entity_t *entity, world_t *world, win_t *window)
 {
-    if (!check_collision(entity, world,
-        (sfVector2f) {entity->comp_position.velocity.x, 0.}, window))
+    sfVector2f xvelo = (sfVector2f) {entity->comp_position.velocity.x, 0.};
+    sfVector2f yvelo = (sfVector2f) {0., entity->comp_position.velocity.y};
+    map_list_t *map = world->map_list[world->map_id];
+
+    if (!check_collision(entity, world, xvelo, window)) {
+            if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
+                update_cam(window, entity, map, xvelo);
             entity->comp_position.position.x +=
             entity->comp_position.velocity.x;
-    if (!check_collision(entity, world,
-        (sfVector2f) {0., entity->comp_position.velocity.y}, window))
+        }
+    if (!check_collision(entity, world, yvelo, window)) {
+        if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
+                update_cam(window, entity, map, yvelo);
             entity->comp_position.position.y +=
             entity->comp_position.velocity.y;
+    }
 }
 
 void sys_position(world_t *world, win_t *window)

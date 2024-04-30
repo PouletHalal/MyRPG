@@ -43,36 +43,22 @@ void update_sprite_animation(entity_t *entity,
     entity->comp_render.frame_rate = 60 / framerate;
 }
 
-static bool collisions(entity_t *entity, world_t *world, map_list_t *map,
-    sfVector2f offset)
-{
-    if (is_colliding(entity, map, offset))
-        return true;
-    if (check_collision(entity, world, offset))
-        return true;
-    return false;
-}
-
 static void move_player(win_t *window, entity_t *entity, world_t *world,
     map_list_t *map_list)
 {
-    if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ) &&
-        !collisions(entity, world, map_list, (sfVector2f) {1.5, 0})) {
+    if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ)) {
         update_speedx(entity, 1.5);
         update_cam(window, entity, map_list, (sfVector2f) {1.5, 0});
     }
-    if (is_key_pressed(entity, sfKeyS) && !is_key_pressed(entity, sfKeyZ) &&
-        !collisions(entity, world, map_list, (sfVector2f) {0, 1.5})) {
+    if (is_key_pressed(entity, sfKeyS) && !is_key_pressed(entity, sfKeyZ)) {
         update_speedy(entity, 1.5);
         update_cam(window, entity, map_list, (sfVector2f) {0, 1.5});
     }
-    if (is_key_pressed(entity, sfKeyQ) && !is_key_pressed(entity, sfKeyD) &&
-        !collisions(entity, world, map_list, (sfVector2f) {-1.5, 0})) {
+    if (is_key_pressed(entity, sfKeyQ) && !is_key_pressed(entity, sfKeyD)) {
         update_speedx(entity, -1.5);
         update_cam(window, entity, map_list, (sfVector2f) {-1.5, 0});
     }
-    if (is_key_pressed(entity, sfKeyZ) && !is_key_pressed(entity, sfKeyS) &&
-        !collisions(entity, world, map_list, (sfVector2f) {0, -1.5})) {
+    if (is_key_pressed(entity, sfKeyZ) && !is_key_pressed(entity, sfKeyS)) {
         update_speedy(entity, -1.5);
         update_cam(window, entity, map_list, (sfVector2f) {0, -1.5});
     }

@@ -43,6 +43,7 @@ int main(void)
     if (map_list == NULL)
         return close_and_return(window, 84);
     srand(time(NULL));
+    world.map_list = map_list;
     init_textures(&world);
     init_entity(&world.entity[0], world.texture_list[TXT_PROTA],
         &mob_list[TXT_PROTA], &world);
