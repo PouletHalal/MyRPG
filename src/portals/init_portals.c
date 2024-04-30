@@ -6,8 +6,8 @@
 */
 
 #include <stdlib.h>
-#include <temp.h>
 #include <stdio.h>
+#include "temp.h"
 #include "error_handling.h"
 
 static bool invalid_coords(world_t *world, char **split)
@@ -53,8 +53,7 @@ void *init_portal(world_t *world, char *line)
     entity->entity = free_slot;
     entity->mask |= COMP_PORTAL | COMP_POSITION | COMP_HITBOX;
     init_comp_portal(entity, split);
-    init_comp_render(entity, world->texture_list[atoi(split[8])],
-    entity->comp_position.position, &mob_list[atoi(split[8])]);
+    init_comp_render(entity, world, ANIM_PORTAL_GREEN, entity->comp_position.position);
     sfSprite_setScale(entity->comp_render.sprite, (sfVector2f) {1.2, 1.2});
 }
 

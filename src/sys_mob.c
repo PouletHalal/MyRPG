@@ -37,13 +37,15 @@ static void next_frame(entity_t *entity, world_t *world)
 {
     int player = find_player(world);
 
+    play_animation(entity, ANIM_MOB_RUN, true);
     if (player != -1 && entity->comp_mob.does_follow == sfTrue &&
-    (entity->mask & COMP_POSITION) == COMP_POSITION &&
-    (world->entity[player].mask & COMP_POSITION) == COMP_POSITION)
+        (entity->mask & COMP_POSITION) == COMP_POSITION &&
+        (world->entity[player].mask & COMP_POSITION) == COMP_POSITION)
         if (check_range(entity, &world->entity[player]))
             follow_move(entity, &world->entity[player]);
         else
             entity->comp_position.velocity = (sfVector2f) {0., 0.};
+    update_sprite_direction(entity);
 }
 
 void sys_mob(world_t *world)
@@ -52,3 +54,4 @@ void sys_mob(world_t *world)
         if ((world->entity[i].mask & COMP_MOB) == COMP_MOB)
             next_frame(&world->entity[i], world);
 }
+

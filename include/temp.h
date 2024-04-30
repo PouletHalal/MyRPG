@@ -32,92 +32,64 @@ enum comp_list {
     COMP_PORTAL = 1 << 6,
 };
 
-enum texture_list {
-    TXT_DARK,
-    TXT_FDP,
-    TXT_ACID,
-    TXT_DARK2,
-    TXT_ACID2,
-    TXT_EFFECT1,
-    TXT_EXPLO,
-    TXT_EXPLO2,
-    TXT_HOLY,
-    TXT_ICE,
-    TXT_SMEAR1,
-    TXT_SMEAR2,
-    TXT_SMEAR3,
-    TXT_THR1,
-    TXT_THR2,
-    TXT_THR3,
-    TXT_THR4,
-    TXT_PROTA,
-    TXT_GREEN_PORTAL,
-    TXT_END,
+enum anim_list
+{
+    ANIM_PROTA_IDLE,
+    ANIM_PROTA_RUN,
+    ANIM_PROTA_JUMP,
+    ANIM_PROTA_ATTACK,
+    ANIM_PROTA_DODO,
+    ANIM_MOB_RUN,
+    ANIM_PORTAL_GREEN,
+    ANIM_END,
 };
 
-static const char *texture_file[] = {
-    "effect/dark.png",
-    "effect/FDP.png",
-    "effect/Acid.png",
-    "effect/Dark2.png",
-    "effect/acid2.png",
-    "effect/effect1.png",
-    "effect/explo.png",
-    "effect/explo2.png",
-    "effect/holy.png",
-    "effect/ice.png",
-    "effect/Smear1.png",
-    "effect/Smear2.png",
-    "effect/Smear3.png",
-    "effect/thr1.png",
-    "effect/thr2.png",
-    "effect/thr3.png",
-    "effect/thr4.png",
-    "effect/prota.png",
-    "effect/green_portal.png",
-};
-
-typedef struct sprite_info_s {
-    sfIntRect text_rect;
+typedef struct animation_s {
+    enum anim_list index;
+    char *filename;
+    sfIntRect base_text_rect;
     size_t frame_count;
     sfVector2i frame_size;
     sfVector2f scale;
     int frame_rate;
-} sprite_info_t;
+} animation_t;
 
-static const sprite_info_t mob_list[] = {
-    {{0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {{0, 0, 192, 192}, 12, {192, 192}, {0.1, 0.1}, 5},
-    {{0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
-    {{0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
-    {{0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
-    {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
-    {{0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
-    {{0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
-    {{0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
-    {{0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {{0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {{0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {{0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
-    {{0, 0, 32, 32}, 3, {32, 32}, {5, 5}, 5},
+static const animation_t animation_list[] = {
+    {ANIM_PROTA_IDLE, "effect/prota.png", {0, 0, 32, 32}, 2, {32, 32}, {1., 1.}, 25},
+    {ANIM_PROTA_RUN, "effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32}, {1., 1.}, 10},
+    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {.5, .5}, 5},
+    {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32}, {1., 1.}, 5},
+/*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
+    {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
+    {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
+    {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
+    {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
+    {"effect/effect1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/explo.png", {0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
+    {"effect/explo2.png", {0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
+    {"effect/holy.png", {0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
+    {"effect/ice.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {"effect/Smear1.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/Smear2.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/Smear3.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/thr1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr2.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr3.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
 };
 
 typedef struct comp_render_s {
-    sfTexture *texture;
+    animation_t *current_animation;
     sfSprite *sprite;
+    sfTexture *texture;
     bool is_visible;
     bool does_loop;
-    sfIntRect starting_rect;
-    size_t frame_count;
-    size_t frame;
+    size_t act_frame;
     size_t clock;
-    size_t frame_rate;
-    sfVector2i frame_size;
 } comp_render_t;
 
 typedef struct comp_position_s {
@@ -161,8 +133,8 @@ typedef struct entity_s {
 
 typedef struct world_s {
     enum map_ids map_id;
-    map_list_t **map_list;
-    sfTexture *texture_list[TXT_END];
+    	map_list_t **map_list;
+    sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];
 } world_t;
@@ -184,10 +156,8 @@ void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world, win_t *window);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
-void init_entity(entity_t *entity,
-    sfTexture *texture, const sprite_info_t *mob, world_t *world);
-void init_mob(enum texture_list mob, world_t *world,
-    sfVector2f position);
+void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
+void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
@@ -195,6 +165,11 @@ int find_empty(world_t *world);
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
 void read_portalconf(world_t *world);
 void init_comp_portal(entity_t *entity, char **split);
-void init_comp_render(entity_t *entity, sfTexture *texture,
-    sfVector2f position, const sprite_info_t *mob);
+void init_comp_render(entity_t *entity, world_t *world,
+    enum anim_list anim_nbr, sfVector2f position);
+
+void play_animation(entity_t *entity, int animation_index, sfBool does_loop);
+void update_sprite_direction(entity_t *entity);
+bool is_in_animation(entity_t *entity);
+
 #endif /* !TEMP_H_ */

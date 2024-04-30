@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** test
+** My rpg
 ** File description:
 ** tilesets
 */

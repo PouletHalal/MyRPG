@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** test
+** My rpg
 ** File description:
 ** init_tilesets
 */
@@ -38,10 +38,9 @@ int add_node(tileset_t *tileset, char *line, int nb_tileset)
 
 void init_textures(world_t *world)
 {
-    world->map_id = MAIN_WORLD;
-    for (int i = 0; i < TXT_END; ++i)
-        world->texture_list[i] =
-        sfTexture_createFromFile(texture_file[i], NULL);
+
+    for (int i = 0; i < ANIM_END; i++)
+        world->texture_list[i] = sfTexture_createFromFile(animation_list[i].filename, NULL);
 }
 
 tileset_t *init_tilesets(void)

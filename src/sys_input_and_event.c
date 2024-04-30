@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
-** Sys Render file
+** Sys render
 */
 
 #include <stdlib.h>
@@ -27,7 +27,7 @@ static void spawn_entity(world_t *world)
     new_pos.x += offset.x;
     new_pos.y += offset.y;
     if (world->key_pressed[sfKeyLControl] && world->key_pressed[sfKeyF])
-        init_mob(TXT_FDP, world, new_pos);
+        init_mob(world, ANIM_MOB_RUN, new_pos);
 }
 
 static void analyse_events(win_t *window, world_t *world)

@@ -5,9 +5,10 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c			\
-		src/start.c			\
-		src/sys_render.c		\
+SRC	=	src/main.c					\
+		src/start.c					\
+		src/animation.c				\
+		src/sys_render.c			\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
 		src/sys_mob.c	\
@@ -15,7 +16,6 @@ SRC	=	src/main.c			\
 		src/camera/camera_movements.c	\
 		src/error_handling/parsing_handling.c	\
 		src/player/sys_player.c	\
-		src/player/player_movements.c	\
 		src/player/player_collisions.c	\
 		src/portals/init_portals.c	\
 		src/map_loading/parsing.c	\
@@ -44,7 +44,7 @@ $(NAME):	$(OBJ)
 
 test:
 	make re
-	./my_rpg
+	./$(NAME)
 	make clean > /dev/null
 
 debuger: $(OBJ)

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
-** Sys Render file
+** Sys position
 */
 
 #include <SFML/Graphics.h>

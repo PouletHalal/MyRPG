@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
 ** Sys Render file
 */
@@ -20,9 +20,51 @@ int find_player(world_t *world)
     return -1;
 }
 
-static void player_events(win_t *window, entity_t *entity, world_t *world)
+static void update_player_animation(entity_t *entity)
 {
-    player_movements(window, entity, world);
+    sfVector2f *velocity = &(entity->comp_position.velocity);
+
+    if (is_in_animation(entity))
+        return;
+    if (is_key_pressed(entity, sfKeySpace)){
+        play_animation(entity, ANIM_PROTA_JUMP, false);
+        return;
+    }
+    if (is_key_pressed(entity, sfKeyE)){
+        play_animation(entity, ANIM_PROTA_ATTACK, false);
+        return;
+    }
+    if (is_key_pressed(entity, sfKeyA)){
+        play_animation(entity, ANIM_PROTA_DODO, false);
+        return;
+    }
+    if (velocity->x == 0 && velocity->y == 0)
+        play_animation(entity, ANIM_PROTA_IDLE, true);
+    else
+        play_animation(entity, ANIM_PROTA_RUN, true);
+}
+
+static void next_frame(win_t *window, entity_t *entity)
+{
+    sfVector2f *velocity = &(entity->comp_position.velocity);
+
+    velocity->x = 0;
+    velocity->y = 0;
+    if (is_key_pressed(entity, sfKeyD))
+        velocity->x += 1.5;
+    if (is_key_pressed(entity, sfKeyS))
+        velocity->y += 1.5;
+    if (is_key_pressed(entity, sfKeyQ))
+        velocity->x -= 1.5;
+    if (is_key_pressed(entity, sfKeyZ))
+        velocity->y -= 1.5;
+    update_player_animation(entity);
+    update_sprite_direction(entity);
+}
+
+static void player_events(win_t *window, entity_t *entity, world_t *worldt)
+{
+    next_frame(window, entity);
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
@@ -32,3 +74,4 @@ void sys_player(win_t *window, world_t *world)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             player_events(window, &(world->entity[i]), world);
 }
+    

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** test
+** My rpg
 ** File description:
-** my
+** maps
 */
 
 #ifndef MAPS_
