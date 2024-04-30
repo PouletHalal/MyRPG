@@ -53,9 +53,10 @@ int main(void)
         position_mob.x += 60;
     }
     init_cam(window, &world);
+    read_portalconf(&world);
     while (sfRenderWindow_isOpen(window->window)) {
-        refresh_world(&world, clock, window, map_list[world.map_id]);
-        render_window(window, &world, map_list[world.map_id]);
+        refresh_world(&world, clock, window);
+        render_window(window, &world);
     }
     return close_and_return(window, 0);
 }

@@ -13,9 +13,11 @@ SRC	=	src/main.c					\
 		src/sys_position.c		\
 		src/sys_mob.c	\
 		src/camera/view.c	\
+		src/camera/camera_movements.c	\
 		src/error_handling/parsing_handling.c	\
 		src/player/sys_player.c	\
 		src/player/player_collisions.c	\
+		src/portals/init_portals.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
 		src/rendering/map_rendering.c	\

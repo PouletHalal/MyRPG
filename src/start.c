@@ -9,8 +9,8 @@
 #include <time.h>
 #include "temp.h"
 
-static void init_comp_render(entity_t *entity, world_t *world, enum anim_list anim_nbr,
-    sfVector2f position)
+void init_comp_render(entity_t *entity, world_t *world,
+    enum anim_list anim_nbr, sfVector2f position)
 {
     comp_render_t *c_render = &(entity->comp_render);
     animation_t *anim = &(animation_list[anim_nbr]);
@@ -57,6 +57,26 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     rect.width / 2., rect.height / 2.};
 }
 
+static void init_hitbox(entity_t *entity, sfVector2f position)
+{
+    sfFloatRect rect;
+
+    rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
+    entity->comp_hitbox.hitbox = (sfFloatRect)
+    {rect.left + rect.width / 4. - position.x,
+    rect.top + rect.height / 4. - position.y,
+    rect.width / 2., rect.height / 2.};
+}
+
+static void init_comp_mob(entity_t *entity)
+{
+    entity->mask |= COMP_MOB;
+    entity->comp_mob.is_alive = sfTrue;
+    entity->comp_mob.range = 200.;
+    entity->comp_mob.speed = 1.;
+    entity->comp_mob.does_follow = sfTrue;
+}
+
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
 {
     sfFloatRect rect;
@@ -68,14 +88,10 @@ void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     entity = &world->entity[free];
     *entity = (entity_t){0};
     entity->entity = free;
-    entity->mask |= COMP_POSITION | COMP_MOB | COMP_HITBOX;
+    entity->mask |= COMP_POSITION | COMP_HITBOX;
     init_comp_render(entity, world, anim_nbr, position);
+    init_comp_mob(entity);
     entity->comp_hitbox.do_collide = sfTrue;
-    entity->comp_mob.does_follow = sfTrue;
-    entity->comp_mob.does_take_damage = sfTrue;
-    entity->comp_mob.is_alive = sfTrue;
-    entity->comp_mob.range = 200;
-    entity->comp_mob.speed = 1;
     entity->comp_position.position = position;
     entity->comp_position.velocity.x = 0;
     entity->comp_position.velocity.y = 0;

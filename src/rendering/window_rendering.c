@@ -28,7 +28,7 @@ void draw_hitbox(win_t *window, entity_t *entity)
 }
 
 void refresh_world(world_t *world, sfClock *clock,
-    win_t *window, map_list_t *map_list)
+    win_t *window)
 {
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
         return;
@@ -36,25 +36,16 @@ void refresh_world(world_t *world, sfClock *clock,
     sys_input_and_event(world, window);
     sys_mob(world);
     sys_position(world, window);
-    sys_player(window, world, map_list);
+    sys_player(window, world);
     sys_render(world);
 }
 
-void render_window(win_t *window, world_t *world, map_list_t *map_list)
+void render_window(win_t *window, world_t *world)
 {
-    sfRectangleShape *shape = sfRectangleShape_create();
-    sfFloatRect rect = world->entity[1].comp_hitbox.hitbox;
-
-    sfRectangleShape_setPosition(shape, (sfVector2f) {rect.left + world->entity[1].comp_position.position.x, rect.top + world->entity[1].comp_position.position.y});
-    sfRectangleShape_setSize(shape, (sfVector2f) {rect.width, rect.height});
-    sfRectangleShape_setFillColor(shape, sfTransparent);
-    sfRectangleShape_setOutlineThickness(shape, 1.);
-    sfRectangleShape_setOutlineColor(shape, sfBlack);
     sfRenderWindow_clear(window->window, sfBlack);
-    resize_cam(window, map_list);
-    move_cam(window, map_list);
-    display_map(window, map_list, 1);
-    sfRenderWindow_drawRectangleShape(window->window, shape, NULL);
+    resize_cam(window, world->map_list[world->map_id]);
+    move_cam(window, world->map_list[world->map_id]);
+    display_map(window, world->map_list[world->map_id], 1);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true)
@@ -63,6 +54,6 @@ void render_window(win_t *window, world_t *world, map_list_t *map_list)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             draw_hitbox(window, &world->entity[i]);
     }
-    display_map(window, map_list, 2);
+    display_map(window, world->map_list[world->map_id], 2);
     sfRenderWindow_display(window->window);
 }

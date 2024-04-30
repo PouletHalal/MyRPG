@@ -44,7 +44,7 @@ static void update_player_animation(entity_t *entity)
         play_animation(entity, ANIM_PROTA_RUN, true);
 }
 
-static void next_frame(win_t *window, entity_t *entity, map_list_t *map_list)
+static void next_frame(win_t *window, entity_t *entity)
 {
     sfVector2f *velocity = &(entity->comp_position.velocity);
 
@@ -62,16 +62,16 @@ static void next_frame(win_t *window, entity_t *entity, map_list_t *map_list)
     update_sprite_direction(entity);
 }
 
-static void player_events(win_t *window, entity_t *entity, world_t *world, map_list_t *map_list)
+static void player_events(win_t *window, entity_t *entity, world_t *worldt)
 {
-    next_frame(window, entity, map_list);
+    next_frame(window, entity);
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
-void sys_player(win_t *window, world_t *world, map_list_t *map_list)
+void sys_player(win_t *window, world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            player_events(window, &(world->entity[i]), world, map_list);
+            player_events(window, &(world->entity[i]), world);
 }
     

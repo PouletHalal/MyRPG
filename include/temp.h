@@ -29,6 +29,7 @@ enum comp_list {
     COMP_PLAYER = 1 << 3,
     COMP_MOB = 1 << 4,
     COMP_HITBOX = 1 << 5,
+    COMP_PORTAL = 1 << 6,
 };
 
 enum anim_list
@@ -39,6 +40,7 @@ enum anim_list
     ANIM_PROTA_ATTACK,
     ANIM_PROTA_DODO,
     ANIM_MOB_RUN,
+    ANIM_PORTAL_GREEN,
     ANIM_END,
 };
 
@@ -59,24 +61,25 @@ static const animation_t animation_list[] = {
     {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
     {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32}, {1., 1.}, 10},
     {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {.5, .5}, 5},
-    /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-        {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
-        {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
-        {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
-        {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
-        {"effect/effect1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-        {"effect/explo.png", {0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
-        {"effect/explo2.png", {0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
-        {"effect/holy.png", {0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
-        {"effect/ice.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
-        {"effect/Smear1.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-        {"effect/Smear2.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-        {"effect/Smear3.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-        {"effect/thr1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-        {"effect/thr2.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-        {"effect/thr3.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-        {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-        {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
+    {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32}, {1., 1.}, 5},
+/*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
+    {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
+    {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
+    {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
+    {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
+    {"effect/effect1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/explo.png", {0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
+    {"effect/explo2.png", {0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
+    {"effect/holy.png", {0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
+    {"effect/ice.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {"effect/Smear1.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/Smear2.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/Smear3.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
+    {"effect/thr1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr2.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr3.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
+    {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
 };
 
 typedef struct comp_render_s {
@@ -97,6 +100,12 @@ typedef struct comp_position_s {
 typedef struct comp_input_s {
     sfBool *key_pressed;
 } comp_input_t;
+
+typedef struct comp_portal_s {
+    enum map_ids origin_id;
+    enum map_ids dest_id;
+    sfVector2f dest_pos;
+} comp_portal_t;
 
 typedef struct comp_mob_s {
     bool is_alive;
@@ -119,6 +128,7 @@ typedef struct entity_s {
     comp_input_t comp_input;
     comp_mob_t comp_mob;
     comp_hitbox_t comp_hitbox;
+    comp_portal_t comp_portal;
 } entity_t;
 
 typedef struct world_s {
@@ -152,7 +162,11 @@ sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
 int find_empty(world_t *world);
-void create_perso_style_insane(entity_t *entity, world_t *world);
+sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
+void read_portalconf(world_t *world);
+void init_comp_portal(entity_t *entity, char **split);
+void init_comp_render(entity_t *entity, world_t *world,
+    enum anim_list anim_nbr, sfVector2f position);
 
 void play_animation(entity_t *entity, int animation_index, sfBool does_loop);
 void update_sprite_direction(entity_t *entity);
