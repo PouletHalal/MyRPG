@@ -29,6 +29,7 @@ enum comp_list {
     COMP_PLAYER = 1 << 3,
     COMP_MOB = 1 << 4,
     COMP_HITBOX = 1 << 5,
+    COMP_PORTAL = 1 << 6,
 };
 
 enum texture_list {
@@ -50,6 +51,7 @@ enum texture_list {
     TXT_THR3,
     TXT_THR4,
     TXT_PROTA,
+    TXT_GREEN_PORTAL,
     TXT_END,
 };
 
@@ -71,7 +73,8 @@ static const char *texture_file[] = {
     "effect/thr2.png",
     "effect/thr3.png",
     "effect/thr4.png",
-    "effect/prota.png"
+    "effect/prota.png",
+    "effect/green_portal.png",
 };
 
 typedef struct sprite_info_s {
@@ -101,6 +104,7 @@ static const sprite_info_t mob_list[] = {
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
     {{0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
     {{0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {{0, 0, 32, 32}, 3, {32, 32}, {5, 5}, 5},
 };
 
 typedef struct comp_render_s {
@@ -125,6 +129,12 @@ typedef struct comp_input_s {
     sfBool *key_pressed;
 } comp_input_t;
 
+typedef struct comp_portal_s {
+    enum map_ids origin_id;
+    enum map_ids dest_id;
+    sfVector2f dest_pos;
+} comp_portal_t;
+
 typedef struct comp_mob_s {
     bool is_alive;
     bool does_follow;
@@ -146,6 +156,7 @@ typedef struct entity_s {
     comp_input_t comp_input;
     comp_mob_t comp_mob;
     comp_hitbox_t comp_hitbox;
+    comp_portal_t comp_portal;
 } entity_t;
 
 typedef struct world_s {
@@ -181,5 +192,9 @@ sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
 int find_empty(world_t *world);
-
+sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
+void read_portalconf(world_t *world);
+void init_comp_portal(entity_t *entity, char **split);
+void init_comp_render(entity_t *entity, sfTexture *texture,
+    sfVector2f position, const sprite_info_t *mob);
 #endif /* !TEMP_H_ */

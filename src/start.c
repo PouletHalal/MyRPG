@@ -9,7 +9,7 @@
 #include <time.h>
 #include "temp.h"
 
-static void init_comp_render(entity_t *entity, sfTexture *texture,
+void init_comp_render(entity_t *entity, sfTexture *texture,
     sfVector2f position, const sprite_info_t *mob)
 {
     int ran = rand();

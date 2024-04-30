@@ -47,10 +47,11 @@ int main(void)
     init_textures(&world);
     init_entity(&world.entity[0], world.texture_list[TXT_PROTA],
         &mob_list[TXT_PROTA], &world);
+    read_portalconf(&world);
     init_cam(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
-        refresh_world(&world, clock, window, map_list[world.map_id]);
-        render_window(window, &world, map_list[world.map_id]);
+        refresh_world(&world, clock, window);
+        render_window(window, &world);
     }
     return close_and_return(window, 0);
 }
