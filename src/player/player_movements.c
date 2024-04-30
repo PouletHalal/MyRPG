@@ -46,22 +46,14 @@ void update_sprite_animation(entity_t *entity,
 static void move_player(win_t *window, entity_t *entity, world_t *world,
     map_list_t *map_list)
 {
-    if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ)) {
+    if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ))
         update_speedx(entity, 1.5);
-        update_cam(window, entity, map_list, (sfVector2f) {1.5, 0});
-    }
-    if (is_key_pressed(entity, sfKeyS) && !is_key_pressed(entity, sfKeyZ)) {
+    if (is_key_pressed(entity, sfKeyS) && !is_key_pressed(entity, sfKeyZ))
         update_speedy(entity, 1.5);
-        update_cam(window, entity, map_list, (sfVector2f) {0, 1.5});
-    }
-    if (is_key_pressed(entity, sfKeyQ) && !is_key_pressed(entity, sfKeyD)) {
+    if (is_key_pressed(entity, sfKeyQ) && !is_key_pressed(entity, sfKeyD))
         update_speedx(entity, -1.5);
-        update_cam(window, entity, map_list, (sfVector2f) {-1.5, 0});
-    }
-    if (is_key_pressed(entity, sfKeyZ) && !is_key_pressed(entity, sfKeyS)) {
+    if (is_key_pressed(entity, sfKeyZ) && !is_key_pressed(entity, sfKeyS))
         update_speedy(entity, -1.5);
-        update_cam(window, entity, map_list, (sfVector2f) {0, -1.5});
-    }
 }
 
 void player_movements(win_t *window, entity_t *entity, world_t *world,
