@@ -28,6 +28,7 @@ enum comp_list {
     COMP_INPUT = 1 << 2,
     COMP_PLAYER = 1 << 3,
     COMP_MOB = 1 << 4,
+    COMP_HITBOX = 1 << 5,
 };
 
 enum anim_list
@@ -57,7 +58,7 @@ static const animation_t animation_list[] = {
     {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
     {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
     {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32}, {1., 1.}, 10},
-    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {1., 1.}, 5},
+    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {.5, .5}, 5},
     /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
         {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
         {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -105,16 +106,24 @@ typedef struct comp_mob_s {
     bool does_take_damage;
 } comp_mob_t;
 
+typedef struct comp_hitbox_s {
+    sfBool do_collide;
+    sfFloatRect hitbox;
+} comp_hitbox_t;
+
 typedef struct entity_s {
     int mask;
+    int entity;
     comp_render_t comp_render;
     comp_position_t comp_position;
     comp_input_t comp_input;
     comp_mob_t comp_mob;
+    comp_hitbox_t comp_hitbox;
 } entity_t;
 
 typedef struct world_s {
     enum map_ids map_id;
+    	map_list_t **map_list;
     sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];
@@ -134,14 +143,15 @@ typedef struct window_s {
 } win_t;
 
 void sys_input_and_event(world_t *world, win_t *window);
-void sys_position(world_t *world);
+void sys_position(world_t *world, win_t *window);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
-void init_entity(entity_t *entity, world_t *world, enum anim_list anim_nbr, sfVector2f position);
-void init_mob(entity_t *entity, world_t *world, enum anim_list anim_nbr, sfVector2f position);
+void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
+void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
+int find_empty(world_t *world);
 void create_perso_style_insane(entity_t *entity, world_t *world);
 
 void play_animation(entity_t *entity, int animation_index, sfBool does_loop);

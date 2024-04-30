@@ -13,7 +13,7 @@
 #include "rendering.h"
 #include "error_handling.h"
 
-static int find_empty(world_t *world)
+int find_empty(world_t *world)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
         if (world->entity[i].mask == COMP_NONE)
@@ -45,9 +45,13 @@ int main(void)
     if (map_list == NULL)
         return close_and_return(window, 84);
     srand(time(NULL));
+    world.map_list = map_list;
     init_textures(&world);
-    init_entity(&world.entity[0], &world, ANIM_PROTA_IDLE, position_player);
-    init_mob(&world.entity[1], &world, ANIM_MOB_RUN, position_mob);
+    init_entity(&world, ANIM_PROTA_IDLE, position_player);
+    for (int i = 0; i < 10; i++){
+        init_mob(&world, ANIM_MOB_RUN, position_mob);
+        position_mob.x += 60;
+    }
     init_cam(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window, map_list[world.map_id]);

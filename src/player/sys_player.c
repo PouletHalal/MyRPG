@@ -50,31 +50,19 @@ static void next_frame(win_t *window, entity_t *entity, map_list_t *map_list)
 
     velocity->x = 0;
     velocity->y = 0;
-    if (is_key_pressed(entity, sfKeyD) && !is_key_pressed(entity, sfKeyQ)
-        && !is_colliding(entity, map_list, (sfVector2f){1.5, 0})) {
-        update_cam(window, entity, map_list, (sfVector2f){1.5, 0});
+    if (is_key_pressed(entity, sfKeyD))
         velocity->x += 1.5;
-    }
-    if (is_key_pressed(entity, sfKeyS) && !is_key_pressed(entity, sfKeyZ) &&
-        !is_colliding(entity, map_list, (sfVector2f){0, 1.5})){
-        update_cam(window, entity, map_list, (sfVector2f){0, 1.5});
+    if (is_key_pressed(entity, sfKeyS))
         velocity->y += 1.5;
-    }
-    if (is_key_pressed(entity, sfKeyQ) && !is_key_pressed(entity, sfKeyD) &&
-        !is_colliding(entity, map_list, (sfVector2f){-1.5, 0})){
-        update_cam(window, entity, map_list, (sfVector2f){-1.5, 0});
+    if (is_key_pressed(entity, sfKeyQ))
         velocity->x -= 1.5;
-    }
-    if (is_key_pressed(entity, sfKeyZ) && !is_key_pressed(entity, sfKeyS) &&
-        !is_colliding(entity, map_list, (sfVector2f){0, -1.5})){
-        update_cam(window, entity, map_list, (sfVector2f){0, -1.5});
+    if (is_key_pressed(entity, sfKeyZ))
         velocity->y -= 1.5;
-    }
     update_player_animation(entity);
     update_sprite_direction(entity);
 }
 
-void player_events(win_t *window, entity_t *entity, map_list_t *map_list)
+static void player_events(win_t *window, entity_t *entity, world_t *world, map_list_t *map_list)
 {
     next_frame(window, entity, map_list);
     sfRenderWindow_setView(window->window, window->cam.view);
@@ -84,6 +72,6 @@ void sys_player(win_t *window, world_t *world, map_list_t *map_list)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            player_events(window, &(world->entity[i]), map_list);
+            player_events(window, &(world->entity[i]), world, map_list);
 }
     

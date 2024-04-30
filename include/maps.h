@@ -11,7 +11,6 @@
     #include <SFML/Window.h>
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
-    #include "temp.h"
     #include "tilesets.h"
 
 static const char TEXTURE_PATH[] = "tileset/big_tileset.png";

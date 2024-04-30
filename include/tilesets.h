@@ -9,7 +9,6 @@
     #define TILESETS_H_
 
     #include <SFML/Graphics.h>
-    #include "temp.h"
 
     #define NAME_MAX 256
     #define NB_ARGS 6
