@@ -9,8 +9,13 @@
 #include <time.h>
 #include "temp.h"
 
+<<<<<<< HEAD
 void init_comp_render(entity_t *entity, world_t *world,
     enum anim_list anim_nbr, sfVector2f position)
+=======
+void init_comp_render(entity_t *entity, sfTexture *texture,
+    sfVector2f position, const sprite_info_t *mob)
+>>>>>>> basic_movement
 {
     comp_render_t *c_render = &(entity->comp_render);
     animation_t *anim = &(animation_list[anim_nbr]);
