@@ -10,8 +10,16 @@
 
     #include <SFML/Graphics.h>
     #include <stdbool.h>
+    #include <stdio.h>
+    #include "maps.h"
 
     #define ENTITY_COUNT 10000
+    #define NB_KEYS 120
+
+enum map_ids {
+    MAIN_WORLD,
+    HOUSE1,
+};
 
 enum comp_list {
     COMP_NONE = 0,
@@ -19,13 +27,17 @@ enum comp_list {
     COMP_POSITION = 1 << 1,
     COMP_INPUT = 1 << 2,
     COMP_PLAYER = 1 << 3,
+    COMP_MOB = 1 << 4,
 };
 
-enum anim_list {
+enum anim_list
+{
     ANIM_PROTA_IDLE,
     ANIM_PROTA_RUN,
     ANIM_PROTA_JUMP,
     ANIM_PROTA_ATTACK,
+    ANIM_PROTA_DODO,
+    ANIM_MOB_RUN,
     ANIM_END,
 };
 
@@ -40,10 +52,12 @@ typedef struct animation_s {
 } animation_t;
 
 static const animation_t animation_list[] = {
-    {ANIM_PROTA_IDLE, "effect/prota.png", {0, 0, 32, 32}, 2, {32, 32}, {5., 5.}, 25},
-    {ANIM_PROTA_RUN, "effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},
-    {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32}, {5., 5.}, 5},
-    {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32}, {5., 5.}, 5},
+    {ANIM_PROTA_IDLE, "effect/prota.png", {0, 0, 32, 32}, 2, {32, 32}, {1., 1.}, 25},
+    {ANIM_PROTA_RUN, "effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
+    {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32}, {1., 1.}, 10},
+    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {1., 1.}, 5},
     /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
         {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
         {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -83,36 +97,55 @@ typedef struct comp_input_s {
     sfBool *key_pressed;
 } comp_input_t;
 
+typedef struct comp_mob_s {
+    bool is_alive;
+    bool does_follow;
+    double range;
+    size_t speed;
+    bool does_take_damage;
+} comp_mob_t;
+
 typedef struct entity_s {
     int mask;
     comp_render_t comp_render;
     comp_position_t comp_position;
     comp_input_t comp_input;
+    comp_mob_t comp_mob;
 } entity_t;
 
 typedef struct world_s {
+    enum map_ids map_id;
     sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
-    sfBool key_pressed[120];
+    sfBool key_pressed[NB_KEYS];
 } world_t;
+
+typedef struct cam_s {
+    sfFloatRect view_rect;
+    sfView *view;
+} cam_t;
 
 typedef struct window_s {
     sfVideoMode mode;
     sfRenderWindow *window;
     sfEvent event;
     sfVector2f windows_scale;
+    cam_t cam;
 } win_t;
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world);
-void sys_player(world_t *world);
+void sys_mob(world_t *world);
 void sys_render(world_t *world);
-
+void init_entity(entity_t *entity, world_t *world, enum anim_list anim_nbr, sfVector2f position);
+void init_mob(entity_t *entity, world_t *world, enum anim_list anim_nbr, sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
+int len_array(char **array);
+void init_textures(world_t *world);
 void create_perso_style_insane(entity_t *entity, world_t *world);
 
 void play_animation(entity_t *entity, int animation_index, sfBool does_loop);
 void update_sprite_direction(entity_t *entity);
 bool is_in_animation(entity_t *entity);
 
-#endif
+#endif /* !TEMP_H_ */

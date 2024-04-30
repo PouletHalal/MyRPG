@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
-** Animation
+** Animation file
 */
 
 #include "temp.h"

@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
-** Sys Render file
+** Sys render
 */
 
 #include <SFML/Graphics.h>
@@ -46,6 +46,6 @@ static void next_frame(entity_t *entity)
 void sys_render(world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if (world->entity[i].mask & COMP_RENDER == COMP_RENDER)
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
             next_frame(&world->entity[i]);
 }

@@ -1,13 +1,17 @@
 /*
 ** EPITECH PROJECT, 2024
-** My_rpg
+** My rpg
 ** File description:
-** Start file
+** Main file
 */
 
 #include <stdlib.h>
 #include <time.h>
 #include "temp.h"
+#include "maps.h"
+#include "camera.h"
+#include "rendering.h"
+#include "error_handling.h"
 
 static int find_empty(world_t *world)
 {
@@ -20,32 +24,12 @@ static int find_empty(world_t *world)
 static win_t *create_win(void)
 {
     win_t *window = malloc(sizeof(win_t));
-    sfVideoMode mode = {1920, 1080, 32};
+    sfVideoMode mode = {WIDTH, HEIGHT, 32};
 
-    window->window = sfRenderWindow_create(mode, "SFML window",
-    sfResize | sfClose, NULL);
+    window->window = sfRenderWindow_create(mode, "SFML window", sfClose, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
+    init_view(window);
     return window;
-}
-
-static void refresh_world(world_t *world, sfClock *clock, win_t *window)
-{
-    if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
-        return;
-    sfClock_restart(clock);
-    sys_input_and_event(world, window);
-    sys_position(world);
-    sys_player(world);
-    sys_render(world);
-}
-
-static void render_window(win_t *window, world_t *world)
-{
-    sfRenderWindow_clear(window->window, sfBlack);
-    for (int i = 0; i < ENTITY_COUNT; ++i)
-        if (world->entity[i].mask & COMP_RENDER == COMP_RENDER && world->entity[i].comp_render.is_visible == true)
-            sfRenderWindow_drawSprite(window->window, world->entity[i].comp_render.sprite, NULL);
-    sfRenderWindow_display(window->window);
 }
 
 int main(void)
@@ -53,16 +37,21 @@ int main(void)
     world_t world = {0};
     win_t *window = create_win();
     sfClock *clock = sfClock_create();
+    tileset_t *tileset_list = init_tilesets();
+    map_list_t **map_list = init_map(MAP_FILE, tileset_list);
+    sfVector2f position_player = {500, 150};
+    sfVector2f position_mob = {800, 150};
 
+    if (map_list == NULL)
+        return close_and_return(window, 84);
     srand(time(NULL));
-    for (int i = 0; i < ANIM_END; i++)
-        world.texture_list[i] = sfTexture_createFromFile(animation_list[i].filename, NULL);
-    create_perso_style_insane(&world.entity[0], &world);
+    init_textures(&world);
+    init_entity(&world.entity[0], &world, ANIM_PROTA_IDLE, position_player);
+    init_mob(&world.entity[1], &world, ANIM_MOB_RUN, position_mob);
+    init_cam(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
-        refresh_world(&world, clock, window);
-        render_window(window, &world);
+        refresh_world(&world, clock, window, map_list[world.map_id]);
+        render_window(window, &world, map_list[world.map_id]);
     }
-    sfRenderWindow_destroy(window->window);
-    free(window);
-    return 0;
+    return close_and_return(window, 0);
 }
