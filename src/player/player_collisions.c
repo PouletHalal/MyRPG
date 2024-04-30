@@ -51,13 +51,42 @@ bool tile_collision(sfVector2f pos, int **collision_map)
     return false;
 }
 
-bool is_colliding(entity_t *entity, map_list_t *map_list, sfVector2f offset)
+bool portal_collision(world_t *world, entity_t *entity, sfVector2f offset)
 {
+    for (int i = 0; i < ENTITY_COUNT; ++i) {
+        if (((world->entity[i].mask & COMP_PORTAL) == COMP_PORTAL) &&
+            world->entity[i].comp_portal.origin_id == world->map_id &&
+            collide_entity(entity, &world->entity[i], offset)) {
+                entity->comp_position.position =
+                world->entity[i].comp_portal.dest_pos;
+                world->map_id = world->entity[i].comp_portal.dest_id;
+                return true;
+        }
+    }
+    return false;
+}
+
+static bool is_outside_map(sfVector2f pos, map_list_t *map_list)
+{
+    if (pos.x < 0 || pos.y < 0)
+        return true;
+    if (pos.x > map_list->maps->size.x || pos.y > map_list->maps->size.y)
+        return true;
+    return false;
+}
+
+bool is_colliding(world_t *world, entity_t *entity, sfVector2f offset)
+{
+    map_list_t *map_list = world->map_list[world->map_id];
     int **collision_map = get_layer(map_list, "collision");
-    sfFloatRect bounds = sfSprite_getGlobalBounds(entity->comp_render.sprite);
+    sfFloatRect bounds = entity->comp_hitbox.hitbox;
     sfVector2f new_pos = {entity->comp_position.position.x + offset.x,
         entity->comp_position.position.y + offset.y};
 
+    bounds.left += entity->comp_position.position.x;
+    bounds.top += entity->comp_position.position.y;
+    if (entity == NULL)
+        return false;
     if (is_out_of_border(bounds, offset, map_list))
         return true;
     if (tile_collision(new_pos, collision_map))

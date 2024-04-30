@@ -24,14 +24,13 @@ static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
     return sfTrue;
 }
 
-static sfBool collide_entity(entity_t *entity, entity_t *bis,
-    sfVector2f velocity)
+sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity)
 {
     sfFloatRect entity_hitbox = entity->comp_hitbox.hitbox;
     sfFloatRect bis_hitbox = bis->comp_hitbox.hitbox;
 
-    if ((bis->mask & (COMP_POSITION & COMP_HITBOX))
-    != COMP_POSITION & COMP_HITBOX)
+    if (((bis->mask & (COMP_POSITION | COMP_HITBOX))
+    != (COMP_POSITION | COMP_HITBOX)))
         return sfFalse;
     entity_hitbox.left += entity->comp_position.position.x;
     entity_hitbox.left += velocity.x;
@@ -39,9 +38,27 @@ static sfBool collide_entity(entity_t *entity, entity_t *bis,
     entity_hitbox.top += velocity.y;
     bis_hitbox.left += bis->comp_position.position.x;
     bis_hitbox.top += bis->comp_position.position.y;
-    if (do_rect_collide(entity_hitbox, bis_hitbox)) {
+    if (do_rect_collide(entity_hitbox, bis_hitbox))
         return sfTrue;
+    return sfFalse;
+}
+
+static sfBool check_if_portal(win_t *window, entity_t *entities[2],
+    world_t *world, sfVector2f velocity)
+{
+    if ((entities[1]->mask & COMP_PORTAL) == COMP_PORTAL &&
+        entities[1]->comp_portal.origin_id == world->map_id) {
+        if (collide_entity(entities[0], entities[1], velocity)) {
+            world->map_id = entities[1]->comp_portal.dest_id;
+            entities[0]->comp_position.position =
+            entities[1]->comp_portal.dest_pos;
+            init_cam(window, world);
+        }
+        return sfFalse;
     }
+    if (((entities[1]->mask & COMP_HITBOX) == COMP_HITBOX) &&
+    entities[1]->comp_hitbox.do_collide)
+        return collide_entity(entities[0], entities[1], velocity);
     return sfFalse;
 }
 
@@ -54,12 +71,15 @@ static sfBool check_collision(entity_t *entity, world_t *world,
     if (((entity->mask & COMP_HITBOX) != COMP_HITBOX)
     || !entity->comp_hitbox.do_collide)
         return sfFalse;
-    if (is_colliding(entity, world->map_list[world->map_id], velocity))
-        return true;
-    for (int i = 0; i < ENTITY_COUNT; ++i)
+    if (is_colliding(world, entity, velocity))
+        return sfTrue;
+    for (int i = 0; i < ENTITY_COUNT; ++i) {
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
-        && collide_entity(entity, &world->entity[i], velocity))
+        && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
+        , world, velocity)) {
             return sfTrue;
+        }
+    }
     return sfFalse;
 }
 

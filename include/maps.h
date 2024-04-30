@@ -15,7 +15,7 @@
 
 static const char TEXTURE_PATH[] = "tileset/big_tileset.png";
 static const char MAP_FILE[] = "maps/map.conf";
-static const char PORTAL_CONF[] = "mas/portals.conf";
+static const char PORTAL_CONF[] = "maps/portals.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080
@@ -25,6 +25,7 @@ static const char PORTAL_CONF[] = "mas/portals.conf";
     #define SPRITESHEET_HEIGHT 1088
     #define THRESHOLD 8
     #define MAP_CONF_NB_ARGS 6
+    #define PORTAL_CONF_NB_ARGS 9
 
 typedef struct sprite_s {
     const sfTexture *texture;
@@ -61,5 +62,4 @@ map_list_t **init_map(char const *map_file, tileset_t *tileset_list);
 char **my_str_to_word_array(char const *str, char const *separators);
 void free_array(char **array);
 int len_array(char **array);
-
 #endif
