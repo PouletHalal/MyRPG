@@ -43,6 +43,7 @@ static void init_comp_hitbox(entity_t *entity, sfVector2f position)
     {rect.left + rect.width / 4. - position.x,
     rect.top + rect.height / 4. - position.y,
     rect.width / 2., rect.height / 2.};
+    entity->comp_hitbox.do_collide = sfTrue;
 }
 
 static void init_comp_mob(entity_t *entity)
