@@ -16,7 +16,7 @@ sfBool is_key_pressed(entity_t *entity, sfKeyCode code)
     return entity->comp_input.key_pressed[code];
 }
 
-sfBool *is_key_down(entity_t *entity, sfKeyCode code)
+sfBool is_key_down(entity_t *entity, sfKeyCode code)
 {
     return entity->comp_input.key_down[code];
 }
