@@ -26,15 +26,15 @@ static void update_player_animation(entity_t *entity)
 
     if (is_in_animation(entity))
         return;
-    if (is_key_pressed(entity, sfKeySpace)){
+    if (is_key_down(entity, sfKeySpace)){
         play_animation(entity, ANIM_PROTA_JUMP, false);
         return;
     }
-    if (is_key_pressed(entity, sfKeyE)){
+    if (is_key_down(entity, sfKeyE)){
         play_animation(entity, ANIM_PROTA_ATTACK, false);
         return;
     }
-    if (is_key_pressed(entity, sfKeyA)){
+    if (is_key_down(entity, sfKeyA)){
         play_animation(entity, ANIM_PROTA_DODO, false);
         return;
     }
@@ -50,13 +50,13 @@ static void next_frame(win_t *window, entity_t *entity)
 
     velocity->x = 0;
     velocity->y = 0;
-    if (is_key_pressed(entity, sfKeyD))
+    if (is_key_down(entity, sfKeyD))
         velocity->x += 1.5;
-    if (is_key_pressed(entity, sfKeyS))
+    if (is_key_down(entity, sfKeyS))
         velocity->y += 1.5;
-    if (is_key_pressed(entity, sfKeyQ))
+    if (is_key_down(entity, sfKeyQ))
         velocity->x -= 1.5;
-    if (is_key_pressed(entity, sfKeyZ))
+    if (is_key_down(entity, sfKeyZ))
         velocity->y -= 1.5;
     update_player_animation(entity);
     update_sprite_direction(entity);
