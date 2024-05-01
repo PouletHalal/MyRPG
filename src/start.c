@@ -48,6 +48,7 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     entity->comp_position.position = position;
     entity->comp_position.velocity.x = 0;
     entity->comp_position.velocity.y = 0;
+    entity->comp_position.can_move = true;
     entity->comp_input.key_pressed = world->key_pressed;
     entity->comp_hitbox.do_collide = sfTrue;
     rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
@@ -57,7 +58,7 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     rect.width / 2., rect.height / 2.};
 }
 
-static void init_hitbox(entity_t *entity, sfVector2f position)
+void init_hitbox(entity_t *entity, sfVector2f position)
 {
     sfFloatRect rect;
 
@@ -66,6 +67,7 @@ static void init_hitbox(entity_t *entity, sfVector2f position)
     {rect.left + rect.width / 4. - position.x,
     rect.top + rect.height / 4. - position.y,
     rect.width / 2., rect.height / 2.};
+    entity->comp_hitbox.do_collide = sfTrue;
 }
 
 static void init_comp_mob(entity_t *entity)
@@ -95,9 +97,6 @@ void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     entity->comp_position.position = position;
     entity->comp_position.velocity.x = 0;
     entity->comp_position.velocity.y = 0;
-    rect = sfSprite_getGlobalBounds(entity->comp_render.sprite);
-    entity->comp_hitbox.hitbox = (sfFloatRect){
-    rect.left + rect.width / 4. - position.x,
-    rect.top + rect.height / 4. - position.y,
-    rect.width / 2., rect.height / 2.};
+    entity->comp_position.can_move = true;
+    init_hitbox(entity, position);
 }

@@ -20,6 +20,7 @@ SRC	=	src/main.c					\
 		src/portals/init_portals.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
+		src/npcs/init_npc.c	\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/lib/my_str_to_word_array.c	\

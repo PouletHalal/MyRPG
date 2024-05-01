@@ -54,6 +54,7 @@ int main(void)
     }
     init_cam(window, &world);
     read_portalconf(&world);
+    read_npcconf(&world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window);
         render_window(window, &world);

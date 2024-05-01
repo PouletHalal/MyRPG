@@ -30,6 +30,7 @@ enum comp_list {
     COMP_MOB = 1 << 4,
     COMP_HITBOX = 1 << 5,
     COMP_PORTAL = 1 << 6,
+    COMP_DIALOG = 1 << 7,
 };
 
 enum anim_list
@@ -41,6 +42,7 @@ enum anim_list
     ANIM_PROTA_DODO,
     ANIM_MOB_RUN,
     ANIM_PORTAL_GREEN,
+    ANIM_BLACKSMITH,
     ANIM_END,
 };
 
@@ -62,6 +64,7 @@ static const animation_t animation_list[] = {
     {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32}, {1., 1.}, 10},
     {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192}, {.5, .5}, 5},
     {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32}, {1., 1.}, 5},
+    {ANIM_BLACKSMITH, "effect/blacksmith.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 15},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -92,9 +95,20 @@ typedef struct comp_render_s {
     size_t clock;
 } comp_render_t;
 
+typedef struct dialog_s {
+    char *text;
+    struct dialog_s *next;
+} dialog_t;
+
+typedef struct comp_dialog_s {
+    dialog_t *dialogs;
+    sfBool is_displayed;
+} comp_dialog_t;
+
 typedef struct comp_position_s {
     sfVector2f position;
     sfVector2f velocity;
+    bool can_move;
 } comp_position_t;
 
 typedef struct comp_input_s {
@@ -171,5 +185,8 @@ void init_comp_render(entity_t *entity, world_t *world,
 void play_animation(entity_t *entity, int animation_index, sfBool does_loop);
 void update_sprite_direction(entity_t *entity);
 bool is_in_animation(entity_t *entity);
+
+void read_npcconf(world_t *world);
+void init_hitbox(entity_t *entity, sfVector2f position);
 
 #endif /* !TEMP_H_ */

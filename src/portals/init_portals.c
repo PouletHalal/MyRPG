@@ -53,8 +53,8 @@ void *init_portal(world_t *world, char *line)
     entity->entity = free_slot;
     entity->mask |= COMP_PORTAL | COMP_POSITION | COMP_HITBOX;
     init_comp_portal(entity, split);
-    init_comp_render(entity, world, ANIM_PORTAL_GREEN, entity->comp_position.position);
-    sfSprite_setScale(entity->comp_render.sprite, (sfVector2f) {1.2, 1.2});
+    init_comp_render(entity, world, ANIM_PORTAL_GREEN,
+    entity->comp_position.position);
 }
 
 void init_comp_portal(entity_t *entity, char **split)
