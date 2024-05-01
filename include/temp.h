@@ -161,7 +161,7 @@ void sys_render(world_t *world);
 void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
-sfBool *is_key_down(entity_t *entity, sfKeyCode code);
+sfBool is_key_down(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
 int find_empty(world_t *world);
