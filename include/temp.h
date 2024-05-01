@@ -99,6 +99,7 @@ typedef struct comp_position_s {
 
 typedef struct comp_input_s {
     sfBool *key_pressed;
+    sfBool *key_down;
 } comp_input_t;
 
 typedef struct comp_portal_s {
@@ -137,6 +138,7 @@ typedef struct world_s {
     sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];
+    sfBool key_down[NB_KEYS];
 } world_t;
 
 typedef struct cam_s {
@@ -159,6 +161,7 @@ void sys_render(world_t *world);
 void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
+sfBool *is_key_down(entity_t *entity, sfKeyCode code);
 int len_array(char **array);
 void init_textures(world_t *world);
 int find_empty(world_t *world);
