@@ -46,13 +46,13 @@ static void next_frame(win_t *window, entity_t *entity)
     velocity->x = 0;
     velocity->y = 0;
     if (is_key_down(entity, sfKeyD))
-        velocity->x += 1.5;
+        add_vector(entity, (sfVector2f) {1.5, 0.}, 1);
     if (is_key_down(entity, sfKeyS))
-        velocity->y += 1.5;
+        add_vector(entity, (sfVector2f) {0., 1.5}, 1);
     if (is_key_down(entity, sfKeyQ))
-        velocity->x -= 1.5;
+        add_vector(entity, (sfVector2f) {-1.5, 0.}, 1);
     if (is_key_down(entity, sfKeyZ))
-        velocity->y -= 1.5;
+        add_vector(entity, (sfVector2f) {0., -1.5}, 1);
     update_player_animation(entity);
     update_sprite_direction(entity);
 }

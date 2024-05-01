@@ -11,6 +11,17 @@
 #include "camera.h"
 #include "player.h"
 #include "dialogs.h"
+#include "stat.h"
+
+void add_vector(entity_t *entity, sfVector2f vector, size_t lenght)
+{
+    for (int i = 0; i < MAX_VECTOR; ++i)
+        if (entity->comp_position.vector_lenght[i] == 0) {
+            entity->comp_position.velocity[i] = vector;
+            entity->comp_position.vector_lenght[i] = lenght;
+            return;
+        }
+}
 
 static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
 {
@@ -54,6 +65,7 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
             world->map_id = entities[1]->comp_portal.dest_id;
             entities[0]->comp_position.position =
             entities[1]->comp_portal.dest_pos;
+            entities[0]->comp_position.world = world->map_id;
             init_cam(window, world);
         }
         return sfFalse;
@@ -105,31 +117,42 @@ static sfBool check_collision(entity_t *entity, world_t *world,
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
         && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
         , world, velocity)) {
+            do_attack(entity, &world->entity[i]);
+            do_attack(&world->entity[i], entity);
             return sfTrue;
         }
     }
     return sfFalse;
 }
 
+static void sum_vectors(entity_t *entity, sfVector2f *yvelo, sfVector2f *xvelo)
+{
+    for (int i = 0; i < MAX_VECTOR; ++i)
+        if (entity->comp_position.vector_lenght[i] > 0) {
+            yvelo->y += entity->comp_position.velocity[i].y;
+            xvelo->x += entity->comp_position.velocity[i].x;
+            entity->comp_position.vector_lenght[i] -= 1;
+        }
+}
+
 static void next_frame(entity_t *entity, world_t *world, win_t *window)
 {
-    sfVector2f xvelo = (sfVector2f) {entity->comp_position.velocity.x, 0.};
-    sfVector2f yvelo = (sfVector2f) {0., entity->comp_position.velocity.y};
+    sfVector2f xvelo = (sfVector2f) {0., 0.};
+    sfVector2f yvelo = (sfVector2f) {0., 0.};
     map_list_t *map = world->map_list[world->map_id];
 
     if (entity->comp_position.can_move == false)
         return;
+    sum_vectors(entity, &yvelo, &xvelo);
     if (!check_collision(entity, world, xvelo, window)) {
             if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, xvelo);
-            entity->comp_position.position.x +=
-            entity->comp_position.velocity.x;
+            entity->comp_position.position.x += xvelo.x;
         }
     if (!check_collision(entity, world, yvelo, window)) {
         if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, yvelo);
-            entity->comp_position.position.y +=
-            entity->comp_position.velocity.y;
+            entity->comp_position.position.y += yvelo.y;
     }
 }
 

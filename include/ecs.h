@@ -33,6 +33,7 @@ enum comp_list {
     COMP_HITBOX = 1 << 5,
     COMP_PORTAL = 1 << 6,
     COMP_DIALOG = 1 << 7,
+    COMP_STAT = 1 << 8,
 };
 
 enum anim_list {
@@ -116,9 +117,14 @@ typedef struct comp_dialog_s {
     sfSprite *box;
 } comp_dialog_t;
 
+    #define MAX_VECTOR 10
+
 typedef struct comp_position_s {
     sfVector2f position;
-    sfVector2f velocity;
+    sfVector2f velocity[MAX_VECTOR];
+    size_t vector_lenght[MAX_VECTOR];
+    sfVector2f spawn;
+    enum map_ids world;
     bool can_move;
 } comp_position_t;
 
@@ -146,6 +152,25 @@ typedef struct comp_hitbox_s {
     sfFloatRect hitbox;
 } comp_hitbox_t;
 
+enum faction {
+    FRIENDLY,
+    NEUTRAL,
+    ENEMY,
+};
+
+typedef struct comp_stat_s {
+    enum faction faction;
+    double max_health;
+    double health;
+    double health_regen;
+    sfBool do_damage;
+    sfBool do_respawn;
+    double damage;
+    double defense;
+    size_t clock;
+    size_t invinsibility_frames;
+} comp_stat_t;
+
 typedef struct entity_s {
     int mask;
     int entity;
@@ -157,6 +182,7 @@ typedef struct entity_s {
     comp_portal_t comp_portal;
     comp_dialog_t comp_dialog;
     comp_input_t comp_ui;
+    comp_stat_t comp_stat;
 } entity_t;
 
 typedef struct world_s {
@@ -178,7 +204,7 @@ void init_comp_mob(entity_t *entity);
 void init_comp_input(entity_t *entity, world_t *world);
 void init_comp_position(entity_t *entity, sfVector2f position);
 
-
+void sys_stat(world_t *world);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
 

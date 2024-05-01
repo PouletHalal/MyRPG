@@ -25,7 +25,7 @@ static void update_texture_rect(comp_render_t *c_render)
     sfSprite_setTextureRect(c_render->sprite, rect);
 }
 
-static void next_frame(entity_t *entity)
+static void next_frame(entity_t *entity, world_t *world)
 {
     comp_render_t *c_render = &entity->comp_render;
     animation_t *anim = c_render->current_animation;
@@ -49,5 +49,5 @@ void sys_render(world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
-            next_frame(&world->entity[i]);
+            next_frame(&world->entity[i], world);
 }
