@@ -5,10 +5,11 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c	\
-		src/start.c	\
-		src/animation.c	\
-		src/sys_render.c	\
+SRC	=	src/main.c					\
+		src/start.c					\
+		src/animation.c				\
+		src/sys_render.c			\
+		src/stats/sys_stat.c		\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
 		src/stats/sys_stat.c	\
