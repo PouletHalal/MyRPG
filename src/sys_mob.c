@@ -8,6 +8,7 @@
 #include <math.h>
 #include "temp.h"
 #include "player.h"
+#include "rendering.h"
 
 static void follow_move(entity_t *mob, entity_t *player)
 {
@@ -35,7 +36,7 @@ static sfBool check_range(entity_t *mob, entity_t *player)
 
 static void next_frame(entity_t *entity, world_t *world)
 {
-    int player = find_player(world);
+    int player = find_comp(world, COMP_PLAYER);
 
     play_animation(entity, ANIM_MOB_RUN, true);
     if (player != -1 && entity->comp_mob.does_follow == sfTrue &&
@@ -54,4 +55,3 @@ void sys_mob(world_t *world)
         if ((world->entity[i].mask & COMP_MOB) == COMP_MOB)
             next_frame(&world->entity[i], world);
 }
-

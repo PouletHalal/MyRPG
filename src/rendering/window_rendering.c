@@ -10,6 +10,7 @@
 #include "player.h"
 #include "rendering.h"
 #include "camera.h"
+#include "dialogs.h"
 
 void draw_hitbox(win_t *window, entity_t *entity)
 {
@@ -51,9 +52,8 @@ void render_window(win_t *window, world_t *world)
             world->entity[i].comp_render.is_visible == true)
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
-        if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            draw_hitbox(window, &world->entity[i]);
     }
     display_map(window, world->map_list[world->map_id], 2);
+    display_dialogs(window, world);
     sfRenderWindow_display(window->window);
 }

@@ -10,12 +10,13 @@
 #include <stdlib.h>
 #include "temp.h"
 #include "maps.h"
+#include "rendering.h"
 #include "player.h"
 
-int find_player(world_t *world)
+int find_comp(world_t *world, int comp)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
+        if ((world->entity[i].mask & comp) == comp)
             return i;
     return -1;
 }
@@ -26,22 +27,16 @@ static void update_player_animation(entity_t *entity)
 
     if (is_in_animation(entity))
         return;
-    if (is_key_down(entity, sfKeySpace)){
-        play_animation(entity, ANIM_PROTA_JUMP, false);
-        return;
-    }
-    if (is_key_down(entity, sfKeyE)){
-        play_animation(entity, ANIM_PROTA_ATTACK, false);
-        return;
-    }
-    if (is_key_down(entity, sfKeyA)){
-        play_animation(entity, ANIM_PROTA_DODO, false);
-        return;
-    }
+    if (is_key_down(entity, sfKeySpace))
+        return play_animation(entity, ANIM_PROTA_JUMP, false);
+    if (is_key_down(entity, sfKeyE))
+        return play_animation(entity, ANIM_PROTA_ATTACK, false);
+    if (is_key_down(entity, sfKeyA))
+        return play_animation(entity, ANIM_PROTA_DODO, false);
     if (velocity->x == 0 && velocity->y == 0)
-        play_animation(entity, ANIM_PROTA_IDLE, true);
+        return play_animation(entity, ANIM_PROTA_IDLE, true);
     else
-        play_animation(entity, ANIM_PROTA_RUN, true);
+        return play_animation(entity, ANIM_PROTA_RUN, true);
 }
 
 static void next_frame(win_t *window, entity_t *entity)
@@ -74,4 +69,3 @@ void sys_player(win_t *window, world_t *world)
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             player_events(window, &(world->entity[i]), world);
 }
-    

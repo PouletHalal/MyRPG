@@ -27,7 +27,9 @@ static const char NPC_CONF[] = "maps/npcs.conf";
     #define THRESHOLD 8
     #define MAP_CONF_NB_ARGS 6
     #define PORTAL_CONF_NB_ARGS 9
-    #define NPC_CONF_NB_ARGS 5
+    #define NPC_CONF_NB_ARGS 11
+
+static const sfVector2f DIALOG_BOX_POS = {WIDTH / 2, HEIGHT * 3 / 4};
 
 typedef struct sprite_s {
     const sfTexture *texture;

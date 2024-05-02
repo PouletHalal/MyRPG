@@ -6,6 +6,7 @@
 */
 
 #include "temp.h"
+#include "rendering.h"
 
 void update_sprite_direction(entity_t *entity)
 {
@@ -48,11 +49,19 @@ void play_animation(entity_t *entity, int animation_index, sfBool does_loop)
     c_render->sprite = sfSprite_create();
     c_render->texture = sfTexture_createFromFile(
         animation_list[animation_index].filename, NULL);
+    set_sprite(entity, anim, mult_scale, rect);
+}
+
+void set_sprite(entity_t *entity, animation_t *anim,
+    float mult_scale, sfIntRect *rect)
+{
+    comp_render_t *c_render = &(entity->comp_render);
+
     sfSprite_setTexture(c_render->sprite, c_render->texture, sfFalse);
     sfSprite_setPosition(c_render->sprite, entity->comp_position.position);
     sfSprite_setScale(c_render->sprite,
-        (sfVector2f){anim->scale.x * mult_scale, anim->scale.x});
+    (sfVector2f){anim->scale.x * mult_scale, anim->scale.x});
     sfSprite_setTextureRect(c_render->sprite, anim->base_text_rect);
     sfSprite_setOrigin(c_render->sprite,
-        (sfVector2f){rect->width / 2, rect->height / 2});
+    (sfVector2f){rect->width / 2, rect->height / 2});
 }
