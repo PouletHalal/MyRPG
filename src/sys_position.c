@@ -10,6 +10,7 @@
 #include "temp.h"
 #include "camera.h"
 #include "player.h"
+#include "dialogs.h"
 
 static sfBool do_rect_collide(sfFloatRect rect, sfFloatRect bis)
 {
@@ -46,7 +47,8 @@ sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity)
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],
     world_t *world, sfVector2f velocity)
 {
-    if ((entities[1]->mask & COMP_PORTAL) == COMP_PORTAL &&
+    if (((entities[0]->mask & COMP_PLAYER) == COMP_PLAYER) &&
+        ((entities[1]->mask & COMP_PORTAL) == COMP_PORTAL) &&
         entities[1]->comp_portal.origin_id == world->map_id) {
         if (collide_entity(entities[0], entities[1], velocity)) {
             world->map_id = entities[1]->comp_portal.dest_id;
@@ -60,6 +62,32 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
     entities[1]->comp_hitbox.do_collide)
         return collide_entity(entities[0], entities[1], velocity);
     return sfFalse;
+}
+
+bool is_close(entity_t *entity, entity_t *bis, int threshold)
+{
+    if (abs(entity->comp_position.position.x -
+        bis->comp_position.position.x) <= threshold &&
+        abs(entity->comp_position.position.y -
+        bis->comp_position.position.y) <= threshold)
+        return true;
+    return false;
+}
+
+bool npc_collision(win_t *window, world_t *world, entity_t *entity)
+{
+    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER ||
+        !world->key_pressed[sfKeySpace])
+        return false;
+    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
+        if ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
+            is_close(entity, &world->entity[i], 30)) {
+            world->entity[i].comp_dialog.is_displayed = true;
+            world->entity[i].comp_position.can_move = false;
+            update_dialog(&world->entity[i]);
+        }
+    }
+    return false;
 }
 
 static sfBool check_collision(entity_t *entity, world_t *world,
@@ -89,6 +117,8 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
     sfVector2f yvelo = (sfVector2f) {0., entity->comp_position.velocity.y};
     map_list_t *map = world->map_list[world->map_id];
 
+    if (entity->comp_position.can_move == false)
+        return;
     if (!check_collision(entity, world, xvelo, window)) {
             if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, xvelo);

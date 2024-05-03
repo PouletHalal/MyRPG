@@ -16,8 +16,10 @@ static void update_texture_rect(comp_render_t *c_render)
     int frame_per_line = sheet_size.x / anim->frame_size.x;
     sfIntRect rect = {0};
 
-    rect.left = anim->base_text_rect.left + anim->frame_size.x * (c_render->act_frame % frame_per_line);
-    rect.top = anim->base_text_rect.top + anim->frame_size.y * (c_render->act_frame / frame_per_line);
+    rect.left = anim->base_text_rect.left + anim->frame_size.x *
+    (c_render->act_frame % frame_per_line);
+    rect.top = anim->base_text_rect.top + anim->frame_size.y *
+    (c_render->act_frame / frame_per_line);
     rect.width = anim->frame_size.x;
     rect.height = anim->frame_size.y;
     sfSprite_setTextureRect(c_render->sprite, rect);

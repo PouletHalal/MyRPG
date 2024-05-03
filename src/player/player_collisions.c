@@ -53,6 +53,8 @@ bool tile_collision(sfVector2f pos, int **collision_map)
 
 bool portal_collision(world_t *world, entity_t *entity, sfVector2f offset)
 {
+    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER)
+        return false;
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if (((world->entity[i].mask & COMP_PORTAL) == COMP_PORTAL) &&
             world->entity[i].comp_portal.origin_id == world->map_id &&

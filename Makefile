@@ -5,10 +5,10 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c					\
-		src/start.c					\
-		src/animation.c				\
-		src/sys_render.c			\
+SRC	=	src/main.c	\
+		src/start.c	\
+		src/animation.c	\
+		src/sys_render.c	\
 		src/sys_input_and_event.c	\
 		src/sys_position.c		\
 		src/sys_mob.c	\
@@ -20,6 +20,9 @@ SRC	=	src/main.c					\
 		src/portals/init_portals.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
+		src/ecs/components_inits.c	\
+		src/npcs/init_npc.c	\
+		src/npcs/dialogs.c	\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/lib/my_str_to_word_array.c	\

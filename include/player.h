@@ -17,7 +17,7 @@ void update_cam(win_t *window, entity_t *entity,
 void update_sprite_animation(entity_t *entity,
     int anim_id, int count, int framerate);
 bool is_colliding(world_t *world, entity_t *entity, sfVector2f offset);
-int find_player(world_t *world);
+int find_comp(world_t *world, int comp);
 void player_movements(win_t *window, entity_t *entity, world_t *world);
 bool portal_collision(world_t *world, entity_t *entity, sfVector2f offset);
 
