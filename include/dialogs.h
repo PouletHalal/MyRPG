@@ -14,6 +14,5 @@
 void display_dialogs(win_t *window, world_t *world);
 void update_dialog(entity_t *entity);
 static void mini_update_dialog(int sentence, entity_t *entity, int dialog);
-bool temp(win_t *window, world_t *world, entity_t *entity, float x);
 
 #endif /* !DIALOGS_H_ */
