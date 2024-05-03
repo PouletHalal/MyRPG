@@ -66,7 +66,7 @@ void display_dialogs(win_t *window, world_t *world)
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
-static void update_dialog(entity_t *entity)
+void update_dialog(entity_t *entity)
 {
     int dialog = entity->comp_dialog.current_dialog;
     int sentence = entity->comp_dialog.current_sentence;
@@ -97,27 +97,3 @@ void mini_update_dialog(int sentence, entity_t *entity, int dialog)
     }
 }
 
-static bool start_dialog(win_t *window, world_t *world, entity_t *entity,
-    sfVector2f velocity)
-{
-    for (int i = 0; i < ENTITY_COUNT; ++i) {
-        if (entity->entity != i &&
-        ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG) &&
-        world->key_pressed[sfKeySpace] == true &&
-        collide_entity(entity, &world->entity[i], velocity) == true) {
-            world->entity[i].comp_dialog.is_displayed = true;
-            world->entity[i].comp_position.can_move = false;
-            update_dialog(&world->entity[i]);
-            return true;
-        }
-    }
-    return false;
-}
-
-bool temp(win_t *window, world_t *world, entity_t *entity, float x)
-{
-    for (float y = -THRESHOLD; y <= THRESHOLD; ++y)
-        if (start_dialog(window, world, entity, (sfVector2f) {x, y}))
-            return true;
-    return false;
-}

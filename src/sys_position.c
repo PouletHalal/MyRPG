@@ -64,13 +64,29 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
     return sfFalse;
 }
 
+bool is_close(entity_t *entity, entity_t *bis, int threshold)
+{
+    if (abs(entity->comp_position.position.x -
+        bis->comp_position.position.x) <= threshold &&
+        abs(entity->comp_position.position.y -
+        bis->comp_position.position.y) <= threshold)
+        return true;
+    return false;
+}
+
 bool npc_collision(win_t *window, world_t *world, entity_t *entity)
 {
-    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER)
+    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER ||
+        !world->key_pressed[sfKeySpace])
         return false;
-    for (float x = -THRESHOLD; x <= THRESHOLD; ++x)
-        if (temp(window, world, entity, x) == true)
-            return true;
+    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
+        if ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
+            is_close(entity, &world->entity[i], 30)) {
+            world->entity[i].comp_dialog.is_displayed = true;
+            world->entity[i].comp_position.can_move = false;
+            update_dialog(&world->entity[i]);
+        }
+    }
     return false;
 }
 
