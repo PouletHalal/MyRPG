@@ -33,6 +33,7 @@ void read_dialogs(entity_t *entity, char *filename)
         store_dialog(entity, line, id);
         id += 1;
     }
+    fclose(stream);
 }
 
 static void init_comp_dialog(entity_t *entity, char **split)
@@ -79,4 +80,5 @@ void read_npcconf(world_t *world)
     while (getline(&line, &len, stream) > 0) {
         init_npc(world, line);
     }
+    fclose(stream);
 }

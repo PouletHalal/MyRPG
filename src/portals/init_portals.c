@@ -81,4 +81,5 @@ void read_portalconf(world_t *world)
     while (getline(&line, &len, stream) > 0) {
         init_portal(world, line);
     }
+    fclose(stream);
 }
