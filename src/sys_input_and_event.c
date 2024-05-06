@@ -57,8 +57,9 @@ static void exec_input(world_t *world, entity_t *entity, win_t *window)
     for (int i = 0; i < NB_KEYS; ++i) {
         if (world->key_down[i] && entity->comp_input.down_func[i] != NULL)
             entity->comp_input.down_func[i](window, world, entity);
-        if (world->key_pressed[i] && entity->comp_input.pressed_func[i] != NULL)
-            entity->comp_input.pressed_func[i](window,world, entity);
+        if (world->key_pressed[i] &&
+        entity->comp_input.pressed_func[i] != NULL)
+            entity->comp_input.pressed_func[i](window, world, entity);
     }
 }
 
