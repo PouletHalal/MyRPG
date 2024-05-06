@@ -126,7 +126,8 @@ static sfBool check_collision(entity_t *entity, world_t *world,
     return sfFalse;
 }
 
-static void sum_vectors(entity_t *entity, sfVector2f *yvelo, sfVector2f *xvelo)
+static void sum_vectors_x_y(entity_t *entity, sfVector2f *yvelo,
+    sfVector2f *xvelo)
 {
     for (int i = 0; i < MAX_VECTOR; ++i)
         if (entity->comp_position.vector_lenght[i] > 0) {
@@ -144,7 +145,7 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
 
     if (entity->comp_position.can_move == false)
         return;
-    sum_vectors(entity, &yvelo, &xvelo);
+    sum_vectors_x_y(entity, &yvelo, &xvelo);
     if (!check_collision(entity, world, xvelo, window)) {
             if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, xvelo);

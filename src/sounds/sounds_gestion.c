@@ -38,8 +38,8 @@ void refresh_sounds(world_t *world, sfClock *clock)
     int y = ((pos.y) / TILE_HEIGHT);
     int random = rand() % 5;
 
-    if ((player->comp_position.velocity.x == 0 &&
-        player->comp_position.velocity.y == 0) || sound_map == NULL)
+    if ((player->comp_position.velocity->x == 0 &&
+        player->comp_position.velocity->y == 0) || sound_map == NULL)
         return;
     if (is_playing(world, sound_map[y][x]))
         return;

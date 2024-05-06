@@ -23,7 +23,7 @@ int find_comp(world_t *world, int comp)
 
 static void update_player_animation(entity_t *entity)
 {
-    sfVector2f *velocity = &(entity->comp_position.velocity);
+    sfVector2f velocity = get_mouv_vector(entity);
 
     if (is_in_animation(entity))
         return;
@@ -33,7 +33,7 @@ static void update_player_animation(entity_t *entity)
         return play_animation(entity, ANIM_PROTA_ATTACK, false);
     if (is_key_down(entity, sfKeyA))
         return play_animation(entity, ANIM_PROTA_DODO, false);
-    if (velocity->x == 0 && velocity->y == 0)
+    if (velocity.x == 0 && velocity.y == 0)
         return play_animation(entity, ANIM_PROTA_IDLE, true);
     else
         return play_animation(entity, ANIM_PROTA_RUN, true);
