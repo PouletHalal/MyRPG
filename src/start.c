@@ -20,6 +20,7 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     *entity = (entity_t){0};
     entity->entity = free;
     entity->mask |= COMP_PLAYER | COMP_STAT;
+    entity->comp_input.pressed_func[sfKeySpace] = &npc_collision;
     entity->comp_stat = (comp_stat_t)
     {FRIENDLY, 100., 100., 1., sfTrue, sfTrue, 30., 5., 0., 20.};
     init_comp_position(entity, position);

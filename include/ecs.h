@@ -13,7 +13,7 @@
     #include <stdio.h>
     #include "maps.h"
 
-    #define ENTITY_COUNT 10000
+    #define ENTITY_COUNT 100
     #define NB_KEYS 120
 
     #define MAX_DIALOGS 5
@@ -131,6 +131,8 @@ typedef struct comp_position_s {
 typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
+    void (*pressed_func[NB_KEYS])();
+    void (*down_func[NB_KEYS])();
 } comp_input_t;
 
 typedef struct comp_portal_s {

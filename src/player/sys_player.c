@@ -41,10 +41,6 @@ static void update_player_animation(entity_t *entity)
 
 static void next_frame(win_t *window, entity_t *entity)
 {
-    sfVector2f *velocity = &(entity->comp_position.velocity);
-
-    velocity->x = 0;
-    velocity->y = 0;
     if (is_key_down(entity, sfKeyD))
         add_vector(entity, (sfVector2f) {1.5, 0.}, 1);
     if (is_key_down(entity, sfKeyS))

@@ -86,11 +86,11 @@ bool is_close(entity_t *entity, entity_t *bis, int threshold)
     return false;
 }
 
-bool npc_collision(win_t *window, world_t *world, entity_t *entity)
+void npc_collision(win_t *window, world_t *world, entity_t *entity)
 {
     if ((entity->mask & COMP_PLAYER) != COMP_PLAYER ||
         !world->key_pressed[sfKeySpace])
-        return false;
+        return;
     for (size_t i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
             is_close(entity, &world->entity[i], 30)) {
@@ -99,7 +99,6 @@ bool npc_collision(win_t *window, world_t *world, entity_t *entity)
             update_dialog(&world->entity[i]);
         }
     }
-    return false;
 }
 
 static sfBool check_collision(entity_t *entity, world_t *world,
