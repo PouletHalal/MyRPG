@@ -39,15 +39,12 @@ static void spawn_entity(world_t *world)
 static void analyse_events(win_t *window, world_t *world)
 {
     sfEvent *event = &window->event;
-    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (event->type == sfEvtClosed)
         sfRenderWindow_close(window->window);
     if (event->type == sfEvtKeyPressed){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
-        npc_collision(window, world, player);
-    spawn_entity(world);
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;
@@ -56,10 +53,24 @@ static void analyse_events(win_t *window, world_t *world)
         sfRenderWindow_close(window->window);
 }
 
+static void exec_input(world_t *world, entity_t *entity, win_t *window)
+{
+    for (int i = 0; i < NB_KEYS; ++i) {
+        if (world->key_down[i] && entity->comp_input.down_func[i] != NULL)
+            entity->comp_input.down_func[i](window, world, entity);
+        if (world->key_pressed[i] &&
+        entity->comp_input.pressed_func[i] != NULL)
+            entity->comp_input.pressed_func[i](window, world, entity);
+    }
+}
+
 void sys_input_and_event(world_t *world, win_t *window)
 {
     for (int i = 0; i < NB_KEYS; i++)
         world->key_pressed[i] = sfFalse;
     while (sfRenderWindow_pollEvent(window->window, &(window->event)))
         analyse_events(window, world);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        if ((world->entity[i].mask & COMP_INPUT) == COMP_INPUT)
+            exec_input(world, &world->entity[i], window);
 }

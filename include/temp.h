@@ -38,9 +38,11 @@ void read_portalconf(world_t *world);
 void read_npcconf(world_t *world);
 
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
-bool npc_collision(win_t *window, world_t *world, entity_t *entity);
+void npc_collision(win_t *window, world_t *world, entity_t *entity);
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world, win_t *window);
+
+void add_vector(entity_t *entity, sfVector2f vector, size_t lenght);
 
 #endif /* !TEMP_H_ */

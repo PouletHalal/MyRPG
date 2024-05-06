@@ -66,7 +66,7 @@ void init_comp_position(entity_t *entity, sfVector2f position)
 {
     entity->mask |= COMP_POSITION;
     entity->comp_position.position = position;
-    entity->comp_position.velocity.x = 0;
-    entity->comp_position.velocity.y = 0;
     entity->comp_position.can_move = sfTrue;
+    entity->comp_position.spawn = position;
+    entity->comp_position.world = MAIN_WORLD;
 }

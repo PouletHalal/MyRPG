@@ -62,6 +62,7 @@ void init_comp_portal(entity_t *entity, char **split)
     entity->comp_position.position = (sfVector2f){atof(split[0]),
     atof(split[1])};
     entity->comp_portal.origin_id = atoi(split[2]);
+    entity->comp_position.world = atoi(split[2]);
     entity->comp_portal.dest_id = atoi(split[3]);
     entity->comp_portal.dest_pos = (sfVector2f){atof(split[4]),
     atof(split[5])};
