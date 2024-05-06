@@ -96,4 +96,3 @@ void mini_update_dialog(int sentence, entity_t *entity, int dialog)
         entity->comp_dialog.current_sentence = 0;
     }
 }
-

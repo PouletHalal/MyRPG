@@ -118,17 +118,25 @@ static map_t add_map(char **args, tileset_t *tileset_list)
     return map;
 }
 
+static int init_music(map_list_t *map, char **split)
+{
+    map->music = sfMusic_createFromFile(split[2]);
+    sfMusic_setVolume(map->music, 20);
+    sfMusic_setLoop(map->music, sfTrue);
+    return 0;
+}
+
 static map_list_t *get_map(char *line, FILE *stream, tileset_t *tileset_list)
 {
     char **split = my_str_to_word_array(line, ":\n");
     map_list_t *map = malloc(sizeof(map_list_t));
     size_t size = 0;
 
-    if (len_array(split) != 2)
+    if (len_array(split) != 3)
         return display_and_return(NULL, 2, "Invalid nbr of args ->", line);
     map->name = split[0];
     map->nb_layer = atoi(split[1]);
-    if (map->nb_layer <= 0)
+    if (map->nb_layer <= 0 || init_music(map, split))
         return display_and_return(NULL, 2, "Invalid nbr of layers ->", line);
     map->maps = malloc(sizeof(map_t) * map->nb_layer);
     for (int i = 0; i < map->nb_layer; ++i) {
