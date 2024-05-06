@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "rendering.h"
 #include "error_handling.h"
+#include "sounds.h"
 
 int find_empty(world_t *world)
 {
@@ -55,15 +56,18 @@ int main(void)
     sfClock *clock = sfClock_create();
     tileset_t *tileset_list = init_tilesets();
     map_list_t **map_list = init_map(MAP_FILE, tileset_list);
+    sound_list_t **sound_list = init_sounds(sound_list, SOUNDS_FILE);
 
-    if (map_list == NULL)
+    if (map_list == NULL || sound_list == NULL)
         return close_and_return(window, 84);
     srand(time(NULL));
     world.map_list = map_list;
+    world.sound_list = sound_list;
     init_all(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window);
         render_window(window, &world);
+        refresh_sounds(&world, clock);
     }
     return close_and_return(window, 0);
 }

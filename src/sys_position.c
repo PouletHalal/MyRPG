@@ -62,10 +62,12 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
         ((entities[1]->mask & COMP_PORTAL) == COMP_PORTAL) &&
         entities[1]->comp_portal.origin_id == world->map_id) {
         if (collide_entity(entities[0], entities[1], velocity)) {
+            sfMusic_stop(world->map_list[world->map_id]->music);
             world->map_id = entities[1]->comp_portal.dest_id;
             entities[0]->comp_position.position =
             entities[1]->comp_portal.dest_pos;
             entities[0]->comp_position.world = world->map_id;
+            sfMusic_play(world->map_list[world->map_id]->music);
             init_cam(window, world);
         }
         return sfFalse;

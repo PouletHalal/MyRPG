@@ -12,6 +12,7 @@
     #include <stdbool.h>
     #include <stdio.h>
     #include "maps.h"
+    #include "sounds.h"
 
     #define ENTITY_COUNT 100
     #define NB_KEYS 120
@@ -34,6 +35,7 @@ enum comp_list {
     COMP_PORTAL = 1 << 6,
     COMP_DIALOG = 1 << 7,
     COMP_STAT = 1 << 8,
+    COMP_SOUND = 1 << 9,
 };
 
 enum anim_list {
@@ -104,6 +106,11 @@ typedef struct comp_render_s {
     size_t act_frame;
     size_t clock;
 } comp_render_t;
+
+typedef struct comp_sound_s {
+    sounds_t sound;
+    sfClock *clock;
+} comp_sound_t;
 
 typedef struct comp_dialog_s {
     sfColor color;
@@ -190,6 +197,7 @@ typedef struct entity_s {
 typedef struct world_s {
     enum map_ids map_id;
     map_list_t **map_list;
+    sound_list_t **sound_list;
     sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];
@@ -209,5 +217,7 @@ void init_comp_position(entity_t *entity, sfVector2f position);
 void sys_stat(world_t *world);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
+
+void refresh_sounds(world_t *world, sfClock *clock);
 
 #endif /* !ECS_H_ */

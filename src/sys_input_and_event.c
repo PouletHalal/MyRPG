@@ -28,11 +28,12 @@ static void spawn_entity(world_t *world)
     sfVector2f offset = {-50 + rand() % 100, -50 + rand() % 100};
 
     if (offset.x < 20 && offset.x > -20)
-        offset.x += 50;
+        offset.x += 100;
     new_pos.x += offset.x;
     new_pos.y += offset.y;
-    if (world->key_pressed[sfKeyLControl] && world->key_pressed[sfKeyF])
+    if (world->key_down[sfKeyLControl] && world->key_pressed[sfKeyF]) {
         init_mob(world, ANIM_MOB_RUN, new_pos);
+    }
 }
 
 static void analyse_events(win_t *window, world_t *world)
