@@ -5,22 +5,42 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c			\
-		src/start.c			\
-		src/sys_render.c		\
+SRC	=	src/main.c					\
+		src/start.c					\
+		src/animation.c				\
+		src/sys_render.c			\
 		src/sys_input_and_event.c	\
-		src/sys_position.c		\
-		src/sys_player.c
+		src/position/sys_position.c		\
+		src/position/vectors.c	\
+		src/stats/sys_stat.c	\
+		src/sys_mob.c	\
+		src/camera/view.c	\
+		src/camera/camera_movements.c	\
+		src/error_handling/parsing_handling.c	\
+		src/player/sys_player.c	\
+		src/player/player_collisions.c	\
+		src/portals/init_portals.c	\
+		src/map_loading/parsing.c	\
+		src/map_loading/init_tilesets.c	\
+		src/ecs/components_inits.c	\
+		src/npcs/init_npc.c	\
+		src/npcs/dialogs.c	\
+		src/rendering/map_rendering.c	\
+		src/rendering/window_rendering.c	\
+		src/lib/my_str_to_word_array.c	\
+		src/lib/my_strcat.c	\
+		src/sounds/init_sounds.c	\
+		src/sounds/sounds_gestion.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_rpg
 
-CFLAGS =	-I include
+CFLAGS +=	-I include
 
-CPPFLGS = 	-W -Wall -Wextra
+CPPFLGS += 	-W -Wall -Wextra
 
-DBFLAGS = 	-g -g3 -ggdb
+DBFLAGS = 	-g -g3 -fsanitize=address
 
 LDFLAGS = 	-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -lm
 
@@ -31,7 +51,7 @@ $(NAME):	$(OBJ)
 
 test:
 	make re
-	./my_rpg 
+	./$(NAME)
 	make clean > /dev/null
 
 debuger: $(OBJ)
@@ -52,5 +72,6 @@ re:     fclean all
 
 style:	fclean
 	coding-style . .
+	clear
 	cat coding-style-reports.log
 	rm -f coding-style-reports.log

@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** My radar
+** My rpg
 ** File description:
 ** Start file
 */
@@ -9,33 +9,41 @@
 #include <time.h>
 #include "temp.h"
 
-void create_perso_style_insane(entity_t *entity,
-    sfTexture *texture, sprite_info_t *mob, world_t *world)
+void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
 {
-    sfVector2f position = {rand() % 1930 - 10, rand() % 1090 - 10};
-    int ran = rand();
+    int free = find_empty(world);
+    entity_t *entity;
 
-    entity->comp_render.frame = 0;
-    entity->comp_render.sprite = sfSprite_create();
-    entity->comp_render.texture = texture;
-    sfSprite_setTexture(entity->comp_render.sprite,
-    entity->comp_render.texture, sfFalse);
-    sfSprite_setScale(entity->comp_render.sprite,
-    (sfVector2f) {0.5 + ran % 1, 0.5 + ran % 1});
-    sfSprite_setPosition(entity->comp_render.sprite, position);
-    sfSprite_setTextureRect(entity->comp_render.sprite, mob->text_rect);
-    entity->mask = COMP_RENDER | COMP_POSITION | COMP_INPUT | COMP_PLAYER;
-    entity->comp_render.is_visible = true;
-    entity->comp_render.does_loop = true;
-    entity->comp_render.frame_count = mob->frame_count;
-    entity->comp_render.clock = 0;
-    entity->comp_render.frame_size = mob->frame_size;
-    entity->comp_render.frame_rate = 60 / mob->frame_rate;
-    entity->comp_input.key_pressed = world->key_pressed;
-    entity->comp_position.position = position;
-    entity->comp_position.velocity.x = 5;
-    entity->comp_position.velocity.y = 5;
-    entity->comp_render.starting_rect = mob->text_rect;
-    sfSprite_setScale(entity->comp_render.sprite, mob->scale);
-    sfSprite_setOrigin(entity->comp_render.sprite, (sfVector2f) {mob->text_rect.width / 2, mob->text_rect.height / 2});
+    if (free == -1)
+        return;
+    entity = &world->entity[free];
+    *entity = (entity_t){0};
+    entity->entity = free;
+    entity->mask |= COMP_PLAYER | COMP_STAT;
+    entity->comp_input.pressed_func[sfKeySpace] = &npc_collision;
+    entity->comp_stat = (comp_stat_t)
+    {FRIENDLY, 100., 100., 1., sfTrue, sfTrue, 30., 5., 0., 20.};
+    init_comp_position(entity, position);
+    init_comp_render(entity, world, anim_nbr, position);
+    init_comp_hitbox(entity, position);
+    init_comp_input(entity, world);
+}
+
+void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
+{
+    int free = find_empty(world);
+    entity_t *entity;
+
+    if (free == -1)
+        return;
+    entity = &world->entity[free];
+    *entity = (entity_t){0};
+    entity->entity = free;
+    entity->mask |= COMP_STAT;
+    entity->comp_stat = (comp_stat_t)
+    {ENEMY, 30., 30., 0., sfTrue, sfTrue, 10., 5., 0., 20.};
+    init_comp_position(entity, position);
+    init_comp_render(entity, world, anim_nbr, position);
+    init_comp_mob(entity);
+    init_comp_hitbox(entity, position);
 }

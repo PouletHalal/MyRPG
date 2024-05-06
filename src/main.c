@@ -1,15 +1,20 @@
 /*
 ** EPITECH PROJECT, 2024
-** My radar
+** My rpg
 ** File description:
-** Start file
+** Main file
 */
 
 #include <stdlib.h>
 #include <time.h>
 #include "temp.h"
+#include "maps.h"
+#include "camera.h"
+#include "rendering.h"
+#include "error_handling.h"
+#include "sounds.h"
 
-static int find_empty(world_t *world)
+int find_empty(world_t *world)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
         if (world->entity[i].mask == COMP_NONE)
@@ -20,32 +25,28 @@ static int find_empty(world_t *world)
 static win_t *create_win(void)
 {
     win_t *window = malloc(sizeof(win_t));
-    sfVideoMode mode = {1920, 1080, 32};
+    sfVideoMode mode = {WIDTH, HEIGHT, 32};
 
-    window->window = sfRenderWindow_create(mode, "SFML window",
-    sfResize | sfClose, NULL);
+    window->window = sfRenderWindow_create(mode, "SFML window", sfClose, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
+    init_view(window);
     return window;
 }
 
-static void refresh_world(world_t *world, sfClock *clock, win_t *window)
+static void init_all(win_t *window, world_t *world)
 {
-    if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
-        return;
-    sfClock_restart(clock);
-    sys_input_and_event(world, window);
-    sys_position(world);
-    sys_player(world);
-    sys_render(world);
-}
+    sfVector2f position_player = {500, 150};
+    sfVector2f position_mob = {800, 150};
 
-static void render_window(win_t *window, world_t *world)
-{
-    sfRenderWindow_clear(window->window, sfBlack);
-    for (int i = 0; i < ENTITY_COUNT; ++i)
-        if (world->entity[i].mask & COMP_RENDER == COMP_RENDER && world->entity[i].comp_render.is_visible == true)
-            sfRenderWindow_drawSprite(window->window, world->entity[i].comp_render.sprite, NULL);
-    sfRenderWindow_display(window->window);
+    init_textures(world);
+    init_entity(world, ANIM_PROTA_IDLE, position_player);
+    for (int i = 0; i < 10; i++){
+        init_mob(world, ANIM_MOB_RUN, position_mob);
+        position_mob.x += 60;
+    }
+    init_cam(window, world);
+    read_portalconf(world);
+    read_npcconf(world);
 }
 
 int main(void)
@@ -53,17 +54,20 @@ int main(void)
     world_t world = {0};
     win_t *window = create_win();
     sfClock *clock = sfClock_create();
-    int ran = 17;
+    tileset_t *tileset_list = init_tilesets();
+    map_list_t **map_list = init_map(MAP_FILE, tileset_list);
+    sound_list_t **sound_list = init_sounds(sound_list, SOUNDS_FILE);
 
-    for (int i = 0; i < TXT_END; ++i)
-        world.texture_list[i] = sfTexture_createFromFile(texture_file[i], NULL);
+    if (map_list == NULL || sound_list == NULL)
+        return close_and_return(window, 84);
     srand(time(NULL));
-    create_perso_style_insane(&world.entity[0], world.texture_list[ran], &mob_list[ran], &world);
+    world.map_list = map_list;
+    world.sound_list = sound_list;
+    init_all(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window);
         render_window(window, &world);
+        refresh_sounds(&world, clock);
     }
-    sfRenderWindow_destroy(window->window);
-    free(window);
-    return 0;
+    return close_and_return(window, 0);
 }
