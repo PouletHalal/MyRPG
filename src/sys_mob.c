@@ -19,8 +19,8 @@ static void follow_move(entity_t *mob, entity_t *player)
     double cos = (player_pos.x - mob_pos.x) / hyp;
     double sin = (player_pos.y - mob_pos.y) / hyp;
 
-    mob->comp_position.velocity.x = cos * mob->comp_mob.speed;
-    mob->comp_position.velocity.y = sin * mob->comp_mob.speed;
+    add_vector(mob, (sfVector2f)
+    {cos * mob->comp_mob.speed, sin * mob->comp_mob.speed}, 1);
 }
 
 static sfBool check_range(entity_t *mob, entity_t *player)
@@ -44,8 +44,6 @@ static void next_frame(entity_t *entity, world_t *world)
         (world->entity[player].mask & COMP_POSITION) == COMP_POSITION)
         if (check_range(entity, &world->entity[player]))
             follow_move(entity, &world->entity[player]);
-        else
-            entity->comp_position.velocity = (sfVector2f) {0., 0.};
     update_sprite_direction(entity);
 }
 

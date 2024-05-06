@@ -39,6 +39,7 @@ void refresh_world(world_t *world, sfClock *clock,
     sys_position(world, window);
     sys_player(window, world);
     sys_render(world);
+    sys_stat(world);
 }
 
 void render_window(win_t *window, world_t *world)
@@ -49,7 +50,8 @@ void render_window(win_t *window, world_t *world)
     display_map(window, world->map_list[world->map_id], 1);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
-            world->entity[i].comp_render.is_visible == true)
+            world->entity[i].comp_render.is_visible == true &&
+            world->entity[i].comp_position.world == world->map_id)
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
     }
