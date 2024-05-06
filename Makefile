@@ -28,7 +28,9 @@ SRC	=	src/main.c					\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/lib/my_str_to_word_array.c	\
-		src/lib/my_strcat.c
+		src/lib/my_strcat.c	\
+		src/sounds/init_sounds.c	\
+		src/sounds/sounds_gestion.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

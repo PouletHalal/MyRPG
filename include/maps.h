@@ -10,6 +10,7 @@
 
     #include <SFML/Window.h>
     #include <SFML/Graphics.h>
+    #include <SFML/Audio.h>
     #include <SFML/System.h>
     #include "tilesets.h"
 
@@ -51,6 +52,7 @@ typedef struct map_s {
 
 typedef struct map_list_s {
     map_t *maps;
+    sfMusic *music;
     char *name;
     int nb_layer;
 } map_list_t;
@@ -66,4 +68,5 @@ map_list_t **init_map(char const *map_file, tileset_t *tileset_list);
 char **my_str_to_word_array(char const *str, char const *separators);
 void free_array(char **array);
 int len_array(char **array);
+int **get_layer(map_list_t *map_list, char const *name);
 #endif
