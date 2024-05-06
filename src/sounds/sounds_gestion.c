@@ -37,9 +37,9 @@ void refresh_sounds(world_t *world, sfClock *clock)
     int x = ((pos.x) / TILE_WIDTH);
     int y = ((pos.y) / TILE_HEIGHT);
     int random = rand() % 5;
+    sfVector2f velocity = get_mouv_vector(player);
 
-    if ((player->comp_position.velocity->x == 0 &&
-        player->comp_position.velocity->y == 0) || sound_map == NULL)
+    if ((velocity.x == 0 && velocity.y == 0) || sound_map == NULL)
         return;
     if (is_playing(world, sound_map[y][x]))
         return;
