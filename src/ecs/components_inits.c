@@ -62,11 +62,11 @@ void init_comp_input(entity_t *entity, world_t *world)
     entity->comp_input.key_down = world->key_down;
 }
 
-void init_comp_position(entity_t *entity, sfVector2f position)
+void init_comp_position(entity_t *entity, sfVector2f position, int world_id)
 {
     entity->mask |= COMP_POSITION;
     entity->comp_position.position = position;
     entity->comp_position.can_move = sfTrue;
     entity->comp_position.spawn = position;
-    entity->comp_position.world = MAIN_WORLD;
+    entity->comp_position.world = world_id;
 }

@@ -12,7 +12,8 @@
     #include "temp.h"
 
 void display_dialogs(win_t *window, world_t *world);
-void update_dialog(entity_t *entity);
-static void mini_update_dialog(int sentence, entity_t *entity, int dialog);
-
+void update_dialog(win_t *window, world_t *world, entity_t *entity);
+int read_dialogs(world_t *world, entity_t *entity, char *filename);
+void update_substring(entity_t *entity, int dialog, int sentence);
+void no_input_dialogs(win_t *window, world_t *world);
 #endif /* !DIALOGS_H_ */

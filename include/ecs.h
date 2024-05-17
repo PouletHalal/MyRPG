@@ -17,11 +17,14 @@
     #define ENTITY_COUNT 100
     #define NB_KEYS 120
 
+    #define GET_BOOL(str) strcmp(str, "true") == 0 ? true : false
+
     #define MAX_DIALOGS 5
 
 enum map_ids {
     MAIN_WORLD,
     HOUSE1,
+    INTRO,
 };
 
 enum comp_list {
@@ -47,6 +50,10 @@ enum anim_list {
     ANIM_MOB_RUN,
     ANIM_PORTAL_GREEN,
     ANIM_BLACKSMITH,
+    ANIM_TRANSPARENT,
+    ANIM_INTRO,
+    ANIM_BOY_IDLE,
+    ANIM_BOY_TALK,
     ANIM_END,
 };
 
@@ -76,7 +83,15 @@ static const animation_t animation_list[] = {
     {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32},
         {1., 1.}, 5},
     {ANIM_BLACKSMITH, "effect/blacksmith.png", {0, 0, 32, 32}, 8, {32, 32},
-        {1., 1.}, 15},
+        {1, 1}, 15},
+    {ANIM_TRANSPARENT, "effect/transparent.png", {0, 0, 32, 32}, 1, {32, 32},
+        {1., 1.}, 5},
+    {ANIM_INTRO, "effect/intro.png", {0, 0, 1920, 1080}, 1, {1920, 1080},
+        {1., 1.}, 5},
+    {ANIM_BOY_IDLE, "effect/boy.png", {0, 0, 48, 48}, 6, {48, 48},
+        {1., 1.}, 10},
+    {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
+        {1., 1.}, 10},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -115,13 +130,22 @@ typedef struct comp_sound_s {
 typedef struct comp_dialog_s {
     sfColor color;
     sfBool is_displayed;
+    sfBool does_loop;
+    sfBool freeze_player;
+    sfBool is_finished;
+    sfBool need_input;
+    sfBool camera_focus;
+    sfVector2f detection_area;
     int current_dialog;
     int nb_dialogs;
     int current_sentence;
+    int current_char;
     char **text[MAX_DIALOGS];
+    char *substring;
     sfText *sftext;
     sfFont *font;
     sfSprite *box;
+    sfClock *clock;
 } comp_dialog_t;
 
     #define MAX_VECTOR 10
@@ -138,6 +162,7 @@ typedef struct comp_position_s {
 typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
+    sfClock *clock;
     void (*pressed_func[NB_KEYS])();
     void (*down_func[NB_KEYS])();
 } comp_input_t;
@@ -212,12 +237,13 @@ void init_comp_render(entity_t *entity, world_t *world,
 void init_comp_hitbox(entity_t *entity, sfVector2f position);
 void init_comp_mob(entity_t *entity);
 void init_comp_input(entity_t *entity, world_t *world);
-void init_comp_position(entity_t *entity, sfVector2f position);
+void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
 
 void sys_stat(world_t *world);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
 
 void refresh_sounds(world_t *world, sfClock *clock);
+bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
 
 #endif /* !ECS_H_ */
