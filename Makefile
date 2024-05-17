@@ -20,6 +20,7 @@ SRC	=	src/main.c					\
 		src/player/sys_player.c	\
 		src/player/player_collisions.c	\
 		src/portals/init_portals.c	\
+		src/portals/portal_parsing.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
 		src/ecs/components_inits.c	\
