@@ -17,6 +17,9 @@
 typedef struct cam_s {
     sfFloatRect view_rect;
     sfView *view;
+    bool is_moving;
+    sfVector2f *destination;
+    sfVector2f offset;
 } cam_t;
 
 typedef struct window_s {
@@ -36,6 +39,7 @@ int find_empty(world_t *world);
 
 void read_portalconf(world_t *world);
 void read_npcconf(world_t *world);
+
 
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
 void npc_collision(win_t *window, world_t *world, entity_t *entity);

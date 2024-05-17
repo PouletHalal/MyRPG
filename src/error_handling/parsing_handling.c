@@ -30,6 +30,22 @@ void *display_and_return(void *ptr, int nb, ...)
     return ptr;
 }
 
+int int_display_and_return(int return_value, int nb, ...)
+{
+    va_list args = {0};
+    char *output = NULL;
+
+    va_start(args, nb);
+    output = va_arg(args, char *);
+    while (nb != 0) {
+        dprintf(2, "%s", output);
+        output = va_arg(args, char *);
+        nb --;
+    }
+    va_end(args);
+    return return_value;
+}
+
 int test_open(FILE *stream, char const *filename)
 {
     if (stream == NULL) {

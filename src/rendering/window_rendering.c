@@ -44,9 +44,12 @@ void refresh_world(world_t *world, sfClock *clock,
 
 void render_window(win_t *window, world_t *world)
 {
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
+
     sfRenderWindow_clear(window->window, sfBlack);
     resize_cam(window, world->map_list[world->map_id]);
     move_cam(window, world->map_list[world->map_id]);
+    move_to_destination(window);
     display_map(window, world->map_list[world->map_id], 1);
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&

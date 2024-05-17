@@ -87,6 +87,8 @@ bool is_colliding(world_t *world, entity_t *entity, sfVector2f offset)
 
     bounds.left += entity->comp_position.position.x;
     bounds.top += entity->comp_position.position.y;
+    if (entity->comp_position.world != world->map_id)
+        return true;
     if (entity == NULL)
         return false;
     if (is_out_of_border(bounds, offset, map_list))

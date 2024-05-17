@@ -24,7 +24,13 @@ SRC	=	src/main.c					\
 		src/map_loading/init_tilesets.c	\
 		src/ecs/components_inits.c	\
 		src/npcs/init_npc.c	\
-		src/npcs/dialogs.c	\
+		src/npcs/dialogs_gestion.c	\
+		src/npcs/dialogs_rendering.c	\
+		src/npcs/npc_gestion.c	\
+		src/npcs/no_input_dialogs.c	\
+		src/npcs/npc_parsing.c	\
+		src/npcs/npc_parsing2.c	\
+		src/npcs/npc_parsing3.c	\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/lib/my_str_to_word_array.c	\
