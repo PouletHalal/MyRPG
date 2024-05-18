@@ -15,6 +15,7 @@ int set_origin_pos(world_t *world, entity_t *entity, char *args);
 int set_destination_id(world_t *world, entity_t *entity, char *args);
 int set_destination_pos(world_t *world, entity_t *entity, char *args);
 int set_hitbox(world_t *world, entity_t *entity, char *args);
+int set_entering_sound(world_t *world, entity_t *entity, char *args);
 
 ptr_func_t PORTAL_FLAGS[] =
 {
@@ -25,6 +26,7 @@ ptr_func_t PORTAL_FLAGS[] =
     {"destination_pos", set_destination_pos},
     {"hitbox", &set_hitbox},
     {"animation_id", &set_idle},
+    {"enter_sound", &set_entering_sound},
     {NULL, NULL}
 };
 

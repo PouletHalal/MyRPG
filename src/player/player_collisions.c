@@ -51,23 +51,6 @@ bool tile_collision(sfVector2f pos, int **collision_map)
     return false;
 }
 
-bool portal_collision(world_t *world, entity_t *entity, sfVector2f offset)
-{
-    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER)
-        return false;
-    for (int i = 0; i < ENTITY_COUNT; ++i) {
-        if (((world->entity[i].mask & COMP_PORTAL) == COMP_PORTAL) &&
-            world->entity[i].comp_portal.origin_id == world->map_id &&
-            collide_entity(entity, &world->entity[i], offset)) {
-                entity->comp_position.position =
-                world->entity[i].comp_portal.dest_pos;
-                world->map_id = world->entity[i].comp_portal.dest_id;
-                return true;
-        }
-    }
-    return false;
-}
-
 static bool is_outside_map(sfVector2f pos, map_list_t *map_list)
 {
     if (pos.x < 0 || pos.y < 0)

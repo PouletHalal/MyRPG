@@ -19,6 +19,5 @@ void update_sprite_animation(entity_t *entity,
 bool is_colliding(world_t *world, entity_t *entity, sfVector2f offset);
 int find_comp(world_t *world, int comp);
 void player_movements(win_t *window, entity_t *entity, world_t *world);
-bool portal_collision(world_t *world, entity_t *entity, sfVector2f offset);
 
 #endif /* !PLAYER_H_ */
