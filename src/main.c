@@ -13,6 +13,7 @@
 #include "rendering.h"
 #include "error_handling.h"
 #include "sounds.h"
+#include "player.h"
 
 int find_empty(world_t *world)
 {
@@ -35,18 +36,13 @@ static win_t *create_win(void)
 
 static void init_all(win_t *window, world_t *world)
 {
-    sfVector2f position_player = {500, 150};
-    sfVector2f position_mob = {800, 150};
+    sfVector2f position_player = {636, 489};
 
     init_textures(world);
     init_entity(world, ANIM_PROTA_IDLE, position_player);
-    for (int i = 0; i < 10; i++){
-        init_mob(world, ANIM_MOB_RUN, position_mob);
-        position_mob.x += 60;
-    }
-    init_cam(window, world);
-    read_portalconf(world);
     read_npcconf(world);
+    read_portalconf(world);
+    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }
 
 int main(void)
@@ -63,6 +59,7 @@ int main(void)
     srand(time(NULL));
     world.map_list = map_list;
     world.sound_list = sound_list;
+    world.map_id = INTRO;
     init_all(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
         refresh_world(&world, clock, window);

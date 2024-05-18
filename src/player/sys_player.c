@@ -27,8 +27,8 @@ static void update_player_animation(entity_t *entity)
 
     if (is_in_animation(entity))
         return;
-    if (is_key_down(entity, sfKeySpace))
-        return play_animation(entity, ANIM_PROTA_JUMP, false);
+    if (entity->comp_position.can_move == false)
+        return;
     if (is_key_down(entity, sfKeyE))
         return play_animation(entity, ANIM_PROTA_ATTACK, false);
     if (is_key_down(entity, sfKeyA))

@@ -11,6 +11,7 @@
     #include "temp.h"
 
 void *display_and_return(void *ptr, int nb, ...);
+int int_display_and_return(int return_value, int nb, ...);
 int openning_and_reading(FILE *stream, char const *filename, char **line);
 int test_open(FILE *stream, char const *filename);
 int close_and_return(win_t *window, int nb);

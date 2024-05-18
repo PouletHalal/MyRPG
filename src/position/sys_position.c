@@ -12,6 +12,7 @@
 #include "player.h"
 #include "dialogs.h"
 #include "stat.h"
+#include "rendering.h"
 
 void add_vector(entity_t *entity, sfVector2f vector, size_t lenght)
 {
@@ -44,6 +45,8 @@ sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity)
     if (((bis->mask & (COMP_POSITION | COMP_HITBOX))
     != (COMP_POSITION | COMP_HITBOX)))
         return sfFalse;
+    if (entity->comp_position.world != bis->comp_position.world)
+        return sfFalse;
     entity_hitbox.left += entity->comp_position.position.x;
     entity_hitbox.left += velocity.x;
     entity_hitbox.top += entity->comp_position.position.y;
@@ -55,6 +58,17 @@ sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity)
     return sfFalse;
 }
 
+static void change_world(world_t *world, entity_t *entity, entity_t *portal)
+{
+    sfMusic_stop(world->map_list[world->map_id]->music);
+    world->map_id = portal->comp_portal.dest_id;
+    entity->comp_position.position =
+    portal->comp_portal.dest_pos;
+    entity->comp_position.world = world->map_id;
+    sfMusic_play(world->map_list[world->map_id]->music);
+    sfSound_play(portal->comp_portal.comp_sound.sound.sound);
+}
+
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],
     world_t *world, sfVector2f velocity)
 {
@@ -62,45 +76,26 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
         ((entities[1]->mask & COMP_PORTAL) == COMP_PORTAL) &&
         entities[1]->comp_portal.origin_id == world->map_id) {
         if (collide_entity(entities[0], entities[1], velocity)) {
-            sfMusic_stop(world->map_list[world->map_id]->music);
-            world->map_id = entities[1]->comp_portal.dest_id;
-            entities[0]->comp_position.position =
-            entities[1]->comp_portal.dest_pos;
-            entities[0]->comp_position.world = world->map_id;
-            sfMusic_play(world->map_list[world->map_id]->music);
-            init_cam(window, world);
+            change_world(world, entities[0], entities[1]);
+            init_cam(window, world, entities[0]);
         }
         return sfFalse;
     }
     if (((entities[1]->mask & COMP_HITBOX) == COMP_HITBOX) &&
-    entities[1]->comp_hitbox.do_collide)
+        entities[1]->comp_hitbox.do_collide &&
+        entities[0]->comp_position.world == world->map_id)
         return collide_entity(entities[0], entities[1], velocity);
     return sfFalse;
 }
 
-bool is_close(entity_t *entity, entity_t *bis, int threshold)
+bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold)
 {
     if (abs(entity->comp_position.position.x -
-        bis->comp_position.position.x) <= threshold &&
+        bis->comp_position.position.x) <= threshold.x &&
         abs(entity->comp_position.position.y -
-        bis->comp_position.position.y) <= threshold)
+        bis->comp_position.position.y) <= threshold.y)
         return true;
     return false;
-}
-
-void npc_collision(win_t *window, world_t *world, entity_t *entity)
-{
-    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER ||
-        !world->key_pressed[sfKeySpace])
-        return;
-    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
-        if ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
-            is_close(entity, &world->entity[i], 30)) {
-            world->entity[i].comp_dialog.is_displayed = true;
-            world->entity[i].comp_position.can_move = false;
-            update_dialog(&world->entity[i]);
-        }
-    }
 }
 
 static sfBool check_collision(entity_t *entity, world_t *world,
@@ -110,8 +105,10 @@ static sfBool check_collision(entity_t *entity, world_t *world,
     sfVector2f position = entity->comp_position.position;
 
     if (((entity->mask & COMP_HITBOX) != COMP_HITBOX)
-    || !entity->comp_hitbox.do_collide)
+    || !entity->comp_hitbox.do_collide ||
+    entity->comp_position.world != world->map_id)
         return sfFalse;
+    no_input_dialogs(window, world);
     if (is_colliding(world, entity, velocity))
         return sfTrue;
     for (int i = 0; i < ENTITY_COUNT; ++i) {
