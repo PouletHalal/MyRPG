@@ -20,6 +20,7 @@
     #define GET_BOOL(str) strcmp(str, "true") == 0 ? true : false
 
     #define MAX_DIALOGS 5
+    #define MAX_VECTOR 10
 
 enum map_ids {
     MAIN_WORLD,
@@ -148,8 +149,6 @@ typedef struct comp_dialog_s {
     sfClock *clock;
 } comp_dialog_t;
 
-    #define MAX_VECTOR 10
-
 typedef struct comp_position_s {
     sfVector2f position;
     sfVector2f velocity[MAX_VECTOR];
@@ -171,6 +170,7 @@ typedef struct comp_portal_s {
     enum map_ids origin_id;
     enum map_ids dest_id;
     sfVector2f dest_pos;
+    comp_sound_t comp_sound;
 } comp_portal_t;
 
 typedef struct comp_mob_s {
