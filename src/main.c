@@ -73,7 +73,7 @@ int main(void)
     sfClock *clock = sfClock_create();
 
     if (init_empty_world(world) == EXIT_FAILURE)
-        return close_and_return(window, 84);
+        return close_and_return(world, window, 84);
     srand(time(NULL));
     init_all(window, world);
     while (sfRenderWindow_isOpen(window->window)) {
@@ -81,5 +81,5 @@ int main(void)
         render_window(window, world);
         refresh_sounds(world, clock);
     }
-    return close_and_return(window, 0);
+    return close_and_return(world, window, 0);
 }
