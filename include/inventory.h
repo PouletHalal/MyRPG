@@ -72,7 +72,6 @@ typedef struct comp_item_s {
     int quantity;
     char *name;
     char *description;
-    sprite_t sprite;
 } comp_item_t;
 
 typedef struct item_list_s {

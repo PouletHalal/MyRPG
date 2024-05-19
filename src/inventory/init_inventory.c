@@ -33,7 +33,7 @@ static void init_items(entity_t *entity)
 
 int init_inventory(world_t *world, entity_t *entity, int size)
 {
-    sfVector2u sprite_size = {0};
+    sfFloatRect bounds = {0};
 
     entity->mask |= COMP_INVENTORY;
     entity->comp_inventory.size = size;
@@ -43,8 +43,8 @@ int init_inventory(world_t *world, entity_t *entity, int size)
     sfSprite_setTexture(entity->comp_inventory.sprite.sprite,
     entity->comp_inventory.sprite.texture, sfTrue);
     entity->comp_inventory.items = malloc(sizeof(entity_t) * size);
-    sprite_size = sfTexture_getSize(entity->comp_inventory.sprite.texture);
+    bounds = sfSprite_getGlobalBounds(entity->comp_inventory.sprite.sprite);
     sfSprite_setOrigin(entity->comp_inventory.sprite.sprite,
-    (sfVector2f){sprite_size.x / 2, sprite_size.y / 2});
+    (sfVector2f){bounds.width / 2, bounds.height / 2});
     init_items(entity);
 }
