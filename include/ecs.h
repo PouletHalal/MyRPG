@@ -14,7 +14,7 @@
     #include "maps.h"
     #include "sounds.h"
 
-    #define ENTITY_COUNT 100
+    #define ENTITY_COUNT 10000
     #define NB_KEYS 120
 
     #define GET_BOOL(str) strcmp(str, "true") == 0 ? true : false
