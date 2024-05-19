@@ -13,6 +13,7 @@
     #include <stdio.h>
     #include "maps.h"
     #include "sounds.h"
+    #include "inventory.h"
 
     #define ENTITY_COUNT 100
     #define NB_KEYS 120
@@ -40,6 +41,8 @@ enum comp_list {
     COMP_DIALOG = 1 << 7,
     COMP_STAT = 1 << 8,
     COMP_SOUND = 1 << 9,
+    COMP_INVENTORY = 1 << 10,
+    COMP_ITEM = 1 << 11,
 };
 
 enum anim_list {
@@ -55,6 +58,11 @@ enum anim_list {
     ANIM_INTRO,
     ANIM_BOY_IDLE,
     ANIM_BOY_TALK,
+    ANIM_SMALL_BLUE_POTION,
+    ANIM_MEDIUM_BLUE_POTION,
+    ANIM_BIG_BLUE_POTION,
+    ANIM_SMALL_GREEN_POTION,
+    ANIM_SMALL_RED_POTION,
     ANIM_END,
 };
 
@@ -93,6 +101,16 @@ static const animation_t animation_list[] = {
         {1., 1.}, 10},
     {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
         {1., 1.}, 10},
+    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
+        {0.5, 0.5}, 5},
+    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
+        {0.5, 0.5}, 5},
+    {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
+        {0.5, 0.5}, 5},
+    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png", {0, 0, 32, 32}, 1, {32, 32},
+        {0.5, 0.5}, 5},
+    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png", {0, 0, 32, 32}, 1, {32, 32},
+        {0.5, 0.5}, 5},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -162,6 +180,9 @@ typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
     sfClock *clock;
+    bool mouse_left_down;
+    bool mouse_right_down;
+    sfVector2f mouse_pos;
     void (*pressed_func[NB_KEYS])();
     void (*down_func[NB_KEYS])();
 } comp_input_t;
@@ -217,6 +238,8 @@ typedef struct entity_s {
     comp_dialog_t comp_dialog;
     comp_input_t comp_ui;
     comp_stat_t comp_stat;
+    comp_inventory_t comp_inventory;
+    comp_item_t comp_item;
 } entity_t;
 
 typedef struct world_s {
@@ -225,6 +248,7 @@ typedef struct world_s {
     sound_list_t **sound_list;
     sfTexture *texture_list[ANIM_END];
     entity_t entity[ENTITY_COUNT];
+    item_list_t item_list;
     sfBool key_pressed[NB_KEYS];
     sfBool key_down[NB_KEYS];
 } world_t;
@@ -245,5 +269,11 @@ void sys_render(world_t *world);
 
 void refresh_sounds(world_t *world, sfClock *clock);
 bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
+
+int init_inventory(world_t *world, entity_t *entity, int size);
+void add_item_to_inv(entity_t *entity, comp_item_t *item);
+bool item_collision(world_t *world, entity_t *entity);
+int read_items_conf(world_t *world);
+void create_item(world_t *world, sfVector2f pos);
 
 #endif /* !ECS_H_ */

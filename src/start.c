@@ -27,6 +27,7 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     init_comp_render(entity, world, anim_nbr, position);
     init_comp_hitbox(entity, position);
     init_comp_input(entity, world);
+    init_inventory(world, entity, 10);
 }
 
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
@@ -45,5 +46,5 @@ void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     init_comp_position(entity, position, world->map_id);
     init_comp_render(entity, world, anim_nbr, position);
     init_comp_mob(entity);
-    init_comp_hitbox(entity, position);
+    init_comp_hitbox(entity, position); 
 }

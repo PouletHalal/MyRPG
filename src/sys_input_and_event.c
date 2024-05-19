@@ -39,12 +39,18 @@ static void spawn_entity(world_t *world)
 static void analyse_events(win_t *window, world_t *world)
 {
     sfEvent *event = &window->event;
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (event->type == sfEvtClosed)
         sfRenderWindow_close(window->window);
     if (event->type == sfEvtKeyPressed){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
+        if (world->key_pressed[sfKeyTab])
+            player->comp_inventory.is_open = !player->comp_inventory.is_open;
+        if (world->key_pressed[sfKeyF])
+            create_item(world, (sfVector2f) {player->comp_position.position.x,
+            player->comp_position.position.y + 50});
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

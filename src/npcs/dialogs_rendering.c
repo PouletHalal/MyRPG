@@ -70,6 +70,5 @@ void display_dialogs(win_t *window, world_t *world)
             disable_far_dialogs(world, &world->entity[i]);
         }
     }
-    sfRenderWindow_display(window->window);
     sfRenderWindow_setView(window->window, window->cam.view);
 }

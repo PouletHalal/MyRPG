@@ -50,4 +50,6 @@ void sys_position(world_t *world, win_t *window);
 void add_vector(entity_t *entity, sfVector2f vector, size_t lenght);
 sfVector2f get_mouv_vector(entity_t *entity);
 
+void display_inventory(win_t *window, world_t *world);
+
 #endif /* !TEMP_H_ */
