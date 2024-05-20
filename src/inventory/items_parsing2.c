@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "inventory.h"
+#include "world.h"
 #include "error_handling.h"
 
 int set_tooltip(world_t *world, comp_item_t *item, char *args)

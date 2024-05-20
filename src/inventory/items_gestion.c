@@ -5,12 +5,16 @@
 ** items_gestion
 */
 
+#include <stdio.h>
 #include "temp.h"
 
 static bool is_mouse_over(sfVector2i pos, entity_t *entity)
 {
-    sfFloatRect bounds = sfSprite_getGlobalBounds(entity->comp_render.sprite);
+    sfFloatRect bounds = {0};
 
+    if ((entity->mask & COMP_RENDER) != COMP_RENDER)
+        return false;
+    bounds = sfSprite_getGlobalBounds(entity->comp_render.sprite);
     if (pos.x >= bounds.left && pos.x <= bounds.left + bounds.width
         && pos.y >= bounds.top && pos.y <= bounds.top + bounds.height)
         return true;
@@ -28,10 +32,12 @@ static bool item_higlighting(win_t *window, world_t *world,
         entity->comp_inventory.is_open == false)
         return false;
     items = entity->comp_inventory.items;
+    if (items[i].type_mask == 0)
+        return false;
     item_pos = sfSprite_getPosition(
     world->entity[items[i].id_in_world].comp_render.sprite);
     if (is_mouse_over(mouse_pos, &world->entity[items[i].id_in_world])
-        && !world->mouse_left_pressed) {
+        && !world->mouse_left_pressed && !world->mouse_right_pressed) {
         display_tooltips(
         window, &world->entity[items[i].id_in_world], item_pos);
         return true;
@@ -43,7 +49,7 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
 {
     sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window->window);
 
-    if (player->comp_input.mouse_left_down == false)
+    if (player->comp_input.mouse_right_down == false)
         return false;
     if (item->comp_item.type_mask == 0)
         return false;
@@ -59,6 +65,38 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
     return false;
 }
 
+static void update_stat(entity_t *player, entity_t *item)
+{
+    player->comp_stat.health += item->comp_stat.health;
+    if (player->comp_stat.health > player->comp_stat.max_health)
+        player->comp_stat.health = player->comp_stat.max_health;
+    player->comp_stat.damage += item->comp_stat.damage;
+    if (player->comp_stat.damage < 0)
+        player->comp_stat.damage = 0;
+    player->comp_stat.defense += item->comp_stat.defense;
+    if (player->comp_stat.defense < 0)
+        player->comp_stat.defense = 0;
+    item->comp_stat = (comp_stat_t) {0};
+}
+
+bool use_item(win_t *window, entity_t *player, entity_t *item, int i)
+{
+    if (!player->comp_input.mouse_left_down || !item->comp_item.type_mask ||
+        !is_mouse_over(sfMouse_getPositionRenderWindow(window->window), item)
+        || (item->comp_item.type_mask & ITEM_CONSUMABLE) != ITEM_CONSUMABLE)
+        return false;
+    printf("player health BEFORE = %f\n", player->comp_stat.health);
+    printf("player defense BEFORE = %f\n", player->comp_stat.defense);
+    printf("player attack BEFORE = %f\n", player->comp_stat.damage);
+    update_stat(player, item);
+    printf("player health AFTER = %f\n", player->comp_stat.health);
+    printf("player defense AFTER = %f\n", player->comp_stat.defense);
+    printf("player attack AFTER = %f\n", player->comp_stat.damage);
+    player->comp_inventory.items[i].type_mask = 0;
+    item->comp_render.is_visible = false;
+    return true;
+}
+
 void item_events(win_t *window, world_t *world, entity_t *entity)
 {
     if ((entity->mask & COMP_INVENTORY) != COMP_INVENTORY ||
@@ -68,6 +106,9 @@ void item_events(win_t *window, world_t *world, entity_t *entity)
         if (item_higlighting(window, world, entity, i))
             return;
         if (drop_item(window, entity, &world->entity[entity->
+        comp_inventory.items[i].id_in_world], i))
+            return;
+        if (use_item(window, entity, &world->entity[entity->
         comp_inventory.items[i].id_in_world], i))
             return;
     }

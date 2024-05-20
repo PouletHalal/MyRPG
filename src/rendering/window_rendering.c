@@ -52,14 +52,13 @@ void render_window(win_t *window, world_t *world)
     move_cam(window, world->map_list[world->map_id]);
     move_to_destination(window);
     display_map(window, world->map_list[world->map_id], 1);
-    for (int i = 0; i < ENTITY_COUNT; ++i) {
+    for (int i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true &&
             world->entity[i].comp_position.world == world->map_id) {
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
         }
-    }
     display_map(window, world->map_list[world->map_id], 2);
     display_dialogs(window, world);
     display_inventory(window, world);

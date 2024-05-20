@@ -36,13 +36,10 @@ static void spawn_entity(world_t *world)
     }
 }
 
-static void analyse_events(win_t *window, world_t *world)
+static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
 {
     sfEvent *event = &window->event;
-    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
-    if (event->type == sfEvtClosed)
-        sfRenderWindow_close(window->window);
     if (event->type == sfEvtMouseButtonPressed) {
         if (event->mouseButton.button == sfMouseLeft) {
             player->comp_input.mouse_left_down = true;
@@ -53,6 +50,22 @@ static void analyse_events(win_t *window, world_t *world)
             world->mouse_right_pressed = true;
         }
     }
+    if (event->type == sfEvtMouseButtonReleased) {
+        player->comp_input.mouse_left_down = false;
+        player->comp_input.mouse_right_down = false;
+        world->mouse_left_pressed = false;
+        world->mouse_right_pressed = false;
+    }
+}
+
+static void analyse_events(win_t *window, world_t *world)
+{
+    sfEvent *event = &window->event;
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
+
+    if (event->type == sfEvtClosed)
+        sfRenderWindow_close(window->window);
+    mouse_inputs(window, world, player);
     if (event->type == sfEvtKeyPressed){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
@@ -61,12 +74,6 @@ static void analyse_events(win_t *window, world_t *world)
         if (world->key_pressed[sfKeyF])
             create_item(world, (sfVector2f) {player->comp_position.position.x,
             player->comp_position.position.y + 50});
-    }
-    if (event->type == sfEvtMouseButtonReleased) {
-        player->comp_input.mouse_left_down = false;
-        player->comp_input.mouse_right_down = false;
-        world->mouse_left_pressed = false;
-        world->mouse_right_pressed = false;
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

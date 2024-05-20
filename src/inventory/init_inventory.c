@@ -24,7 +24,7 @@ int init_inventory(world_t *world, entity_t *entity, int size)
     entity->comp_inventory.size = size;
     entity->comp_inventory.sprite.sprite = sfSprite_create();
     entity->comp_inventory.sprite.texture = sfTexture_createFromFile(
-        "effect/inventory.png", NULL);
+    "effect/inventory.png", NULL);
     sfSprite_setTexture(entity->comp_inventory.sprite.sprite,
     entity->comp_inventory.sprite.texture, sfTrue);
     entity->comp_inventory.items = malloc(sizeof(entity_t) * size);

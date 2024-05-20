@@ -8,7 +8,9 @@
 #ifndef CAMERA_H_
     #define CAMERA_H_
 
-    #include "temp.h"
+    #include <stdbool.h>
+    #include "window.h"
+    #include "world.h"
 
     #define CAM_THRESHOLD 10
 

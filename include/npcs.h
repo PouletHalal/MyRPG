@@ -8,6 +8,7 @@
 #ifndef NPCS_H_
     #define NPCS_H_
 
+    #include "world.h"
     #include "dialogs.h"
 
 int set_npc_pos(world_t *world, entity_t *entity, char *args);

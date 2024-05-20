@@ -28,12 +28,11 @@ static win_t *create_win(void)
     win_t *window = malloc(sizeof(win_t));
 
     window->mode = (sfVideoMode){WIDTH, HEIGHT, 32};
-    window->style = (sfUint32){sfClose | sfResize};
+    window->style = (sfUint32){sfClose};
     window->window = sfRenderWindow_create(window->mode, "SFML window",
     window->style, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
-    //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
 

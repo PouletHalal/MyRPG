@@ -8,9 +8,9 @@
 #ifndef INVENTORY_H_
     #define INVENTORY_H_
 
-    #include "maps.h"
-    #include <stddef.h>
     #include <stdbool.h>
+    #include "items.h"
+
 
 enum EQUIPEMENTS {
     EQUIP_NONE = 0,
@@ -62,25 +62,6 @@ static const enum_names_t ITEM_TYPES_NAMES[] = {
     {ITEM_USABLE, "usable"},
     {0, NULL}
 };
-
-typedef struct tooltip_s {
-    char *name;
-    char *description;
-    sprite_t sprite;
-    sfFont *font;
-    sfText *name_txt;
-    sfText *description_txt;
-} tooltip_t;
-
-typedef struct comp_item_s {
-    int id_in_world;
-    int id;
-    int animation_id;
-    int equip_mask;
-    int type_mask;
-    int quantity;
-    tooltip_t tooltip;
-} comp_item_t;
 
 typedef struct item_list_s {
     int nb_items;

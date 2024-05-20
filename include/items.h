@@ -8,33 +8,31 @@
 #ifndef ITEMS_H_
     #define ITEMS_H_
 
-    #include "npcs.h"
+    #include <SFML/Graphics/Font.h>
+    #include "maps.h"
+    #include "ecs.h"
 
-typedef struct item_ptr_func {
+
+typedef struct tooltip_s {
     char *name;
-    int (*ptr)(world_t *world, comp_item_t *item, char *args);
-} item_ptr_func_t;
+    char *description;
+    sprite_t sprite;
+    sfFont *font;
+    sfText *name_txt;
+    sfText *description_txt;
+} tooltip_t;
 
+typedef struct comp_item_s {
+    int id_in_world;
+    int id;
+    int animation_id;
+    int equip_mask;
+    int type_mask;
+    int quantity;
+    tooltip_t tooltip;
+    comp_stat_t stats;
+} comp_item_t;
 
-int set_description(world_t *world, comp_item_t *item, char *args);
-int set_name(world_t *world, comp_item_t *item, char *args);
-int set_type(world_t *world, comp_item_t *item, char *args);
-int set_animation_id(world_t *world, comp_item_t *item, char *args);
-int set_tooltip(world_t *world, comp_item_t *item, char *args);
-int set_scale(world_t *world, comp_item_t *item, char *args);
-int set_item_font(world_t *world, comp_item_t *item, char *args);
-
-item_ptr_func_t ITEM_FLAGS[] =
-{
-    {"type", &set_type},
-    {"name", &set_name},
-    {"description", &set_description},
-    {"animation_id", &set_animation_id},
-    {"tooltip_box", &set_tooltip},
-    {"tooltip_scale", &set_scale},
-    {"font", &set_item_font},
-    {NULL, NULL}
-};
 
 
 #endif /* !ITEMS_H_ */

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "inventory.h"
 #include "error_handling.h"
+#include "world.h"
 
 int get_mask_from_str(char *str)
 {

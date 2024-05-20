@@ -5,7 +5,7 @@
 ** inventory_gestion
 */
 
-#include "ecs.h"
+#include "world.h"
 
 int find_empty_slot(entity_t *entity)
 {

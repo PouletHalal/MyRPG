@@ -17,7 +17,6 @@ static void display_text(win_t *win, sfText *text, sfVector2f pos)
 void display_tooltips(win_t *window, entity_t *item, sfVector2f pos)
 {
     item->comp_item.tooltip.sprite.pos = pos;
-
     if (item->comp_item.tooltip.sprite.sprite == NULL)
         return;
     sfSprite_setPosition(item->comp_item.tooltip.sprite.sprite, pos);

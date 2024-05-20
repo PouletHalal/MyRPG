@@ -8,8 +8,10 @@
 #ifndef DIALOGS_H_
     #define DIALOGS_H_
 
-    #include <SFML/Graphics.h>
-    #include "temp.h"
+    #include "window.h"
+    #include "world.h"
+
+
 
 void display_dialogs(win_t *window, world_t *world);
 void update_dialog(win_t *window, world_t *world, entity_t *entity);
