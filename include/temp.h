@@ -28,6 +28,8 @@ typedef struct window_s {
     sfEvent event;
     sfVector2f windows_scale;
     cam_t cam;
+    bool fullscreen;
+    sfUint32 style;
 } win_t;
 
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code);
