@@ -18,8 +18,11 @@
 int find_empty(world_t *world)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if (world->entity[i].mask == COMP_NONE)
+        if (world->entity[i].mask == COMP_NONE) {
+            world->entity[i] = (entity_t) {0};
+            world->entity[i].entity = i;
             return i;
+        }
     return -1;
 }
 
@@ -42,6 +45,7 @@ static void init_all(win_t *window, world_t *world)
     init_entity(world, ANIM_PROTA_IDLE, position_player);
     read_npcconf(world);
     read_portalconf(world);
+    read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }
 
