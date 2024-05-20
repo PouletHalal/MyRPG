@@ -24,6 +24,7 @@ void init_comp_render(entity_t *entity, world_t *world,
     c_render->is_visible = true;
     c_render->sprite = sfSprite_create();
     c_render->texture = world->texture_list[anim_nbr];
+    c_render->texture_list = world->texture_list;
     sfSprite_setTexture(c_render->sprite, c_render->texture, sfFalse);
     sfSprite_setPosition(c_render->sprite, position);
     sfSprite_setScale(c_render->sprite, anim->scale);

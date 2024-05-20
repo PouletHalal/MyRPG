@@ -117,6 +117,7 @@ typedef struct comp_render_s {
     animation_t *current_animation;
     sfSprite *sprite;
     sfTexture *texture;
+    sfTexture **texture_list;
     bool is_visible;
     bool does_loop;
     size_t act_frame;
