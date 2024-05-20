@@ -143,12 +143,12 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
     if (entity->comp_position.can_move == false)
         return;
     sum_vectors_x_y(entity, &yvelo, &xvelo);
-    if (!check_collision(entity, world, xvelo, window)) {
+    if (xvelo.x != 0. && !check_collision(entity, world, xvelo, window)) {
             if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, xvelo);
             entity->comp_position.position.x += xvelo.x;
         }
-    if (!check_collision(entity, world, yvelo, window)) {
+    if (yvelo.y != 0. &&!check_collision(entity, world, yvelo, window)) {
         if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, yvelo);
             entity->comp_position.position.y += yvelo.y;

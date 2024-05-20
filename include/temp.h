@@ -20,6 +20,7 @@ int find_empty(world_t *world);
 
 void read_portalconf(world_t *world);
 void read_npcconf(world_t *world);
+void read_mobconf(world_t *world);
 
 
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);

@@ -40,15 +40,12 @@ void play_animation(entity_t *entity, int animation_index, sfBool does_loop)
 
     if (c_render->current_animation == anim && c_render->does_loop == true)
         return;
-    sfSprite_destroy(c_render->sprite);
     c_render->current_animation = anim;
     c_render->act_frame = 0;
     c_render->clock = 0;
     c_render->does_loop = does_loop;
     c_render->is_visible = true;
-    c_render->sprite = sfSprite_create();
-    c_render->texture = sfTexture_createFromFile(
-        animation_list[animation_index].filename, NULL);
+    c_render->texture = c_render->texture_list[animation_index];
     set_sprite(entity, anim, mult_scale, rect);
 }
 

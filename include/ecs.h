@@ -12,7 +12,7 @@
     #include <stdbool.h>
     #include "sounds.h"
 
-    #define ENTITY_COUNT 100
+    #define ENTITY_COUNT 10000
     #define NB_KEYS 120
 
     #define GET_BOOL(str) strcmp(str, "true") == 0 ? true : false
@@ -109,7 +109,6 @@ static const animation_t animation_list[] = {
     {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
     {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
@@ -132,6 +131,7 @@ typedef struct comp_render_s {
     animation_t *current_animation;
     sfSprite *sprite;
     sfTexture *texture;
+    sfTexture **texture_list;
     bool is_visible;
     bool does_loop;
     size_t act_frame;
@@ -210,6 +210,7 @@ enum faction {
     FRIENDLY,
     NEUTRAL,
     ENEMY,
+    MAX_FACTION,
 };
 
 typedef struct comp_stat_s {

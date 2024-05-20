@@ -24,6 +24,9 @@ SRC	=	src/main.c					\
 		src/portals/portal_parsing2.c	\
 		src/map_loading/parsing.c	\
 		src/map_loading/init_tilesets.c	\
+		src/mob/init_mob.c	\
+		src/mob/mob_parsing.c	\
+		src/mob/mob_parsing2.c	\
 		src/ecs/components_inits.c	\
 		src/npcs/init_npc.c	\
 		src/npcs/dialogs_gestion.c	\
