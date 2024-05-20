@@ -23,7 +23,7 @@ int set_animation_id(world_t *world, comp_item_t *item, char *args);
 int set_tooltip(world_t *world, comp_item_t *item, char *args);
 int set_scale(world_t *world, comp_item_t *item, char *args);
 int set_item_font(world_t *world, comp_item_t *item, char *args);
-int set_health(world_t *world, comp_item_t *item, char *args);
+int set_item_health(world_t *world, comp_item_t *item, char *args);
 
 item_ptr_func_t ITEM_FLAGS[] =
 {
@@ -34,7 +34,7 @@ item_ptr_func_t ITEM_FLAGS[] =
     {"tooltip_box", &set_tooltip},
     {"tooltip_scale", &set_scale},
     {"font", &set_item_font},
-    {"healing", &set_health},
+    {"healing", &set_item_health},
     {NULL, NULL}
 };
 

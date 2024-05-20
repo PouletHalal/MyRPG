@@ -12,10 +12,11 @@
 #include "camera.h"
 
 static void update_no_input_dialog(win_t *window, world_t *world,
-    entity_t *entity)
+    entity_t *entity, entity_t *player)
 {
     comp_dialog_t *dialog = &entity->comp_dialog;
 
+    player->comp_inventory.is_open = false;
     dialog->is_displayed = true;
     dialog->need_input = true;
     dialog->current_dialog = 0;
@@ -36,8 +37,8 @@ void no_input_dialogs(win_t *window, world_t *world)
             && (world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
             is_close(player, &world->entity[i], dialog->detection_area) &&
             dialog->need_input == false && dialog->is_displayed != true) {
-            player->comp_position.can_move = !dialog->freeze_player;
-            update_no_input_dialog(window, world, &world->entity[i]);
+                player->comp_position.can_move = !dialog->freeze_player;
+            update_no_input_dialog(window, world, &world->entity[i], player);
             play_animation(player, ANIM_PROTA_IDLE, true);
         }
     }

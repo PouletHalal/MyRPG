@@ -108,7 +108,6 @@ static sfBool check_collision(entity_t *entity, world_t *world,
     || !entity->comp_hitbox.do_collide ||
     entity->comp_position.world != world->map_id)
         return sfFalse;
-    no_input_dialogs(window, world);
     if (is_colliding(world, entity, velocity))
         return sfTrue;
     for (int i = 0; i < ENTITY_COUNT; ++i) {
@@ -140,6 +139,8 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
     sfVector2f yvelo = (sfVector2f) {0., 0.};
     map_list_t *map = world->map_list[world->map_id];
 
+    no_input_dialogs(window, world);
+    item_collision(world, entity);
     if (entity->comp_position.can_move == false)
         return;
     sum_vectors_x_y(entity, &yvelo, &xvelo);
@@ -148,7 +149,7 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
                 update_cam(window, entity, map, xvelo);
             entity->comp_position.position.x += xvelo.x;
         }
-    if (yvelo.y != 0. &&!check_collision(entity, world, yvelo, window)) {
+    if (yvelo.y != 0. && !check_collision(entity, world, yvelo, window)) {
         if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, yvelo);
             entity->comp_position.position.y += yvelo.y;

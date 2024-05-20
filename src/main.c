@@ -32,9 +32,8 @@ static win_t *create_win(void)
 
     window->mode = (sfVideoMode){WIDTH, HEIGHT, 32};
     window->style = (sfUint32){sfClose};
-    window->window = sfRenderWindow_create(window->mode, "SFML window",
-    window->style, NULL);
-    window->window = sfRenderWindow_create(mode, "SFML window", sfClose | sfResize, NULL);
+    window->window = sfRenderWindow_create(window->mode, "SFML window", sfClose
+    | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
     return window;
@@ -49,6 +48,7 @@ static void init_all(win_t *window, world_t *world)
     read_npcconf(world);
     read_portalconf(world);
     read_items_conf(world);
+    read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }
 
@@ -66,8 +66,6 @@ void full_screen(world_t *world, win_t *window)
         sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
         window->fullscreen = !window->fullscreen;
     }
-    read_mobconf(world);
-    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }
 
 static int init_empty_world(world_t *world)
@@ -79,7 +77,8 @@ static int init_empty_world(world_t *world)
     world->sound_list = sound_list;
     world->map_id = INTRO;
     for (int i = 0; i < ANIM_END; ++i)
-        world->texture_list[i] = sfTexture_createFromFile(animation_list[i].filename, NULL);
+        world->texture_list[i] = sfTexture_createFromFile(
+            animation_list[i].filename, NULL);
     for (int i = 0; i < NB_KEYS; ++i) {
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
