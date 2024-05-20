@@ -25,6 +25,6 @@ int set_entering_sound(world_t *world, entity_t *entity, char *args)
     sfSound_setBuffer(entity->comp_portal.comp_sound.sound.sound,
     entity->comp_portal.comp_sound.sound.buffer);
     entity->comp_portal.comp_sound.sound.nb_variations = 1;
-    sfSound_setVolume(entity->comp_portal.comp_sound.sound.sound, 20);
+    sfSound_setVolume(entity->comp_portal.comp_sound.sound.sound, 10);
     return 0;
 }

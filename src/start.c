@@ -22,11 +22,12 @@ void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position)
     entity->mask |= COMP_PLAYER | COMP_STAT;
     entity->comp_input.pressed_func[sfKeySpace] = &npc_collision;
     entity->comp_stat = (comp_stat_t)
-    {FRIENDLY, 100., 100., 1., sfTrue, sfTrue, 30., 5., 0., 20.};
+    {FRIENDLY, 100., 50., 0., sfTrue, sfTrue, 30., 5., 0., 20.};
     init_comp_position(entity, position, world->map_id);
     init_comp_render(entity, world, anim_nbr, position);
     init_comp_hitbox(entity, position);
     init_comp_input(entity, world);
+    init_inventory(world, entity, 18);
 }
 
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position)

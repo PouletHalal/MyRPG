@@ -8,9 +8,8 @@
 #ifndef RENDERING_H_
     #define RENDERING_H_
 
-
-    #include "temp.h"
-    #include "maps.h"
+    #include "world.h"
+    #include "window.h"
 
 
 void render_window(win_t *window, world_t *world);

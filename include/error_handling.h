@@ -8,7 +8,9 @@
 #ifndef ERROR_HANDLING_H_
     #define ERROR_HANDLING_H_
 
-    #include "temp.h"
+    #include <stdio.h>
+    #include "window.h"
+    #include "lib.h"
 
 void *display_and_return(void *ptr, int nb, ...);
 int int_display_and_return(int return_value, int nb, ...);

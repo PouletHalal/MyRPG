@@ -29,8 +29,11 @@ int find_empty(world_t *world)
 static win_t *create_win(void)
 {
     win_t *window = malloc(sizeof(win_t));
-    sfVideoMode mode = {WIDTH, HEIGHT, 32};
 
+    window->mode = (sfVideoMode){WIDTH, HEIGHT, 32};
+    window->style = (sfUint32){sfClose};
+    window->window = sfRenderWindow_create(window->mode, "SFML window",
+    window->style, NULL);
     window->window = sfRenderWindow_create(mode, "SFML window", sfClose | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
@@ -45,6 +48,24 @@ static void init_all(win_t *window, world_t *world)
     init_entity(world, ANIM_PROTA_IDLE, position_player);
     read_npcconf(world);
     read_portalconf(world);
+    read_items_conf(world);
+    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+}
+
+void full_screen(world_t *world, win_t *window)
+{
+    if (world->key_pressed[sfKeyF11]) {
+        world->key_pressed[sfKeyF11] = false;
+        sfRenderWindow_destroy(window->window);
+        if (window->fullscreen)
+            window->style = (sfUint32){sfClose | sfResize | sfFullscreen};
+        else
+            window->style = (sfUint32){sfClose | sfResize};
+        window->window = sfRenderWindow_create(window->mode, "SFML window",
+        window->style, NULL);
+        sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+        window->fullscreen = !window->fullscreen;
+    }
     read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }

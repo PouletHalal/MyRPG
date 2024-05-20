@@ -30,7 +30,7 @@ void init_comp_render(entity_t *entity, world_t *world,
     sfSprite_setScale(c_render->sprite, anim->scale);
     sfSprite_setTextureRect(c_render->sprite, anim->base_text_rect);
     sfSprite_setOrigin(c_render->sprite,
-        (sfVector2f){rect->width / 2, rect->height / 2});
+    (sfVector2f) {rect->width / 2, rect->height / 2});
 }
 
 void init_comp_hitbox(entity_t *entity, sfVector2f position)

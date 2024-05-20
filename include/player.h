@@ -8,8 +8,8 @@
 #ifndef PLAYER_H_
     #define PLAYER_H_
 
-    #include "temp.h"
-    #include "maps.h"
+    #include "world.h"
+    #include "window.h"
 
 void sys_player(win_t *window, world_t *world);
 void update_cam(win_t *window, entity_t *entity,
