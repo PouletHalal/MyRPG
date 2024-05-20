@@ -46,6 +46,7 @@ void render_window(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
+    full_screen(world, window);
     sfRenderWindow_clear(window->window, sfBlack);
     resize_cam(window, world->map_list[world->map_id]);
     move_cam(window, world->map_list[world->map_id]);

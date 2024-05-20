@@ -21,4 +21,5 @@ void resize_cam(win_t *window, map_list_t *map);
 void move_cam(win_t *window, map_list_t *map);
 bool is_in_cam_range(win_t *window, entity_t *entity);
 void move_to_destination(win_t *window);
+void full_screen(world_t *world, win_t *window);
 #endif /* !CAMERA_H_ */

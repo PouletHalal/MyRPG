@@ -29,7 +29,8 @@ static win_t *create_win(void)
 
     window->mode = (sfVideoMode){WIDTH, HEIGHT, 32};
     window->style = (sfUint32){sfClose | sfResize};
-    window->window = sfRenderWindow_create(window->mode, "SFML window", window->style, NULL);
+    window->window = sfRenderWindow_create(window->mode, "SFML window",
+    window->style, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
     sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
@@ -82,7 +83,6 @@ int main(void)
     world.map_id = INTRO;
     init_all(window, &world);
     while (sfRenderWindow_isOpen(window->window)) {
-        full_screen(&world, window);
         refresh_world(&world, clock, window);
         render_window(window, &world);
         refresh_sounds(&world, clock);
