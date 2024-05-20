@@ -20,6 +20,8 @@
     #define MAX_DIALOGS 5
     #define MAX_VECTOR 10
 
+static const char ANIM_CONF[] = "animations/animations.conf";
+
 enum map_ids {
     MAIN_WORLD,
     HOUSE1,
@@ -40,6 +42,7 @@ enum comp_list {
     COMP_SOUND = 1 << 9,
     COMP_INVENTORY = 1 << 10,
     COMP_ITEM = 1 << 11,
+    COMP_HUD = 1 << 12,
 };
 
 enum anim_list {
@@ -60,12 +63,14 @@ enum anim_list {
     ANIM_BIG_BLUE_POTION,
     ANIM_SMALL_GREEN_POTION,
     ANIM_SMALL_RED_POTION,
+    ANIM_HEALTHBAR,
     ANIM_END,
 };
 
 typedef struct animation_s {
     enum anim_list index;
     char *filename;
+    char *name;
     sfIntRect base_text_rect;
     size_t frame_count;
     sfVector2i frame_size;
@@ -74,40 +79,42 @@ typedef struct animation_s {
 } animation_t;
 
 static const animation_t animation_list[] = {
-    {ANIM_PROTA_IDLE, "effect/prota.png", {0, 0, 32, 32}, 2, {32, 32},
+/*     {ANIM_PROTA_IDLE, "effect/prota.png", "Prota Idle", {0, 0, 32, 32}, 2, {32, 32},
         {0.9, 0.9}, 25},
-    {ANIM_PROTA_RUN, "effect/prota.png", {0, 96, 32, 32}, 8, {32, 32},
+    {ANIM_PROTA_RUN, "effect/prota.png", "Prota Run", {0, 96, 32, 32}, 8, {32, 32},
         {0.9, 0.9}, 5},
-    {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32},
+    {ANIM_PROTA_JUMP, "effect/prota.png", "Prota Jump", {0, 160, 32, 32}, 8, {32, 32},
         {0.9, 0.9}, 5},
-    {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32},
+    {ANIM_PROTA_ATTACK, "effect/prota.png", "Prota Attack", {0, 256, 32, 32}, 8, {32, 32},
         {0.9, 0.9}, 5},
-    {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32},
+    {ANIM_PROTA_DODO, "effect/prota.png", "Prota Dodo", {0, 224, 32, 32}, 8, {32, 32},
         {0.9, 0.9}, 10},
-    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192},
+    {ANIM_MOB_RUN, "effect/FDP.png", "Mob Run", {0, 192, 192, 192}, 6, {192, 192},
         {.5, .5}, 5},
-    {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32},
+    {ANIM_PORTAL_GREEN, "effect/green_portal.png", "Green Portal", {0, 0, 32, 32}, 6, {32, 32},
         {1., 1.}, 5},
-    {ANIM_BLACKSMITH, "effect/blacksmith.png", {0, 0, 32, 32}, 8, {32, 32},
+    {ANIM_BLACKSMITH, "effect/blacksmith.png", "Blacksmith", {0, 0, 32, 32}, 8, {32, 32},
         {1, 1}, 15},
-    {ANIM_TRANSPARENT, "effect/transparent.png", {0, 0, 32, 32}, 1, {32, 32},
+    {ANIM_TRANSPARENT, "effect/transparent.png", "Transparent", {0, 0, 32, 32}, 1, {32, 32},
         {1., 1.}, 5},
-    {ANIM_INTRO, "effect/intro.png", {0, 0, 1920, 1080}, 1, {1920, 1080},
+    {ANIM_INTRO, "effect/intro.png", "Intro", {0, 0, 1920, 1080}, 1, {1920, 1080},
         {1., 1.}, 5},
-    {ANIM_BOY_IDLE, "effect/boy.png", {0, 0, 48, 48}, 6, {48, 48},
+    {ANIM_BOY_IDLE, "effect/boy.png", "Boy Idle", {0, 0, 48, 48}, 6, {48, 48},
         {1., 1.}, 10},
-    {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
+    {ANIM_BOY_TALK, "effect/boy.png", "Boy Talk", {0, 448, 16, 16}, 6, {16, 16},
         {1., 1.}, 10},
-    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png",
+    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png", "Small Blue Potion",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png",
+    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png", "Medium Blue Potion",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png",
+        {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png", "Big Blue Potion",
+            {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png", "Small Green Potion",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png",
+    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png", "Small Red Potion",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png",
-        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_HEALTHBAR, "effect/healthbar.png", "Healthbar", {0, 0, 100, 6}, 1, {100, 6},
+        {0.5, 0.5}, 5}, */
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},

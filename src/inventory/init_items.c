@@ -21,8 +21,8 @@ void create_item(world_t *world, sfVector2f pos)
 
     entity->entity = free_slot;
     init_comp_position(entity, pos, world->map_id);
-    init_comp_render(entity, world, world->item_list.items[random].animation_id
-    , pos);
+    init_comp_render(entity, world, &world->animations
+    [world->item_list.items[random].animation_id], pos);
     entity->mask |= COMP_ITEM;
     entity->mask |= COMP_STAT;
     entity->comp_stat = world->item_list.items[random].stats;

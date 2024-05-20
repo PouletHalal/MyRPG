@@ -42,9 +42,14 @@ static win_t *create_win(void)
 static void init_all(win_t *window, world_t *world)
 {
     sfVector2f position_player = {636, 489};
+    int anim_index = get_anim_id(world, "prota_idle");
 
-    init_textures(world);
-    init_entity(world, ANIM_PROTA_IDLE, position_player);
+    if (anim_index == -1) {
+        int_display_and_return(0, 2, "Player Animation not found", "\n");
+        anim_index = 0;
+    }
+    init_entity(world, &world->animations[anim_index],
+    position_player);
     read_npcconf(world);
     read_portalconf(world);
     read_items_conf(world);
@@ -73,12 +78,11 @@ static int init_empty_world(world_t *world)
     tileset_t *tileset_list = init_tilesets();
     sound_list_t **sound_list = init_sounds(sound_list, SOUNDS_FILE);
 
+    read_animconf(world);
+    init_textures(world);
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
     world->map_id = INTRO;
-    for (int i = 0; i < ANIM_END; ++i)
-        world->texture_list[i] = sfTexture_createFromFile(
-            animation_list[i].filename, NULL);
     for (int i = 0; i < NB_KEYS; ++i) {
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;

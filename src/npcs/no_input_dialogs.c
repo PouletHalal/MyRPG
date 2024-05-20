@@ -39,7 +39,7 @@ void no_input_dialogs(win_t *window, world_t *world)
             dialog->need_input == false && dialog->is_displayed != true) {
                 player->comp_position.can_move = !dialog->freeze_player;
             update_no_input_dialog(window, world, &world->entity[i], player);
-            play_animation(player, ANIM_PROTA_IDLE, true);
+            play_animation(world, player, get_anim_id(world, "prota_idle"), 1);
         }
     }
 }
