@@ -40,6 +40,7 @@ enum comp_list {
     COMP_SOUND = 1 << 9,
     COMP_INVENTORY = 1 << 10,
     COMP_ITEM = 1 << 11,
+    COMP_MOUSE = 1 << 12,
 };
 
 enum anim_list {
@@ -60,6 +61,7 @@ enum anim_list {
     ANIM_BIG_BLUE_POTION,
     ANIM_SMALL_GREEN_POTION,
     ANIM_SMALL_RED_POTION,
+    ANIM_MOUSE,
     ANIM_END,
 };
 
@@ -108,6 +110,7 @@ static const animation_t animation_list[] = {
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
     {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_MOUSE, "effect/mouse.png", {0, 0, 32, 32}, 1, {32, 32}, {1, 1}, 5},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
