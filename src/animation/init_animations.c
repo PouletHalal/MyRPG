@@ -54,7 +54,7 @@ static void init_anim(animation_t *anim, char *filename)
 
 void read_animconf(world_t *world)
 {
-    FILE *stream = fopen(ANIM_CONF, "r"); 
+    FILE *stream = fopen(ANIM_CONF, "r");
     char *line = NULL;
     size_t len = 0;
     int nb_anim = 0;

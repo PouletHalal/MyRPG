@@ -63,7 +63,7 @@ int set_idle(world_t *world, entity_t *entity, char *args)
     init_comp_render(entity, world, &world->animations[anim_index],
     entity->comp_position.position);
     init_comp_hitbox(entity, entity->comp_position.position);
-    if (atoi(split[1]) == 9)
+    if (!strcmp(split[1], "intro") || !strcmp(split[1], "transparent"))
         entity->comp_hitbox.do_collide = sfFalse;
     return 0;
 }

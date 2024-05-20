@@ -72,7 +72,6 @@ void set_sprite(entity_t *entity, animation_t *anim,
     comp_render_t *c_render = &(entity->comp_render);
 
     sfSprite_setTexture(c_render->sprite, c_render->texture, sfFalse);
-    printf("pos = %f %f\n", entity->comp_position.position.x, entity->comp_position.position.y);
     sfSprite_setPosition(c_render->sprite, entity->comp_position.position);
     sfSprite_setScale(c_render->sprite,
     (sfVector2f){anim->scale.x * mult_scale, anim->scale.x});

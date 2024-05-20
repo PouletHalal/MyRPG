@@ -79,7 +79,7 @@ typedef struct animation_s {
 } animation_t;
 
 static const animation_t animation_list[] = {
-    {ANIM_PROTA_IDLE, "effect/prota.png", "Prota Idle", {0, 0, 32, 32}, 2, {32, 32},
+/*     {ANIM_PROTA_IDLE, "effect/prota.png", "Prota Idle", {0, 0, 32, 32}, 2, {32, 32},
         {0.9, 0.9}, 25},
     {ANIM_PROTA_RUN, "effect/prota.png", "Prota Run", {0, 96, 32, 32}, 8, {32, 32},
         {0.9, 0.9}, 5},
@@ -114,7 +114,7 @@ static const animation_t animation_list[] = {
     {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png", "Small Red Potion",
         {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
     {ANIM_HEALTHBAR, "effect/healthbar.png", "Healthbar", {0, 0, 100, 6}, 1, {100, 6},
-        {0.5, 0.5}, 5},
+        {0.5, 0.5}, 5}, */
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},

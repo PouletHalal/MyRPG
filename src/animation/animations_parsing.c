@@ -75,4 +75,3 @@ int set_anim_scale(animation_t *anim, char *args)
     anim->scale = (sfVector2f) {atof(temp[0]), atof(temp[1])};
     return 0;
 }
-

@@ -30,13 +30,17 @@ static void update_player_animation(world_t *world, entity_t *entity)
     if (is_in_animation(entity))
         return;
     if (is_key_down(entity, sfKeyE))
-        return play_animation(world, entity, get_anim_id(world, "prota_attack"), false);
+        return play_animation(world, entity, get_anim_id(world, "prota_attack")
+        , false);
     if (is_key_down(entity, sfKeyA))
-        return play_animation(world, entity, get_anim_id(world, "prota_dodo"), false);
+        return play_animation(world, entity, get_anim_id(world, "prota_dodo"),
+        false);
     if (velocity.x == 0 && velocity.y == 0)
-        return play_animation(world, entity, get_anim_id(world, "prota_idle"), true);
+        return play_animation(world, entity, get_anim_id(world, "prota_idle"),
+        true);
     else {
-        return play_animation(world, entity, get_anim_id(world, "prota_run"), true);
+        return play_animation(world, entity, get_anim_id(world, "prota_run"),
+        true);
     }
 }
 

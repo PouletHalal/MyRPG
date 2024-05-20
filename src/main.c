@@ -43,7 +43,7 @@ static void init_all(win_t *window, world_t *world)
 {
     sfVector2f position_player = {636, 489};
     int anim_index = get_anim_id(world, "prota_idle");
-    
+
     if (anim_index == -1) {
         int_display_and_return(0, 2, "Player Animation not found", "\n");
         anim_index = 0;
