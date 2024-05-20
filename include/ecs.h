@@ -55,7 +55,6 @@ enum anim_list {
     ANIM_INTRO,
     ANIM_BOY_IDLE,
     ANIM_BOY_TALK,
-    ANIM_BASIC_MOB,
     ANIM_END,
 };
 
@@ -94,8 +93,6 @@ static const animation_t animation_list[] = {
         {1., 1.}, 10},
     {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
         {1., 1.}, 10},
-    {ANIM_BASIC_MOB, "effect/FDP.png",{0, 0, 192, 192}, 12, {192, 192},
-        {1., 1.}, 5},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
