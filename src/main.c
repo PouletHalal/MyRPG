@@ -33,7 +33,7 @@ static win_t *create_win(void)
     window->style, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
-    sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+    //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
 

@@ -273,7 +273,7 @@ void refresh_sounds(world_t *world, sfClock *clock);
 bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
 
 int init_inventory(world_t *world, entity_t *entity, int size);
-void add_item_to_inv(entity_t *entity, entity_t *item, int i);
+bool add_item_to_inv(entity_t *entity, entity_t *item, int i);
 bool item_collision(world_t *world, entity_t *entity);
 int read_items_conf(world_t *world);
 void create_item(world_t *world, sfVector2f pos);

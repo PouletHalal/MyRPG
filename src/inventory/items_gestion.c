@@ -52,6 +52,8 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
         sfSprite_setScale(item->comp_render.sprite, (sfVector2f) {0.5, 0.5});
         player->comp_inventory.items[i].type_mask = 0;
         item->comp_position.position = player->comp_position.position;
+        sfSprite_setPosition(item->comp_render.sprite,
+        player->comp_position.position);
         return true;
     }
     return false;
@@ -82,8 +84,7 @@ bool item_collision(world_t *world, entity_t *entity)
         if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM &&
             world->entity[i].comp_render.is_visible &&
             is_close(&world->entity[i], entity, (sfVector2f) {16, 16})) {
-            add_item_to_inv(entity, &world->entity[i], i);
-            return true;
+            return add_item_to_inv(entity, &world->entity[i], i);
         }
     }
     return false;

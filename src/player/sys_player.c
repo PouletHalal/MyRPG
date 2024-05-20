@@ -25,9 +25,9 @@ static void update_player_animation(entity_t *entity)
 {
     sfVector2f velocity = get_mouv_vector(entity);
 
-    if (is_in_animation(entity))
-        return;
     if (entity->comp_position.can_move == false)
+        return;
+    if (is_in_animation(entity))
         return;
     if (is_key_down(entity, sfKeyE))
         return play_animation(entity, ANIM_PROTA_ATTACK, false);
