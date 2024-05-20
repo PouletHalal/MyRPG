@@ -94,7 +94,6 @@ void read_mobconf(world_t *world)
     char *line = NULL;
     size_t len = 0;
 
-    printf("ici\n");
     if (test_open(stream, MOB_CONF) == -1)
         return;
     while (getline(&line, &len, stream) > 0) {

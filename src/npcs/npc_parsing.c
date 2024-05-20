@@ -51,13 +51,16 @@ int set_world_id(world_t *world, entity_t *entity, char *args)
 int set_idle(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\n");
+    int anim_index = 0;
 
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
-    if (atoi(split[1]) < 0 || atoi(split[1]) >= ANIM_END)
-        return int_display_and_return(84, 3, "Invalid anim id: ",
-        split[1], "\n");
-    init_comp_render(entity, world, atoi(split[1]),
+    anim_index = get_anim_id(world, split[1]);
+    if (anim_index == -1) {
+        int_display_and_return(84, 3, "Invalid anim: ", split[1], "\n");
+        anim_index = 0;
+    }
+    init_comp_render(entity, world, &world->animations[anim_index],
     entity->comp_position.position);
     init_comp_hitbox(entity, entity->comp_position.position);
     if (atoi(split[1]) == 9)

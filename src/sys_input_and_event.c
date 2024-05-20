@@ -31,9 +31,6 @@ static void spawn_entity(world_t *world)
         offset.x += 100;
     new_pos.x += offset.x;
     new_pos.y += offset.y;
-    if (world->key_down[sfKeyLControl] && world->key_pressed[sfKeyF]) {
-        init_mob(world, ANIM_MOB_RUN, new_pos);
-    }
 }
 
 static void mouse_inputs(win_t *window, world_t *world, entity_t *player)

@@ -45,3 +45,4 @@ int set_camera_focus(world_t *world, entity_t *entity, char *args)
     entity->comp_dialog.camera_focus = GET_BOOL(split[1]);
     return 0;
 }
+

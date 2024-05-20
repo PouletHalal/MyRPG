@@ -80,7 +80,12 @@ int set_animation_id(world_t *world, comp_item_t *item, char *args)
 
     if (split == NULL || split[0] == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args :", args, "\n");
-    item->animation_id = atoi(split[1]);
+    item->animation_id = get_anim_id(world, split[1]);
+    if (item->animation_id == -1) {
+        item->animation_id = 0;
+        int_display_and_return(84, 3, "Invalid animation id :", args, "\n"
+        );
+    }
     free_array(split);
     return 0;
 }
