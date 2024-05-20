@@ -18,6 +18,7 @@ static const char TEXTURE_PATH[] = "tileset/big_tileset.png";
 static const char MAP_FILE[] = "maps/map.conf";
 static const char PORTAL_CONF[] = "maps/portals.conf";
 static const char NPC_CONF[] = "maps/npcs.conf";
+static const char MOB_CONF[] = "maps/mobs.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080
