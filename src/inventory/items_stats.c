@@ -11,7 +11,7 @@
 #include "error_handling.h"
 #include "world.h"
 
-int set_health(world_t *world, comp_item_t *item, char *args)
+int set_item_health(world_t *world, comp_item_t *item, char *args)
 {
     char **split = my_str_to_word_array(args, "= \n\t");
 

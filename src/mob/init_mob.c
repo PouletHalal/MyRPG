@@ -69,8 +69,7 @@ static void read_mob(world_t *world, char *filename)
     FILE *stream = fopen(filename, "r");
     char *line = NULL;
     size_t len = 0;
-    int free_slot = find_empty(world);
-    entity_t *entity = &world->entity[free_slot];
+    entity_t *entity = &world->entity[find_empty(world)];
     char **split = NULL;
 
     if (test_open(stream, filename) == -1)
@@ -95,6 +94,7 @@ void read_mobconf(world_t *world)
     char *line = NULL;
     size_t len = 0;
 
+    printf("ici\n");
     if (test_open(stream, MOB_CONF) == -1)
         return;
     while (getline(&line, &len, stream) > 0) {

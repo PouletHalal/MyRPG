@@ -10,6 +10,7 @@
 
     #include <stdio.h>
     #include "window.h"
+    #include "world.h"
     #include "lib.h"
 
 void *display_and_return(void *ptr, int nb, ...);
