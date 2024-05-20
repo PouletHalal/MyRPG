@@ -16,21 +16,6 @@ static void init_items(entity_t *entity)
     }
 }
 
-/* void init_item(world_t *world, entity_t *entity, sfVector2f pos)
-{
-    sfVector2u item_size = {0};
-    int free_slot = find_empty(world);
-    entity_t *item = &world->entity[free_slot];
-
-    init_comp_position(item, pos, world->map_id);
-    init_comp_render(item, world, ANIM_ITEM, pos);
-    item->mask |= COMP_ITEM;
-    item->comp_item.type_mask |= ITEM_EQUIPABLE;
-    item->comp_item.equip_mask = CHESTPLATE;
-    item->comp_item.id = 1;
-    item->comp_item.quantity = 1;
-} */
-
 int init_inventory(world_t *world, entity_t *entity, int size)
 {
     sfFloatRect bounds = {0};
@@ -45,6 +30,8 @@ int init_inventory(world_t *world, entity_t *entity, int size)
     entity->comp_inventory.items = malloc(sizeof(entity_t) * size);
     bounds = sfSprite_getGlobalBounds(entity->comp_inventory.sprite.sprite);
     sfSprite_setOrigin(entity->comp_inventory.sprite.sprite,
-    (sfVector2f){bounds.width / 2, bounds.height / 2});
+    (sfVector2f) {bounds.width / 2, bounds.height / 2});
+    sfSprite_setScale(entity->comp_inventory.sprite.sprite,
+    (sfVector2f) {3, 3});
     init_items(entity);
 }

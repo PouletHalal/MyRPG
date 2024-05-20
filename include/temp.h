@@ -53,5 +53,7 @@ void add_vector(entity_t *entity, sfVector2f vector, size_t lenght);
 sfVector2f get_mouv_vector(entity_t *entity);
 
 void display_inventory(win_t *window, world_t *world);
+void item_events(win_t *window, world_t *world, entity_t *entity);
+void display_tooltips(win_t *window, entity_t *item, sfVector2f pos);
 
 #endif /* !TEMP_H_ */

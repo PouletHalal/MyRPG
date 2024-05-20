@@ -42,10 +42,16 @@ int set_type(world_t *world, comp_item_t *item, char *args)
 int set_name(world_t *world, comp_item_t *item, char *args)
 {
     char **split = my_str_to_word_array(args, "= \n\t");
+    char **temp = NULL;
+    sfText *text = sfText_create();
 
     if (split == NULL || split[0] == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args :", args, "\n");
-    item->name = strdup(split[1]);
+    temp = my_str_to_word_array(args, "\"");
+    item->tooltip.name = strdup(temp[1]);
+    item->tooltip.name_txt = text;
+    sfText_setString(text, item->tooltip.name);
+    sfText_setCharacterSize(text, 20);
     free_array(split);
     return 0;
 }
@@ -53,10 +59,16 @@ int set_name(world_t *world, comp_item_t *item, char *args)
 int set_description(world_t *world, comp_item_t *item, char *args)
 {
     char **split = my_str_to_word_array(args, "= \n\t");
+    char **temp = NULL;
+    sfText *text = sfText_create();
 
     if (split == NULL || split[0] == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args :", args, "\n");
-    item->description = strdup(split[1]);
+    temp = my_str_to_word_array(args, "\"");
+    item->tooltip.description = strdup(temp[1]);
+    item->tooltip.description_txt = text;
+    sfText_setString(text, item->tooltip.description);
+    sfText_setCharacterSize(text, 20);
     free_array(split);
     return 0;
 }

@@ -43,6 +43,16 @@ static void analyse_events(win_t *window, world_t *world)
 
     if (event->type == sfEvtClosed)
         sfRenderWindow_close(window->window);
+    if (event->type == sfEvtMouseButtonPressed) {
+        if (event->mouseButton.button == sfMouseLeft) {
+            player->comp_input.mouse_left_down = true;
+            world->mouse_left_pressed = true;
+        }
+        if (event->mouseButton.button == sfMouseRight) {
+            player->comp_input.mouse_right_down = true;
+            world->mouse_right_pressed = true;
+        }
+    }
     if (event->type == sfEvtKeyPressed){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
@@ -51,6 +61,12 @@ static void analyse_events(win_t *window, world_t *world)
         if (world->key_pressed[sfKeyF])
             create_item(world, (sfVector2f) {player->comp_position.position.x,
             player->comp_position.position.y + 50});
+    }
+    if (event->type == sfEvtMouseButtonReleased) {
+        player->comp_input.mouse_left_down = false;
+        player->comp_input.mouse_right_down = false;
+        world->mouse_left_pressed = false;
+        world->mouse_right_pressed = false;
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

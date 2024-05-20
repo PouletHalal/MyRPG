@@ -45,6 +45,8 @@ SRC	=	src/main.c					\
 		src/inventory/init_items.c	\
 		src/inventory/items_gestion.c	\
 		src/inventory/items_parsing.c	\
+		src/inventory/items_parsing2.c	\
+		src/inventory/items_rendering.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

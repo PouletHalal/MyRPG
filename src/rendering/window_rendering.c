@@ -63,5 +63,6 @@ void render_window(win_t *window, world_t *world)
     display_map(window, world->map_list[world->map_id], 2);
     display_dialogs(window, world);
     display_inventory(window, world);
+    sfRenderWindow_setView(window->window, window->cam.view);
     sfRenderWindow_display(window->window);
 }

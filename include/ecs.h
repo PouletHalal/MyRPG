@@ -43,7 +43,6 @@ enum comp_list {
     COMP_SOUND = 1 << 9,
     COMP_INVENTORY = 1 << 10,
     COMP_ITEM = 1 << 11,
-    COMP_UI = 1 << 12,
 };
 
 enum anim_list {
@@ -102,16 +101,16 @@ static const animation_t animation_list[] = {
         {1., 1.}, 10},
     {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
         {1., 1.}, 10},
-    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
-        {0.5, 0.5}, 5},
-    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
-        {0.5, 0.5}, 5},
-    {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png", {0, 0, 32, 32}, 1, {32, 32},
-        {0.5, 0.5}, 5},
-    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png", {0, 0, 32, 32}, 1, {32, 32},
-        {0.5, 0.5}, 5},
-    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png", {0, 0, 32, 32}, 1, {32, 32},
-        {0.5, 0.5}, 5},
+    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png",
+        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png",
+        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png",
+        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png",
+        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
+    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png",
+        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
 /*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
     {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
@@ -252,6 +251,8 @@ typedef struct world_s {
     item_list_t item_list;
     sfBool key_pressed[NB_KEYS];
     sfBool key_down[NB_KEYS];
+    sfBool mouse_left_pressed;
+    sfBool mouse_right_pressed;
 } world_t;
 
 void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);

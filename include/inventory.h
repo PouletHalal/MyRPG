@@ -63,6 +63,15 @@ static const enum_names_t ITEM_TYPES_NAMES[] = {
     {0, NULL}
 };
 
+typedef struct tooltip_s {
+    char *name;
+    char *description;
+    sprite_t sprite;
+    sfFont *font;
+    sfText *name_txt;
+    sfText *description_txt;
+} tooltip_t;
+
 typedef struct comp_item_s {
     int id_in_world;
     int id;
@@ -70,8 +79,7 @@ typedef struct comp_item_s {
     int equip_mask;
     int type_mask;
     int quantity;
-    char *name;
-    char *description;
+    tooltip_t tooltip;
 } comp_item_t;
 
 typedef struct item_list_s {

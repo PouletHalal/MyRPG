@@ -19,7 +19,8 @@ void create_item(world_t *world, sfVector2f pos)
     entity_t *entity = &world->entity[free_slot];
 
     init_comp_position(entity, pos, world->map_id);
-    init_comp_render(entity, world, world->item_list.items[random].animation_id, pos);
+    init_comp_render(entity, world, world->item_list.items[random].animation_id
+    , pos);
     entity->mask |= COMP_ITEM;
     entity->comp_item = world->item_list.items[random];
 }
@@ -74,11 +75,12 @@ int read_items_conf(world_t *world)
     size_t len = 0;
 
     if (openning_and_reading(stream, ITEM_CONF, &line) == -1)
-        return 84 ;
+        return int_display_and_return(84, 1, "Invalid file\n");
     world->item_list.nb_items = atoi(line);
     if (world->item_list.nb_items <= 0)
         return int_display_and_return(84, 3, "Invalid items nb: ", line, "\n");
-    world->item_list.items = malloc(sizeof(comp_item_t) * world->item_list.nb_items);
+    world->item_list.items = malloc(sizeof(comp_item_t) *
+    world->item_list.nb_items);
     for (int item_id = 0; getline(&line, &len, stream) > 0; ++item_id) {
         if (line[strlen(line) - 1] == '\n')
             line[strlen(line) - 1] = '\0';
