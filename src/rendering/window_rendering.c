@@ -11,6 +11,8 @@
 #include "rendering.h"
 #include "camera.h"
 #include "dialogs.h"
+#include "hud.h"
+
 
 void draw_hitbox(win_t *window, entity_t *entity)
 {
@@ -36,6 +38,9 @@ void refresh_world(world_t *world, sfClock *clock,
     sfClock_restart(clock);
     sys_input_and_event(world, window);
     sys_mob(world);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
+            sfSprite_setColor(world->entity[i].comp_render.sprite, sfWhite);
     sys_position(world, window);
     sys_player(window, world);
     sys_render(world);
@@ -62,9 +67,7 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true &&
             (world->entity[i].mask & COMP_HUD) == COMP_HUD) {
-                sfSprite_setTextureRect(world->entity[i].comp_render.sprite,
-                world->entity[i].comp_render.current_animation->
-                base_text_rect);
+                update_hud(world, player);
                 sfRenderWindow_drawSprite(window->window,
                 world->entity[i].comp_render.sprite, NULL);
             }

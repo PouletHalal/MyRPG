@@ -29,9 +29,10 @@ enum map_ids {
 };
 
 enum hud_list {
-    HUD_HEALTHBAR = 0,
-    HUD_PLATE = 1,
-    HUD_INVENTORY = 1 << 1,
+    HUD_NONE = 0,
+    HUD_HEALTHBAR = 1,
+    HUD_PLATE = 1 << 2,
+    HUD_INVENTORY = 1 << 3,
 };
 
 enum comp_list {

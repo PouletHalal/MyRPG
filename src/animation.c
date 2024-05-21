@@ -15,7 +15,7 @@ int get_anim_id(world_t *world, char *name)
         if (strcmp(name, world->animations[i].name) == 0)
             return i;
     }
-    return -1;
+    return 0;
 }
 
 void update_sprite_direction(entity_t *entity)

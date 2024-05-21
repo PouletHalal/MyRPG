@@ -38,7 +38,7 @@ static void next_frame(entity_t *entity, world_t *world)
 {
     int player = find_comp(world, COMP_PLAYER);
 
-    play_animation(world, entity, get_anim_id(world, "mob_run"), true);
+    play_animation(world, entity, get_anim_id(world, "skeleton_run"), false);
     if (player != -1 && entity->comp_mob.does_follow == sfTrue &&
         (entity->mask & COMP_POSITION) == COMP_POSITION &&
         (world->entity[player].mask & COMP_POSITION) == COMP_POSITION)

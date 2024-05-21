@@ -64,8 +64,6 @@ static bool is_last_sentence(entity_t *entity, entity_t *player,
 
 static void mini_update_dialog(win_t *window, world_t *world, entity_t *entity)
 {
-    int dialog = entity->comp_dialog.current_dialog;
-    int sentence = entity->comp_dialog.current_sentence;
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (is_last_sentence(entity, player, window, world) == false) {

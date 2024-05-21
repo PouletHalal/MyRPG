@@ -12,6 +12,7 @@ SRC	=	src/animation.c				\
 		src/camera/camera_movements.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
+		src/hud/hud_gestion.c	\
 		src/hud/init_hud.c	\
 		src/inventory/init_inventory.c	\
 		src/inventory/inventory_gestion.c	\

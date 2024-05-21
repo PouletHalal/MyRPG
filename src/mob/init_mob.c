@@ -79,7 +79,7 @@ static void read_mob(world_t *world, char *filename)
         if (line[0] == '\0' || line[0] == '\n')
             break;
         split = my_str_to_word_array(line, "=\n ");
-        entity->mask |= COMP_STAT | COMP_MOB | COMP_POSITION;
+        entity->mask |= COMP_STAT | COMP_MOB;
         if (get_arg(split, world, entity, line) == 84) {
             entity->mask = COMP_NONE;
             break;
