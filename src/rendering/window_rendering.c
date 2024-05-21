@@ -39,7 +39,7 @@ void refresh_world(world_t *world, sfClock *clock,
     sys_position(world, window);
     sys_player(window, world);
     sys_render(world);
-    sys_stat(world);
+    sys_stat(window, world);
 }
 
 static bool is_renderable(entity_t *entity, int map_id)

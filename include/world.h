@@ -55,7 +55,7 @@ void init_comp_mob(entity_t *entity);
 void init_comp_input(entity_t *entity, world_t *world);
 void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
 
-void sys_stat(world_t *world);
+void sys_stat(win_t *window, world_t *world);
 void sys_mob(world_t *world, win_t *win);
 void sys_render(world_t *world);
 

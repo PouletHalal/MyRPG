@@ -24,7 +24,7 @@ void do_attack(entity_t *attack, entity_t *defense)
     defense->comp_stat.clock = defense->comp_stat.invinsibility_frames;
 }
 
-static void next_frame(entity_t *entity, world_t *world)
+static void next_frame(win_t *window, entity_t *entity, world_t *world)
 {
     comp_stat_t *stat = &entity->comp_stat;
 
@@ -32,6 +32,8 @@ static void next_frame(entity_t *entity, world_t *world)
         if (stat->do_respawn) {
             stat->health = stat->max_health;
             entity->comp_position.position = entity->comp_position.spawn;
+            window->cam.is_moving = true;
+            window->cam.destination = &entity->comp_position.position;
             return;
         }
         if ((entity->mask & COMP_RENDER) == COMP_RENDER) {
@@ -47,9 +49,9 @@ static void next_frame(entity_t *entity, world_t *world)
         stat->clock -= 1;
 }
 
-void sys_stat(world_t *world)
+void sys_stat(win_t *window, world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_STAT) == COMP_STAT)
-            next_frame(&world->entity[i], world);
+            next_frame(window, &world->entity[i], world);
 }
