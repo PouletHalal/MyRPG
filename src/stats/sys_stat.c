@@ -45,7 +45,7 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
     stat->health += stat->health_regen;
     if (stat->health > stat->max_health)
         stat->health = stat->max_health;
-    stat->clock -= (stat->clock > 0) ? -1 : 0;
+    stat->clock -= (stat->clock > 0) ? 1 : 0;
 }
 
 void sys_stat(win_t *window, world_t *world)
