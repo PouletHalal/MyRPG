@@ -110,6 +110,7 @@ sfBool check_collision(entity_t *entity, world_t *world,
         return sfFalse;
     if (is_colliding(world, entity, velocity))
         return sfTrue;
+    printf("help\n");
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
         && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}

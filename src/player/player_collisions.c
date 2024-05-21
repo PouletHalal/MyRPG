@@ -28,6 +28,7 @@ static bool is_out_of_border(sfFloatRect bounds, sfVector2f offset,
 {
     if (offset.y < 0 && bounds.top <= 0 + offset.y)
         return true;
+    printf("%f %f, %f %f\n", bounds.top, bounds.height, map_list->maps->size.y, offset.y);
     if (offset.y > 0 &&
         bounds.top + bounds.height >= map_list->maps->size.y - offset.y)
         return true;
@@ -76,6 +77,7 @@ bool is_colliding(world_t *world, entity_t *entity, sfVector2f offset)
         return false;
     if (is_out_of_border(bounds, offset, map_list))
         return true;
+    printf("oui\n");
     if (tile_collision(new_pos, collision_map))
         return true;
     return false;
