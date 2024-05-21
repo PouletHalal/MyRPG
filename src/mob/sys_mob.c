@@ -13,7 +13,6 @@
 #include "window.h"
 #include "mob.h"
 
-
 static void follow_move(entity_t *mob, entity_t *player)
 {
     sfVector2f mob_pos = mob->comp_position.position;
@@ -53,7 +52,7 @@ static void next_frame(entity_t *entity, world_t *world, win_t *win)
     update_sprite_direction(entity);
     if (entity->comp_mob.does_rand_spawn && player != -1
     && ran % 100 > entity->comp_mob.spawn_rate)
-        spawn_copy(entity, world, (ran % 180) * M_PI / 180. , win);
+        spawn_copy(entity, world, (ran % 180) * M_PI / 180., win);
 }
 
 void sys_mob(world_t *world, win_t *win)

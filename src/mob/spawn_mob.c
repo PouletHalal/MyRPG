@@ -16,6 +16,7 @@ static void check_spawn(entity_t *new, world_t *world, win_t *window)
     new->comp_mob.is_alive = true;
     new->comp_mob.does_rand_spawn = false;
     new->comp_stat.do_respawn = false;
+    new->comp_hitbox.do_collide = true;
     if (!check_collision(new, world, (sfVector2f) {0, 0}, window))
         return;
     sfSprite_destroy(new->comp_render.sprite);
@@ -30,12 +31,13 @@ void spawn_copy(entity_t *entity, world_t *world, double angle, win_t *window)
     sfVector2f vect = {cosf(angle) * 100., sinf(angle) * 100.};
     int player = find_comp(world, COMP_PLAYER);
 
-    if (free == -1 || player == -1)
+    if (free == -1 || player == -1 || window->cam.is_moving)
         return;
     vect.x += world->entity[player].comp_position.position.x;
     vect.y += world->entity[player].comp_position.position.y;
     new = &world->entity[free];
-    init_comp_render(new, world, &world->animations[entity->comp_mob.anim_id], vect);
+    init_comp_render(new, world,
+    &world->animations[entity->comp_mob.anim_id], vect);
     init_comp_position(new, vect, entity->comp_position.world);
     init_comp_hitbox(new, vect);
     new->comp_mob = entity->comp_mob;

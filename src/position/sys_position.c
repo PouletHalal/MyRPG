@@ -82,7 +82,8 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
         return sfFalse;
     }
     if (((entities[1]->mask & COMP_HITBOX) == COMP_HITBOX) &&
-        entities[1]->comp_hitbox.do_collide && entities[1]->comp_mob.is_alive
+        entities[1]->comp_hitbox.do_collide && (entities[1]->comp_mob.is_alive
+        || (entities[1]->mask & COMP_MOB) != COMP_MOB)
         && entities[0]->comp_position.world == world->map_id)
         return collide_entity(entities[0], entities[1], velocity);
     return sfFalse;
