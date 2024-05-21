@@ -205,7 +205,10 @@ typedef struct comp_mob_s {
     bool does_follow;
     double range;
     size_t speed;
+    int anim_id;
     bool does_take_damage;
+    bool does_rand_spawn;
+    double spawn_rate;
 } comp_mob_t;
 
 typedef struct comp_hitbox_s {

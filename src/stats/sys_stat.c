@@ -11,11 +11,13 @@ void do_attack(entity_t *attack, entity_t *defense)
 {
     if ((attack->mask & defense->mask & COMP_STAT) != COMP_STAT)
         return;
-    if (defense->comp_stat.clock > 0)
+    if (defense->comp_stat.clock > 0 || attack->comp_mob.does_rand_spawn ||
+    defense->comp_mob.does_rand_spawn)
         return;
     if (attack->comp_stat.do_damage == sfFalse)
         return;
-    if (attack->comp_stat.faction == defense->comp_stat.faction)
+    if (attack->comp_stat.faction == defense->comp_stat.faction ||
+    defense->comp_stat.defense > attack->comp_stat.damage)
         return;
     defense->comp_stat.health -=
     attack->comp_stat.damage - defense->comp_stat.defense;

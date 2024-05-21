@@ -29,6 +29,9 @@ SRC	=	src/animation.c				\
 		src/mob/init_mob.c	\
 		src/mob/mob_parsing.c	\
 		src/mob/mob_parsing2.c	\
+		src/mob/mob_parsing3.c	\
+		src/mob/spawn_mob.c	\
+		src/mob/sys_mob.c	\
 		src/npcs/dialogs_gestion.c	\
 		src/npcs/dialogs_rendering.c	\
 		src/npcs/init_npc.c	\
@@ -48,7 +51,6 @@ SRC	=	src/animation.c				\
 		src/sounds/sounds_gestion.c	\
 		src/stats/sys_stat.c	\
 		src/sys_input_and_event.c	\
-		src/sys_mob.c	\
 		src/sys_render.c			\
 		src/ecs/components_inits.c	\
 		src/position/sys_position.c		\
