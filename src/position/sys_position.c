@@ -160,6 +160,8 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
 
 void sys_position(world_t *world, win_t *window)
 {
+    if (window->cam.is_moving)
+        return;
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_POSITION) == COMP_POSITION
         && is_in_cam_range(window, &world->entity[i]))
