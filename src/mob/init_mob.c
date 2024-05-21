@@ -20,7 +20,7 @@ int set_does_damage(world_t *world, entity_t *entity, char *args)
         free_array(split);
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
     }
-    entity->comp_stat.do_respawn = GET_BOOL(split[1]);
+    entity->comp_stat.do_damage = GET_BOOL(split[1]);
     free_array(split);
     return 0;
 }
@@ -79,7 +79,7 @@ static void read_mob(world_t *world, char *filename)
         if (line[0] == '\0' || line[0] == '\n')
             break;
         split = my_str_to_word_array(line, "=\n ");
-        entity->mask |= COMP_STAT | COMP_MOB | COMP_POSITION;
+        entity->mask |= COMP_STAT | COMP_MOB;
         if (get_arg(split, world, entity, line) == 84) {
             entity->mask = COMP_NONE;
             break;

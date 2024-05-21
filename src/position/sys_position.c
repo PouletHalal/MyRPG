@@ -114,8 +114,8 @@ static sfBool check_collision(entity_t *entity, world_t *world,
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
         && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
         , world, velocity)) {
-            do_attack(entity, &world->entity[i]);
-            do_attack(&world->entity[i], entity);
+            do_attack(world, entity, &world->entity[i]);
+            do_attack(world, &world->entity[i], entity);
             return sfTrue;
         }
     }

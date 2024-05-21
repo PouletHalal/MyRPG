@@ -11,6 +11,8 @@
 #include "rendering.h"
 #include "camera.h"
 #include "dialogs.h"
+#include "hud.h"
+
 
 void draw_hitbox(win_t *window, entity_t *entity)
 {
@@ -36,6 +38,9 @@ void refresh_world(world_t *world, sfClock *clock,
     sfClock_restart(clock);
     sys_input_and_event(world, window);
     sys_mob(world);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
+            sfSprite_setColor(world->entity[i].comp_render.sprite, sfWhite);
     sys_position(world, window);
     sys_player(window, world);
     sys_render(world);
@@ -50,6 +55,23 @@ static bool is_renderable(entity_t *entity, int map_id)
         (entity->mask & COMP_HUD) != COMP_HUD)
         return true;
     return false;
+}
+
+static void hud_rendering(win_t *window, world_t *world, entity_t *player)
+{
+    sfRenderWindow_setView(window->window,
+    sfRenderWindow_getDefaultView(window->window));
+    display_dialogs(window, world);
+    display_inventory(window, world);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
+            world->entity[i].comp_render.is_visible == true &&
+            (world->entity[i].mask & COMP_HUD) == COMP_HUD) {
+                update_hud(world, player);
+                sfRenderWindow_drawSprite(window->window,
+                world->entity[i].comp_render.sprite, NULL);
+            }
+    sfRenderWindow_setView(window->window, window->cam.view);
 }
 
 void render_window(win_t *window, world_t *world)
@@ -68,8 +90,6 @@ void render_window(win_t *window, world_t *world)
             world->entity[i].comp_render.sprite, NULL);
         }
     display_map(window, world->map_list[world->map_id], 2);
-    display_dialogs(window, world);
-    display_inventory(window, world);
-    sfRenderWindow_setView(window->window, window->cam.view);
+    hud_rendering(window, world, player);
     sfRenderWindow_display(window->window);
 }

@@ -14,6 +14,7 @@
 #include "error_handling.h"
 #include "sounds.h"
 #include "player.h"
+#include "hud.h"
 
 int find_empty(world_t *world)
 {
@@ -50,6 +51,7 @@ static void init_all(win_t *window, world_t *world)
     }
     init_entity(world, &world->animations[anim_index],
     position_player);
+    init_healthbar(world);
     read_npcconf(world);
     read_portalconf(world);
     read_items_conf(world);
@@ -83,6 +85,8 @@ static int init_empty_world(world_t *world)
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
     world->map_id = INTRO;
+    world->mouse_right_pressed = false;
+    world->mouse_left_pressed = false;
     for (int i = 0; i < NB_KEYS; ++i) {
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
