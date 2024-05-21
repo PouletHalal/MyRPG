@@ -229,5 +229,9 @@ typedef struct comp_stat_s {
     size_t invinsibility_frames;
 } comp_stat_t;
 
+typedef struct comp_mouse_s {
+    sfBool item_picked;
+    int item_picked_i;
+} comp_mouse_t;
 
 #endif /* !ECS_H_ */

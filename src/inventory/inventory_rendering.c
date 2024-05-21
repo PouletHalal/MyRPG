@@ -41,7 +41,8 @@ static void display_items(win_t *window, world_t *world, entity_t *entity)
 
     for (int i = 0; i < entity->comp_inventory.size; i++) {
         if (entity->comp_inventory.items[i].type_mask != 0) {
-            place_item(world, entity, i, start);
+            if (!entity->comp_inventory.items[i].is_picked)
+                place_item(world, entity, i, start);
             sfRenderWindow_drawSprite(window->window,
             world->entity[entity->comp_inventory.items[i].id_in_world].
             comp_render.sprite, NULL);
@@ -75,5 +76,6 @@ void display_inventory(win_t *window, world_t *world)
     player->comp_inventory.sprite.pos = (sfVector2f) {win_size.x / 2,
     win_size.y / 2};
     display_items(window, world, player);
+    manage_inv_slots(world, window, player);
     item_events(window, world, player);
 }

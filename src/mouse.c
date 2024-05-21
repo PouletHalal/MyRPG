@@ -35,4 +35,6 @@ void init_mouse(world_t *world, win_t *window)
     mouse->comp_position.can_move = true;
     mouse->comp_hitbox.do_collide = false;
     mouse->mask |= COMP_MOUSE;
+    mouse->comp_mouse.item_picked = false;
+    mouse->comp_mouse.item_picked_i = 0;
 }
