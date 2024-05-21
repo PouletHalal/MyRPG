@@ -66,8 +66,6 @@ void display_inventory(win_t *window, world_t *world)
 
     if (player->comp_inventory.is_open == false)
         return turn_off_items(world, player);
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
     sfSprite_setPosition(player->comp_inventory.sprite.sprite,
     (sfVector2f) {win_size.x / 2, win_size.y / 2});
     sfRenderWindow_drawSprite(window->window,

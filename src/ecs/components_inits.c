@@ -10,6 +10,7 @@
 #include <time.h>
 #include "temp.h"
 
+
 void init_comp_render(entity_t *entity, world_t *world,
     animation_t *anim, sfVector2f position)
 {

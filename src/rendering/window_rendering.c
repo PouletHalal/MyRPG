@@ -52,6 +52,25 @@ static bool is_renderable(entity_t *entity, int map_id)
     return false;
 }
 
+static void hud_rendering(win_t *window, world_t *world, entity_t *player)
+{
+    sfRenderWindow_setView(window->window,
+    sfRenderWindow_getDefaultView(window->window));
+    display_dialogs(window, world);
+    display_inventory(window, world);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
+            world->entity[i].comp_render.is_visible == true &&
+            (world->entity[i].mask & COMP_HUD) == COMP_HUD) {
+                sfSprite_setTextureRect(world->entity[i].comp_render.sprite,
+                world->entity[i].comp_render.current_animation->
+                base_text_rect);
+                sfRenderWindow_drawSprite(window->window,
+                world->entity[i].comp_render.sprite, NULL);
+            }
+    sfRenderWindow_setView(window->window, window->cam.view);
+}
+
 void render_window(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
@@ -68,8 +87,6 @@ void render_window(win_t *window, world_t *world)
             world->entity[i].comp_render.sprite, NULL);
         }
     display_map(window, world->map_list[world->map_id], 2);
-    display_dialogs(window, world);
-    display_inventory(window, world);
-    sfRenderWindow_setView(window->window, window->cam.view);
+    hud_rendering(window, world, player);
     sfRenderWindow_display(window->window);
 }

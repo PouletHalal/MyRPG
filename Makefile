@@ -12,6 +12,7 @@ SRC	=	src/animation.c				\
 		src/camera/camera_movements.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
+		src/hud/init_hud.c	\
 		src/inventory/init_inventory.c	\
 		src/inventory/inventory_gestion.c	\
 		src/inventory/inventory_rendering.c	\
@@ -53,7 +54,7 @@ SRC	=	src/animation.c				\
 		src/ecs/components_inits.c	\
 		src/position/sys_position.c		\
 		src/position/vectors.c	\
-		src/start.c
+		src/start.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

@@ -20,7 +20,7 @@ int set_does_damage(world_t *world, entity_t *entity, char *args)
         free_array(split);
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
     }
-    entity->comp_stat.do_respawn = GET_BOOL(split[1]);
+    entity->comp_stat.do_damage = GET_BOOL(split[1]);
     free_array(split);
     return 0;
 }

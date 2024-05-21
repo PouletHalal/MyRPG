@@ -28,6 +28,12 @@ enum map_ids {
     INTRO,
 };
 
+enum hud_list {
+    HUD_HEALTHBAR = 0,
+    HUD_PLATE = 1,
+    HUD_INVENTORY = 1 << 1,
+};
+
 enum comp_list {
     COMP_NONE = 0,
     COMP_RENDER = 1 << 0,
@@ -133,6 +139,10 @@ static const animation_t animation_list[] = {
     {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
     {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
 };
+
+typedef struct comp_hud_s {
+    int hud_type;
+} comp_hud_t;
 
 typedef struct comp_render_s {
     animation_t *current_animation;

@@ -68,7 +68,7 @@ static void analyse_events(win_t *window, world_t *world)
         world->key_pressed[event->key.code] = sfTrue;
         if (world->key_pressed[sfKeyTab])
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
-        if (world->key_pressed[sfKeyF])
+        if (world->key_pressed[sfKeyK])
             create_item(world, (sfVector2f) {player->comp_position.position.x,
             player->comp_position.position.y + 50});
     }
