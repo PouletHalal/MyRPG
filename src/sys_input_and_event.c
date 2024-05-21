@@ -64,8 +64,10 @@ static void analyse_events(win_t *window, world_t *world)
         sfRenderWindow_close(window->window);
     mouse_inputs(window, world, player);
     if (event->type == sfEvtKeyPressed){
-        world->key_down[event->key.code] = sfTrue;
-        world->key_pressed[event->key.code] = sfTrue;
+        if (event->key.code > 0) {
+            world->key_down[event->key.code] = sfTrue;
+            world->key_pressed[event->key.code] = sfTrue;
+        }
         if (world->key_pressed[sfKeyTab])
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
         if (world->key_pressed[sfKeyK])

@@ -113,9 +113,6 @@ static void update_npc_direction(entity_t *npc, entity_t *player)
 {
     sfVector2f scale = sfSprite_getScale(npc->comp_render.sprite);
 
-    if (npc->comp_render.current_animation->index == ANIM_INTRO ||
-        npc->comp_render.current_animation->index == ANIM_TRANSPARENT)
-        return;
     if (npc->comp_position.position.x > player->comp_position.position.x)
         scale.x = abs(scale.x) * -1;
     else
