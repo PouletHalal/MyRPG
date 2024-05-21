@@ -11,6 +11,7 @@
 #include "maps.h"
 #include "camera.h"
 
+
 static int is_right_size(sfVector2f cam_center, sfVector2f cam_size,
     sfVector2f map_size)
 {

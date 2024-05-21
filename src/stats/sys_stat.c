@@ -6,8 +6,9 @@
 */
 
 #include "temp.h"
+#include "rendering.h"
 
-void do_attack(entity_t *attack, entity_t *defense)
+void do_attack(world_t *world, entity_t *attack, entity_t *defense)
 {
     if ((attack->mask & defense->mask & COMP_STAT) != COMP_STAT)
         return;
@@ -22,6 +23,8 @@ void do_attack(entity_t *attack, entity_t *defense)
     defense->comp_stat.health -=
     attack->comp_stat.damage - defense->comp_stat.defense;
     defense->comp_stat.clock = defense->comp_stat.invinsibility_frames;
+    if ((defense->mask & COMP_PLAYER) == COMP_PLAYER)
+        play_animation(world, defense, get_anim_id(world, "prota_hurt"), 0);
 }
 
 static void next_frame(win_t *window, entity_t *entity, world_t *world)

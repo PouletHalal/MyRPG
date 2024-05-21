@@ -12,6 +12,7 @@
 #include "maps.h"
 #include "rendering.h"
 #include "player.h"
+#include "hud.h"
 
 int find_comp(world_t *world, int comp)
 {

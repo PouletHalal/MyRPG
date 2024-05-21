@@ -24,6 +24,9 @@ int set_tooltip(world_t *world, comp_item_t *item, char *args);
 int set_scale(world_t *world, comp_item_t *item, char *args);
 int set_item_font(world_t *world, comp_item_t *item, char *args);
 int set_item_health(world_t *world, comp_item_t *item, char *args);
+int set_item_attack(world_t *world, comp_item_t *item, char *args);
+int set_item_defense(world_t *world, comp_item_t *item, char *args);
+int set_item_regen(world_t *world, comp_item_t *item, char *args);
 
 item_ptr_func_t ITEM_FLAGS[] =
 {
@@ -35,6 +38,9 @@ item_ptr_func_t ITEM_FLAGS[] =
     {"tooltip_scale", &set_scale},
     {"font", &set_item_font},
     {"healing", &set_item_health},
+    {"attack", &set_item_attack},
+    {"defense", &set_item_defense},
+    {"regen", &set_item_regen},
     {NULL, NULL}
 };
 

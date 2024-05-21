@@ -10,6 +10,6 @@
 
     #include "world.h"
 
-void do_attack(entity_t *attack, entity_t *defense);
+void do_attack(world_t *world, entity_t *attack, entity_t *defense);
 
 #endif /* !STAT_H_ */

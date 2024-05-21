@@ -52,6 +52,7 @@ int set_idle(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\n");
     int anim_index = 0;
+    animation_t *anim = NULL;
 
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
@@ -60,7 +61,8 @@ int set_idle(world_t *world, entity_t *entity, char *args)
         int_display_and_return(84, 3, "Invalid anim: ", split[1], "\n");
         anim_index = 0;
     }
-    init_comp_render(entity, world, &world->animations[anim_index],
+    anim = &world->animations[anim_index];
+    init_comp_render(entity, world, anim,
     entity->comp_position.position);
     init_comp_hitbox(entity, entity->comp_position.position);
     if (!strcmp(split[1], "intro") || !strcmp(split[1], "transparent"))

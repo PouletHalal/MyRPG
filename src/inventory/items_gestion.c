@@ -85,13 +85,7 @@ bool use_item(win_t *window, entity_t *player, entity_t *item, int i)
         !is_mouse_over(sfMouse_getPositionRenderWindow(window->window), item)
         || (item->comp_item.type_mask & ITEM_CONSUMABLE) != ITEM_CONSUMABLE)
         return false;
-    printf("player health BEFORE = %f\n", player->comp_stat.health);
-    printf("player defense BEFORE = %f\n", player->comp_stat.defense);
-    printf("player attack BEFORE = %f\n", player->comp_stat.damage);
     update_stat(player, item);
-    printf("player health AFTER = %f\n", player->comp_stat.health);
-    printf("player defense AFTER = %f\n", player->comp_stat.defense);
-    printf("player attack AFTER = %f\n", player->comp_stat.damage);
     player->comp_inventory.items[i].type_mask = 0;
     item->comp_render.is_visible = false;
     return true;
@@ -119,7 +113,7 @@ bool item_collision(world_t *world, entity_t *entity)
     if (entity->comp_position.world != world->map_id ||
         (entity->mask & COMP_PLAYER) != COMP_PLAYER)
         return false;
-    if (world->key_pressed[sfKeyE] == false)
+    if (world->key_pressed[sfKeyF] == false)
         return false;
     for (int i = 0; i < ENTITY_COUNT; i++) {
         if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM &&

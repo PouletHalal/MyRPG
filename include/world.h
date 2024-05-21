@@ -29,6 +29,7 @@ typedef struct entity_s {
     comp_stat_t comp_stat;
     comp_inventory_t comp_inventory;
     comp_item_t comp_item;
+    comp_hud_t comp_hud;
 } entity_t;
 
 typedef struct world_s {
