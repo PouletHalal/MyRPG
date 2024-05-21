@@ -37,14 +37,11 @@ void refresh_world(world_t *world, sfClock *clock,
         return;
     sfClock_restart(clock);
     sys_input_and_event(world, window);
-    sys_mob(world);
-    for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
-            sfSprite_setColor(world->entity[i].comp_render.sprite, sfWhite);
+    sys_mob(world, window);
     sys_position(world, window);
     sys_player(window, world);
     sys_render(world);
-    sys_stat(world);
+    sys_stat(window, world);
 }
 
 static bool is_renderable(entity_t *entity, int map_id)
