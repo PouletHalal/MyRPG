@@ -8,16 +8,15 @@
 #ifndef MAPS_
     #define MAPS_
 
-    #include <SFML/Window.h>
-    #include <SFML/Graphics.h>
     #include <SFML/Audio.h>
-    #include <SFML/System.h>
     #include "tilesets.h"
 
 static const char TEXTURE_PATH[] = "tileset/big_tileset.png";
 static const char MAP_FILE[] = "maps/map.conf";
 static const char PORTAL_CONF[] = "maps/portals.conf";
 static const char NPC_CONF[] = "maps/npcs.conf";
+static const char ITEM_CONF[] = "maps/items.conf";
+static const char MOB_CONF[] = "maps/mobs.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080
@@ -65,8 +64,5 @@ typedef struct portal_s {
 
 tileset_t *init_tilesets(void);
 map_list_t **init_map(char const *map_file, tileset_t *tileset_list);
-char **my_str_to_word_array(char const *str, char const *separators);
-void free_array(char **array);
-int len_array(char **array);
 int **get_layer(map_list_t *map_list, char const *name);
 #endif

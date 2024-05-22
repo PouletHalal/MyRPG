@@ -5,7 +5,7 @@
 ** Vector file
 */
 
-#include "ecs.h"
+#include "world.h"
 
 sfVector2f get_mouv_vector(entity_t *entity)
 {

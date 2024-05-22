@@ -38,9 +38,14 @@ int add_node(tileset_t *tileset, char *line, int nb_tileset)
 
 void init_textures(world_t *world)
 {
-    for (int i = 0; i < ANIM_END; i++)
-        world->texture_list[i] =
-        sfTexture_createFromFile(animation_list[i].filename, NULL);
+    int nb_anim = 0;
+
+    for (nb_anim = 0; world->animations[nb_anim].name != NULL; nb_anim++);
+    world->texture_list = malloc(sizeof(sfTexture *) * (nb_anim + 1));
+    for (int i = 0; world->animations[i].name != NULL; i++) {
+        world->texture_list[i] = sfTexture_createFromFile(
+        world->animations[i].filename, NULL);
+    }
 }
 
 tileset_t *init_tilesets(void)

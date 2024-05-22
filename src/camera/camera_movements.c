@@ -11,6 +11,7 @@
 #include "maps.h"
 #include "camera.h"
 
+
 static int is_right_size(sfVector2f cam_center, sfVector2f cam_size,
     sfVector2f map_size)
 {
@@ -50,8 +51,10 @@ void move_to_destination(win_t *window)
         offset.y = window->cam.offset.y *
         abs(window->cam.destination->y - cam_center.y) /
         (window->cam.destination->y - cam_center.y);
-    if (offset.x == 0. && offset.y == 0.)
+    if (offset.x == 0. && offset.y == 0.) {
+        window->cam.offset = (sfVector2f) {0.5, 0.5};
         window->cam.is_moving = false;
+    }
     sfView_move(window->cam.view, offset);
 }
 

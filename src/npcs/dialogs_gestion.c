@@ -64,8 +64,6 @@ static bool is_last_sentence(entity_t *entity, entity_t *player,
 
 static void mini_update_dialog(win_t *window, world_t *world, entity_t *entity)
 {
-    int dialog = entity->comp_dialog.current_dialog;
-    int sentence = entity->comp_dialog.current_sentence;
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (is_last_sentence(entity, player, window, world) == false) {
@@ -113,9 +111,6 @@ static void update_npc_direction(entity_t *npc, entity_t *player)
 {
     sfVector2f scale = sfSprite_getScale(npc->comp_render.sprite);
 
-    if (npc->comp_render.current_animation->index == ANIM_INTRO ||
-        npc->comp_render.current_animation->index == ANIM_TRANSPARENT)
-        return;
     if (npc->comp_position.position.x > player->comp_position.position.x)
         scale.x = abs(scale.x) * -1;
     else

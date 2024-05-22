@@ -70,10 +70,11 @@ int openning_and_reading(FILE *stream, char const *filename, char **line)
     return 0;
 }
 
-int close_and_return(win_t *window, int nb)
+int close_and_return(world_t *world, win_t *window, int nb)
 {
     sfRenderWindow_close(window->window);
     sfRenderWindow_destroy(window->window);
     free(window);
+    free(world);
     return nb;
 }
