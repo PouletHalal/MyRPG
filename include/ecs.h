@@ -220,6 +220,10 @@ typedef struct comp_mob_s {
     bool does_take_damage;
     bool does_rand_spawn;
     double spawn_rate;
+    size_t mob_cap;
+    size_t mob_count;
+    bool is_clone;
+    int clone;
 } comp_mob_t;
 
 typedef struct comp_hitbox_s {
