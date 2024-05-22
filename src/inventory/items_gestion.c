@@ -6,7 +6,18 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 #include "temp.h"
+
+int get_item_id(item_list_t items, char const *name)
+{
+    for (int i = 0; i < items.nb_items; i++) {
+        if (strcmp(items.items[i].tooltip.name, name) == 0) {
+            return i;
+        }
+    }
+    return 0;
+}
 
 static bool is_mouse_over(sfVector2i pos, entity_t *entity)
 {
@@ -51,7 +62,8 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
 
     if (player->comp_input.mouse_right_down == false)
         return false;
-    if (item->comp_item.type_mask == 0)
+    if (item->comp_item.type_mask == 0 ||
+        (item->comp_item.type_mask & ITEM_KEY) == ITEM_KEY)
         return false;
     if (is_mouse_over(mouse_pos, item)) {
         item->comp_render.is_visible = true;

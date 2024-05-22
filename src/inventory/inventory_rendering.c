@@ -12,6 +12,8 @@ static void place_item(world_t *world, entity_t *entity, int i,
     sfVector2f start)
 {
     sfVector2f item_pos = {0};
+    animation_t *anim = world->entity[entity->comp_inventory.items[i]
+    .id_in_world].comp_render.current_animation;
 
     item_pos.x = start.x + (i % 6) * (16 + 3) * 3;
     item_pos.y = start.y + (i / 6) * (16 + 3) * 3;
@@ -24,7 +26,7 @@ static void place_item(world_t *world, entity_t *entity, int i,
     item_pos);
     sfSprite_setScale(world->entity[entity->comp_inventory.items[i].
     id_in_world].comp_render.sprite,
-    (sfVector2f) {2, 2});
+    (sfVector2f) {64 / anim->frame_size.x, 64 / anim->frame_size.y});
 }
 
 static void display_items(win_t *window, world_t *world, entity_t *entity)

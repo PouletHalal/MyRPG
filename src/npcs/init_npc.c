@@ -29,6 +29,7 @@ static int store_dialog(entity_t *entity, char *line, int id)
 
 static void init_mandatories(entity_t *entity)
 {
+    entity->mask |= COMP_NPC;
     entity->comp_dialog.current_dialog = -1;
     entity->comp_dialog.current_sentence = 0;
     entity->comp_dialog.current_char = 0;

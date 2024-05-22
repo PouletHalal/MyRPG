@@ -51,10 +51,10 @@ static void init_all(win_t *window, world_t *world)
     }
     init_entity(world, &world->animations[anim_index],
     position_player);
+    read_items_conf(world);
     init_healthbar(world);
     read_npcconf(world);
     read_portalconf(world);
-    read_items_conf(world);
     read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
 }

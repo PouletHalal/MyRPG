@@ -26,6 +26,7 @@ enum map_ids {
     MAIN_WORLD,
     HOUSE1,
     INTRO,
+    LIBRARY,
 };
 
 enum hud_list {
@@ -50,6 +51,7 @@ enum comp_list {
     COMP_INVENTORY = 1 << 10,
     COMP_ITEM = 1 << 11,
     COMP_HUD = 1 << 12,
+    COMP_NPC = 1 << 13,
 };
 
 enum anim_list {
@@ -144,6 +146,18 @@ static const animation_t animation_list[] = {
 typedef struct comp_hud_s {
     int hud_type;
 } comp_hud_t;
+
+typedef struct comp_npc_s {
+    sfBool gives_item;
+    sfBool need_key_item_to_talk;
+    sfBool need_key_item_to_drop;
+    int gives_item_dialog_id;
+    int gives_item_sentence_id;
+    int key_item_to_talk_id;
+    int key_item_to_drop_id;
+    int item_id;
+    int exclamation_id;
+} comp_npc_t;
 
 typedef struct comp_render_s {
     animation_t *current_animation;

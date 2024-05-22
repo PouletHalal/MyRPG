@@ -11,7 +11,7 @@
     #include "world.h"
     #include "window.h"
 
-void sys_player(win_t *window, world_t *world);
+void sys_player(win_t *window, world_t *world, entity_t *player);
 void update_cam(win_t *window, entity_t *entity,
     map_list_t *map_list, sfVector2f offset);
 void update_sprite_animation(entity_t *entity,

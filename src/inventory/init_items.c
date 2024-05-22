@@ -13,21 +13,19 @@
 #include "temp.h"
 #include "items_parsing.h"
 
-void create_item(world_t *world, sfVector2f pos)
+void create_item(world_t *world, sfVector2f pos, int item_id)
 {
-    int random = rand() % world->item_list.nb_items;
     int free_slot = find_empty(world);
     entity_t *entity = &world->entity[free_slot];
 
     entity->entity = free_slot;
     init_comp_position(entity, pos, world->map_id);
     init_comp_render(entity, world, &world->animations
-    [world->item_list.items[random].animation_id], pos);
+    [world->item_list.items[item_id].animation_id], pos);
     entity->mask |= COMP_ITEM;
     entity->mask |= COMP_STAT;
-    entity->comp_stat = world->item_list.items[random].stats;
-    printf("item health = %f\n", entity->comp_stat.health);
-    entity->comp_item = world->item_list.items[random];
+    entity->comp_stat = world->item_list.items[item_id].stats;
+    entity->comp_item = world->item_list.items[item_id];
 }
 
 static int get_item_arg(world_t *world, comp_item_t *item, char *line,

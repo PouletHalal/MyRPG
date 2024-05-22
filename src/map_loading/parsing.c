@@ -103,7 +103,10 @@ static tileset_t *get_tileset(tileset_t *tileset_list, char *name)
 static map_t add_map(char **args, tileset_t *tileset_list)
 {
     map_t map = {0};
+    tileset_t *tileset = get_tileset(tileset_list, args[4]);
 
+    if (strcmp(args[1], "collision") == 0)
+        map.tile_size = tileset->tile_size;
     map.name = strdup(args[1]);
     map.size = (sfVector2f) {atoi(args[2]), atoi(args[3])};
     map.map = sfRenderTexture_create(map.size.x, map.size.y, sfFalse);

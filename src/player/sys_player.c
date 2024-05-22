@@ -65,9 +65,7 @@ static void player_events(win_t *window, entity_t *entity, world_t *world)
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
-void sys_player(win_t *window, world_t *world)
+void sys_player(win_t *window, world_t *world, entity_t *player)
 {
-    for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            player_events(window, &(world->entity[i]), world);
+    player_events(window, player, world);
 }

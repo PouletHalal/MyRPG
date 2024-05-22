@@ -47,6 +47,7 @@ typedef struct map_s {
     sfRenderTexture *map;
     sfTexture *spritesheet;
     sprite_t sprite;
+    sfVector2f tile_size;
 } map_t;
 
 typedef struct map_list_s {
