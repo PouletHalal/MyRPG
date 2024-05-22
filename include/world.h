@@ -15,6 +15,9 @@
     #include "items.h"
     #include "window.h"
 
+    #define RENDER_DISTANCE 600. * 600.
+    #define DISPAWN_RANGE 800. * 800.
+
 typedef struct entity_s {
     int mask;
     int entity;

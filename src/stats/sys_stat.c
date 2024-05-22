@@ -27,6 +27,15 @@ void do_attack(world_t *world, entity_t *attack, entity_t *defense)
         play_animation(world, defense, get_anim_id(world, "prota_hurt"), 0);
 }
 
+static void check_player_respawn(entity_t *entity, win_t *window)
+{
+    entity->comp_position.position = entity->comp_position.spawn;
+    if ((entity->mask & COMP_PLAYER) != COMP_PLAYER)
+        return;
+    window->cam.is_moving = true;
+    window->cam.destination = &entity->comp_position.position;
+}
+
 static void next_frame(win_t *window, entity_t *entity, world_t *world)
 {
     comp_stat_t *stat = &entity->comp_stat;
@@ -34,15 +43,10 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
     if (stat->health <= 0.) {
         if (stat->do_respawn) {
             stat->health = stat->max_health;
-            entity->comp_position.position = entity->comp_position.spawn;
-            window->cam.is_moving = true;
-            window->cam.destination = &entity->comp_position.position;
+            check_player_respawn(entity, window);
             return;
         }
-        if ((entity->mask & COMP_RENDER) == COMP_RENDER) {
-            entity->mask = COMP_NONE;
-            sfSprite_destroy(entity->comp_render.sprite);
-        }
+        kill_entity(entity, world);
         return;
     }
     stat->health += stat->health_regen;
