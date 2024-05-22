@@ -36,7 +36,6 @@ static int get_layer_id(map_list_t *map_list, char const *name)
 static bool is_out_of_border(sfFloatRect bounds, sfVector2f offset,
     map_list_t *map_list)
 {
-    printf("map size = %f %f\n", map_list->maps->size.x, map_list->maps->size.y);
     if (offset.y < 0 && bounds.top <= 0 + offset.y)
         return true;
     if (offset.y > 0 &&
