@@ -15,7 +15,7 @@ sfBool is_in_inv(world_t *world, entity_t *entity, int id)
         if (entity->comp_inventory.items[i].type_mask != 0
             && entity->comp_inventory.items[i].id == id) {
             return sfTrue;
-            }
+        }
     }
     return sfFalse;
 }

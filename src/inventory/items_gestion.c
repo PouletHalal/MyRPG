@@ -72,6 +72,7 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
         item->comp_position.position = player->comp_position.position;
         sfSprite_setPosition(item->comp_render.sprite,
         player->comp_position.position);
+        item->comp_position.world = player->comp_position.world;
         return true;
     }
     return false;

@@ -57,6 +57,8 @@ void sys_npc(win_t *window, world_t *world, entity_t *player)
     entity_t *npc = NULL;
 
     for (int i = 0; i < ENTITY_COUNT; ++i) {
+        if (world->entity[i].comp_position.world != world->map_id)
+            continue;
         npc = &world->entity[i];
         if ((npc->mask & COMP_DIALOG) == COMP_DIALOG &&
             (npc->mask & COMP_NPC) == COMP_NPC && npc->comp_npc.need_key_item_to_talk) {
