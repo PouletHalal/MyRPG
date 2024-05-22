@@ -53,9 +53,11 @@ static void next_frame(win_t *window, entity_t *entity)
     update_sprite_direction(entity);
 }
 
-static void player_events(win_t *window, entity_t *entity, world_t *worldt)
+static void player_events(win_t *window, entity_t *entity, world_t *world)
 {
     next_frame(window, entity);
+    if (is_key_pressed(entity, sfKeyR))
+        init_spell(world, entity->comp_position.position, SPELL_DARK);
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 

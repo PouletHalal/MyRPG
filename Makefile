@@ -8,12 +8,15 @@
 SRC	=	src/main.c					\
 		src/start.c					\
 		src/animation.c				\
+		src/memory.c				\
 		src/sys_render.c			\
 		src/sys_input_and_event.c	\
 		src/position/sys_position.c		\
 		src/position/vectors.c	\
 		src/stats/sys_stat.c	\
 		src/sys_mob.c	\
+		src/spell/sys_spell.c	\
+		src/spell/init_spell.c	\
 		src/camera/view.c	\
 		src/camera/camera_movements.c	\
 		src/error_handling/parsing_handling.c	\

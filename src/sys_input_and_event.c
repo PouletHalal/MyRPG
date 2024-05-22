@@ -21,7 +21,7 @@ sfBool is_key_down(entity_t *entity, sfKeyCode code)
     return entity->comp_input.key_down[code];
 }
 
-static void spawn_entity(world_t *world)
+void spawn_entity(world_t *world)
 {
     int player = find_comp(world, COMP_PLAYER);
     sfVector2f new_pos = world->entity[player].comp_position.position;

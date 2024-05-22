@@ -40,6 +40,7 @@ void refresh_world(world_t *world, sfClock *clock,
     sys_player(window, world);
     sys_render(world);
     sys_stat(world);
+    sys_spell(world);
 }
 
 void render_window(win_t *window, world_t *world)

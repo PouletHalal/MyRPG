@@ -28,7 +28,8 @@ static win_t *create_win(void)
     win_t *window = malloc(sizeof(win_t));
     sfVideoMode mode = {WIDTH, HEIGHT, 32};
 
-    window->window = sfRenderWindow_create(mode, "SFML window", sfClose | sfResize, NULL);
+    window->window = sfRenderWindow_create(mode, "SFML window",
+        sfClose | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
     return window;
@@ -54,7 +55,8 @@ static int init_empty_world(world_t *world)
     world->sound_list = sound_list;
     world->map_id = INTRO;
     for (int i = 0; i < ANIM_END; ++i)
-        world->texture_list[i] = sfTexture_createFromFile(animation_list[i].filename, NULL);
+        world->texture_list[i] = sfTexture_createFromFile(
+            animation_list[i].filename, NULL);
     for (int i = 0; i < NB_KEYS; ++i) {
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
@@ -76,7 +78,8 @@ int main(void)
         return close_and_return(world, window, 84);
     srand(time(NULL));
     init_all(window, world);
-    while (sfRenderWindow_isOpen(window->window)) {
+    init_mob(world, ANIM_MOB_RUN, (sfVector2f){200, 200});
+    while (sfRenderWindow_isOpen(window->window)){
         refresh_world(world, clock, window);
         render_window(window, world);
         refresh_sounds(world, clock);

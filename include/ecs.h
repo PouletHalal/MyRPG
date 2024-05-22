@@ -13,6 +13,7 @@
     #include <stdio.h>
     #include "maps.h"
     #include "sounds.h"
+    #include "spell.h"
 
     #define ENTITY_COUNT 10000
     #define NB_KEYS 120
@@ -40,6 +41,7 @@ enum comp_list {
     COMP_DIALOG = 1 << 7,
     COMP_STAT = 1 << 8,
     COMP_SOUND = 1 << 9,
+    COMP_SPELL = 1 << 10,
 };
 
 enum anim_list {
@@ -55,6 +57,7 @@ enum anim_list {
     ANIM_INTRO,
     ANIM_BOY_IDLE,
     ANIM_BOY_TALK,
+    ANIM_SPELL_DARK,
     ANIM_END,
 };
 
@@ -93,8 +96,9 @@ static const animation_t animation_list[] = {
         {1., 1.}, 10},
     {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
         {1., 1.}, 10},
-/*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
+    {ANIM_SPELL_DARK, "effect/dark.png", {0, 0, 40, 32}, 10, {40, 32},
+        {3., 3.}, 5},
+/*  {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
     {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
     {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
     {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
@@ -204,7 +208,24 @@ typedef struct comp_stat_s {
     double defense;
     size_t clock;
     size_t invinsibility_frames;
+    effect_t effect[20];
 } comp_stat_t;
+
+typedef struct comp_spell_s {
+    enum anim_list index;
+    enum target target;
+    enum move_type move_type;
+    float damage;
+    float duration;
+    float speed;
+    animation_t *animation;
+    memory_t *memory;
+    // effect_t *effect;
+} comp_spell_t;
+
+static const comp_spell_t spell_list[] = {
+    {ANIM_SPELL_DARK, ALL_ENEMY, DIRECT, 5, 80, 8, NULL, NULL},
+};
 
 typedef struct entity_s {
     int mask;
@@ -218,6 +239,7 @@ typedef struct entity_s {
     comp_dialog_t comp_dialog;
     comp_input_t comp_ui;
     comp_stat_t comp_stat;
+    comp_spell_t comp_spell;
 } entity_t;
 
 typedef struct world_s {
@@ -230,6 +252,7 @@ typedef struct world_s {
     sfBool key_down[NB_KEYS];
 } world_t;
 
+void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr);
 void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
 void init_comp_portal(entity_t *entity, char **split);
@@ -243,8 +266,14 @@ void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
 void sys_stat(world_t *world);
 void sys_mob(world_t *world);
 void sys_render(world_t *world);
+void sys_spell(world_t *world);
 
 void refresh_sounds(world_t *world, sfClock *clock);
 bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
+entity_t *get_closest(entity_t *entity, world_t *world);
+void follow_enemy(entity_t *spell, entity_t *enemy);
+void add_to_memory(memory_t **memory, entity_t *entity);
+bool is_in_memory(memory_t **start_memory, entity_t *entity);
+void free_memory(memory_t *memory);
 
 #endif /* !ECS_H_ */
