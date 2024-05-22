@@ -22,6 +22,7 @@
 
     #define MAX_DIALOGS 5
     #define MAX_VECTOR 10
+    #define MAX_EFFECT 10
 
 enum map_ids {
     MAIN_WORLD,
@@ -208,7 +209,9 @@ typedef struct comp_stat_s {
     double defense;
     size_t clock;
     size_t invinsibility_frames;
-    effect_t effect[20];
+    effect_t *effect[MAX_EFFECT];
+    int effect_duration[MAX_EFFECT];
+    int effect_tick_cooldown[MAX_EFFECT];
 } comp_stat_t;
 
 typedef struct comp_spell_s {
@@ -218,13 +221,13 @@ typedef struct comp_spell_s {
     float damage;
     float duration;
     float speed;
+    enum effect effect_index;
     animation_t *animation;
     memory_t *memory;
-    // effect_t *effect;
 } comp_spell_t;
 
 static const comp_spell_t spell_list[] = {
-    {ANIM_SPELL_DARK, ALL_ENEMY, DIRECT, 5, 80, 8, NULL, NULL},
+    {ANIM_SPELL_DARK, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
 
 typedef struct entity_s {
@@ -275,5 +278,8 @@ void follow_enemy(entity_t *spell, entity_t *enemy);
 void add_to_memory(memory_t **memory, entity_t *entity);
 bool is_in_memory(memory_t **start_memory, entity_t *entity);
 void free_memory(memory_t *memory);
+void spawn_entity(world_t *world);
+void add_effect(entity_t *entity, enum effect effect_index);
+void loop_effect(entity_t *entity);
 
 #endif /* !ECS_H_ */

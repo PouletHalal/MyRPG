@@ -40,15 +40,17 @@ enum effect_type {
 typedef struct effect_s {
     enum effect_type effect_type;
     int value;
-    int tick_cooldown;
+    int base_tick_cooldown;
     int duration;
 } effect_t;
 
 enum effect {
+    NO_EFFECT,
     EFFECT_BURN,
 };
 
 static const effect_t effect_list[] = {
+    {0},
     {DAMAGE, 5, 10, 40},
 };
 

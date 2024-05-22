@@ -15,6 +15,7 @@ SRC	=	src/main.c					\
 		src/position/vectors.c	\
 		src/stats/sys_stat.c	\
 		src/sys_mob.c	\
+		src/spell/effect.c		\
 		src/spell/sys_spell.c	\
 		src/spell/init_spell.c	\
 		src/camera/view.c	\

@@ -72,6 +72,7 @@ static void follow_closest(entity_t *entity, world_t *world)
 
 static void destroy_spell(entity_t *entity, world_t *world)
 {
+    free_memory(entity->comp_spell.memory);
     if ((entity->mask & COMP_RENDER) == COMP_RENDER)
         sfSprite_destroy(entity->comp_render.sprite);
     entity->mask = COMP_NONE;
@@ -98,6 +99,8 @@ static void next_frame(entity_t *entity, world_t *world)
             || is_in_memory(&entity->comp_spell.memory, &world->entity[i]))
             continue;
         world->entity[i].comp_stat.health -= c_spell->damage;
+        if (entity->comp_spell.effect_index != NO_EFFECT)
+            add_effect(&world->entity[i], entity->comp_spell.effect_index);
         add_to_memory(&entity->comp_spell.memory, &world->entity[i]);
         if (!is_piercing(entity))
             return destroy_spell(entity, world);

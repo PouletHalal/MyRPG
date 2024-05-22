@@ -22,14 +22,24 @@ void do_attack(entity_t *attack, entity_t *defense)
     defense->comp_stat.clock = defense->comp_stat.invinsibility_frames;
 }
 
+void respawn_entity(entity_t *entity)
+{
+    comp_stat_t *stat = &entity->comp_stat;
+
+    stat->health = stat->max_health;
+    entity->comp_position.position = entity->comp_position.spawn;
+    for (int i = 0; i < MAX_EFFECT; i++)
+        stat->effect[i] = NULL;
+}
+
 static void next_frame(entity_t *entity, world_t *world)
 {
     comp_stat_t *stat = &entity->comp_stat;
 
+    loop_effect(entity);
     if (stat->health <= 0.) {
         if (stat->do_respawn) {
-            stat->health = stat->max_health;
-            entity->comp_position.position = entity->comp_position.spawn;
+            respawn_entity(entity);
             return;
         }
         if ((entity->mask & COMP_RENDER) == COMP_RENDER) {
