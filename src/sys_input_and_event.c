@@ -21,30 +21,44 @@ sfBool is_key_down(entity_t *entity, sfKeyCode code)
     return entity->comp_input.key_down[code];
 }
 
-void spawn_entity(world_t *world)
+static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
 {
-    int player = find_comp(world, COMP_PLAYER);
-    sfVector2f new_pos = world->entity[player].comp_position.position;
-    sfVector2f offset = {-50 + rand() % 100, -50 + rand() % 100};
+    sfEvent *event = &window->event;
 
-    if (offset.x < 20 && offset.x > -20)
-        offset.x += 100;
-    new_pos.x += offset.x;
-    new_pos.y += offset.y;
-    if (world->key_down[sfKeyLControl] && world->key_pressed[sfKeyF]) {
-        init_mob(world, ANIM_MOB_RUN, new_pos);
+    if (event->type == sfEvtMouseButtonPressed) {
+        if (event->mouseButton.button == sfMouseLeft) {
+            player->comp_input.mouse_left_down = true;
+            world->mouse_left_pressed = true;
+        }
+        if (event->mouseButton.button == sfMouseRight) {
+            player->comp_input.mouse_right_down = true;
+            world->mouse_right_pressed = true;
+        }
+    }
+    if (event->type == sfEvtMouseButtonReleased) {
+        player->comp_input.mouse_left_down = false;
+        player->comp_input.mouse_right_down = false;
+        world->mouse_left_pressed = false;
+        world->mouse_right_pressed = false;
     }
 }
 
 static void analyse_events(win_t *window, world_t *world)
 {
     sfEvent *event = &window->event;
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (event->type == sfEvtClosed)
         sfRenderWindow_close(window->window);
-    if (event->type == sfEvtKeyPressed){
+    mouse_inputs(window, world, player);
+    if (event->type == sfEvtKeyPressed && event->key.code != -1){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
+        if (world->key_pressed[sfKeyTab])
+            player->comp_inventory.is_open = !player->comp_inventory.is_open;
+        if (world->key_pressed[sfKeyK])
+            create_item(world, (sfVector2f) {player->comp_position.position.x,
+            player->comp_position.position.y + 50}, rand() % world->item_list.nb_items);
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

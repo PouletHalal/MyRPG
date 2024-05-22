@@ -58,7 +58,6 @@ int set_loop(world_t *world, entity_t *entity, char *args)
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
     entity->comp_dialog.does_loop = GET_BOOL(split[1]);
-    player->comp_position.can_move = !entity->comp_dialog.freeze_player;
     return 0;
 }
 

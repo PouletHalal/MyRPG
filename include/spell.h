@@ -54,4 +54,6 @@ static const effect_t effect_list[] = {
     {DAMAGE, 5, 10, 40},
 };
 
+
+
 #endif /* !PLAYER_H_ */

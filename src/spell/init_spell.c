@@ -20,7 +20,7 @@ void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr)
     *entity = (entity_t){0};
     entity->entity = free;
     init_comp_position(entity, position, world->map_id);
-    init_comp_render(entity, world, spell_list[spell_nbr].index, position);
+    init_comp_render(entity, world, &world->animations[spell_list[spell_nbr].index], position);
     init_comp_hitbox(entity, position);
     entity->mask |= COMP_SPELL;
     entity->comp_hitbox.do_collide = sfFalse;

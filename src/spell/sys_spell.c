@@ -11,6 +11,7 @@
 #include "temp.h"
 #include "rendering.h"
 #include "player.h"
+#include "memory.h"
 
 void follow_enemy(entity_t *spell, entity_t *enemy)
 {
@@ -113,7 +114,6 @@ static void next_frame(entity_t *entity, world_t *world)
 
 void sys_spell(world_t *world)
 {
-    spawn_entity(world);
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_SPELL) == COMP_SPELL)
             next_frame(&world->entity[i], world);

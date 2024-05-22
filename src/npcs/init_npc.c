@@ -29,11 +29,13 @@ static int store_dialog(entity_t *entity, char *line, int id)
 
 static void init_mandatories(entity_t *entity)
 {
+    entity->mask |= COMP_NPC;
     entity->comp_dialog.current_dialog = -1;
     entity->comp_dialog.current_sentence = 0;
     entity->comp_dialog.current_char = 0;
     entity->comp_dialog.substring = NULL;
     entity->comp_dialog.clock = sfClock_create();
+    entity->comp_npc.exclamation_display = true;
 }
 
 int read_dialogs(world_t *world, entity_t *entity, char *filename)

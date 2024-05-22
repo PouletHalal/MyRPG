@@ -10,8 +10,6 @@
 
     #include <SFML/Graphics.h>
     #include <stdbool.h>
-    #include <stdio.h>
-    #include "maps.h"
     #include "sounds.h"
     #include "spell.h"
 
@@ -24,10 +22,20 @@
     #define MAX_VECTOR 10
     #define MAX_EFFECT 10
 
+static const char ANIM_CONF[] = "animations/animations.conf";
+
 enum map_ids {
     MAIN_WORLD,
     HOUSE1,
     INTRO,
+    LIBRARY,
+};
+
+enum hud_list {
+    HUD_NONE = 0,
+    HUD_HEALTHBAR = 1,
+    HUD_PLATE = 1 << 2,
+    HUD_INVENTORY = 1 << 3,
 };
 
 enum comp_list {
@@ -42,7 +50,11 @@ enum comp_list {
     COMP_DIALOG = 1 << 7,
     COMP_STAT = 1 << 8,
     COMP_SOUND = 1 << 9,
-    COMP_SPELL = 1 << 10,
+    COMP_INVENTORY = 1 << 10,
+    COMP_ITEM = 1 << 11,
+    COMP_HUD = 1 << 12,
+    COMP_NPC = 1 << 13,
+    COMP_SPELL = 1 << 14,
 };
 
 enum anim_list {
@@ -59,12 +71,19 @@ enum anim_list {
     ANIM_BOY_IDLE,
     ANIM_BOY_TALK,
     ANIM_SPELL_DARK,
+    ANIM_SMALL_BLUE_POTION,
+    ANIM_MEDIUM_BLUE_POTION,
+    ANIM_BIG_BLUE_POTION,
+    ANIM_SMALL_GREEN_POTION,
+    ANIM_SMALL_RED_POTION,
+    ANIM_HEALTHBAR,
     ANIM_END,
 };
 
 typedef struct animation_s {
     enum anim_list index;
     char *filename;
+    char *name;
     sfIntRect base_text_rect;
     size_t frame_count;
     sfVector2i frame_size;
@@ -72,51 +91,23 @@ typedef struct animation_s {
     int frame_rate;
 } animation_t;
 
-static const animation_t animation_list[] = {
-    {ANIM_PROTA_IDLE, "effect/prota.png", {0, 0, 32, 32}, 2, {32, 32},
-        {0.9, 0.9}, 25},
-    {ANIM_PROTA_RUN, "effect/prota.png", {0, 96, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_JUMP, "effect/prota.png", {0, 160, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_ATTACK, "effect/prota.png", {0, 256, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_DODO, "effect/prota.png", {0, 224, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 10},
-    {ANIM_MOB_RUN, "effect/FDP.png", {0, 192, 192, 192}, 6, {192, 192},
-        {.5, .5}, 5},
-    {ANIM_PORTAL_GREEN, "effect/green_portal.png", {0, 0, 32, 32}, 6, {32, 32},
-        {1., 1.}, 5},
-    {ANIM_BLACKSMITH, "effect/blacksmith.png", {0, 0, 32, 32}, 8, {32, 32},
-        {1, 1}, 15},
-    {ANIM_TRANSPARENT, "effect/transparent.png", {0, 0, 32, 32}, 1, {32, 32},
-        {1., 1.}, 5},
-    {ANIM_INTRO, "effect/intro.png", {0, 0, 1920, 1080}, 1, {1920, 1080},
-        {1., 1.}, 5},
-    {ANIM_BOY_IDLE, "effect/boy.png", {0, 0, 48, 48}, 6, {48, 48},
-        {1., 1.}, 10},
-    {ANIM_BOY_TALK, "effect/boy.png", {0, 448, 16, 16}, 6, {16, 16},
-        {1., 1.}, 10},
-    {ANIM_SPELL_DARK, "effect/dark.png", {0, 0, 40, 32}, 10, {40, 32},
-        {3., 3.}, 5},
-/*  {"effect/FDP.png", {0, 0, 192, 192}, 12, {192, 192}, {1., 1.}, 5},
-    {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
-    {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
-    {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
-    {"effect/effect1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/explo.png", {0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
-    {"effect/explo2.png", {0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
-    {"effect/holy.png", {0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
-    {"effect/ice.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
-    {"effect/Smear1.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/Smear2.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/Smear3.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/thr1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr2.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr3.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
-};
+typedef struct comp_hud_s {
+    int hud_type;
+} comp_hud_t;
+
+typedef struct comp_npc_s {
+    sfBool gives_item;
+    sfBool need_key_item_to_talk;
+    sfBool need_key_item_to_drop;
+    sfBool exclamation_display;
+    sfBool exclamation_end;
+    int gives_item_dialog_id;
+    int gives_item_sentence_id;
+    int key_item_to_talk_id;
+    int key_item_to_drop_id;
+    int item_id;
+    int exclamation_id;
+} comp_npc_t;
 
 typedef struct comp_render_s {
     animation_t *current_animation;
@@ -168,6 +159,9 @@ typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
     sfClock *clock;
+    bool mouse_left_down;
+    bool mouse_right_down;
+    sfVector2f mouse_pos;
     void (*pressed_func[NB_KEYS])();
     void (*down_func[NB_KEYS])();
 } comp_input_t;
@@ -179,12 +173,21 @@ typedef struct comp_portal_s {
     comp_sound_t comp_sound;
 } comp_portal_t;
 
+
+
 typedef struct comp_mob_s {
     bool is_alive;
     bool does_follow;
     double range;
     size_t speed;
+    int anim_id;
     bool does_take_damage;
+    bool does_rand_spawn;
+    double spawn_rate;
+    size_t mob_cap;
+    size_t mob_count;
+    bool is_clone;
+    int clone;
 } comp_mob_t;
 
 typedef struct comp_hitbox_s {
@@ -196,6 +199,7 @@ enum faction {
     FRIENDLY,
     NEUTRAL,
     ENEMY,
+    MAX_FACTION,
 };
 
 typedef struct comp_stat_s {
@@ -207,6 +211,11 @@ typedef struct comp_stat_s {
     sfBool do_respawn;
     double damage;
     double defense;
+    sfBool level_up;
+    double exp_loot;
+    double exp;
+    size_t level;
+    double exp_requiered;
     size_t clock;
     size_t invinsibility_frames;
     effect_t *effect[MAX_EFFECT];
@@ -227,59 +236,7 @@ typedef struct comp_spell_s {
 } comp_spell_t;
 
 static const comp_spell_t spell_list[] = {
-    {ANIM_SPELL_DARK, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
+    {20, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
-
-typedef struct entity_s {
-    int mask;
-    int entity;
-    comp_render_t comp_render;
-    comp_position_t comp_position;
-    comp_input_t comp_input;
-    comp_mob_t comp_mob;
-    comp_hitbox_t comp_hitbox;
-    comp_portal_t comp_portal;
-    comp_dialog_t comp_dialog;
-    comp_input_t comp_ui;
-    comp_stat_t comp_stat;
-    comp_spell_t comp_spell;
-} entity_t;
-
-typedef struct world_s {
-    enum map_ids map_id;
-    map_list_t **map_list;
-    sound_list_t **sound_list;
-    sfTexture *texture_list[ANIM_END];
-    entity_t entity[ENTITY_COUNT];
-    sfBool key_pressed[NB_KEYS];
-    sfBool key_down[NB_KEYS];
-} world_t;
-
-void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr);
-void init_entity(world_t *world, enum anim_list anim_nbr, sfVector2f position);
-void init_mob(world_t *world, enum anim_list anim_nbr, sfVector2f position);
-void init_comp_portal(entity_t *entity, char **split);
-void init_comp_render(entity_t *entity, world_t *world,
-    enum anim_list anim_nbr, sfVector2f position);
-void init_comp_hitbox(entity_t *entity, sfVector2f position);
-void init_comp_mob(entity_t *entity);
-void init_comp_input(entity_t *entity, world_t *world);
-void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
-
-void sys_stat(world_t *world);
-void sys_mob(world_t *world);
-void sys_render(world_t *world);
-void sys_spell(world_t *world);
-
-void refresh_sounds(world_t *world, sfClock *clock);
-bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
-entity_t *get_closest(entity_t *entity, world_t *world);
-void follow_enemy(entity_t *spell, entity_t *enemy);
-void add_to_memory(memory_t **memory, entity_t *entity);
-bool is_in_memory(memory_t **start_memory, entity_t *entity);
-void free_memory(memory_t *memory);
-void spawn_entity(world_t *world);
-void add_effect(entity_t *entity, enum effect effect_index);
-void loop_effect(entity_t *entity);
 
 #endif /* !ECS_H_ */

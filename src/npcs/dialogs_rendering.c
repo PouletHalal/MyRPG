@@ -57,19 +57,16 @@ void display_dialogs(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             player = &world->entity[i];
         if ((world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
             world->entity[i].comp_dialog.is_displayed == true &&
             world->entity[i].comp_dialog.is_finished == false) {
+                player->comp_inventory.is_open = false;
             display_box(window, &world->entity[i]);
             display_txt(window, &world->entity[i]);
             disable_far_dialogs(world, &world->entity[i]);
         }
     }
-    sfRenderWindow_display(window->window);
-    sfRenderWindow_setView(window->window, window->cam.view);
 }
