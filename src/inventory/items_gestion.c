@@ -104,9 +104,9 @@ void item_events(win_t *window, world_t *world, entity_t *entity)
         if (drop_item(window, entity, &world->entity[entity->
         comp_inventory.items[i].id_in_world], i))
             return;
-         if (use_item(window, entity, &world->entity[entity->
-         comp_inventory.items[i].id_in_world], i))
-             return;
+        if (use_item(window, entity, &world->entity[entity->
+        comp_inventory.items[i].id_in_world], i))
+            return;
     }
 }
 
@@ -139,7 +139,8 @@ sfVector2f get_pos_from_slot(entity_t *entity, int slot)
     int slot_size = 19 * 3;
     sfVector2f pos = (sfVector2f){0};
 
-    pos = (sfVector2f){inv_coords[slot].x * 3 + inv_pos.x + slot_size / 2, inv_coords[slot].y * 3 + inv_pos.y + slot_size / 2};
+    pos = (sfVector2f){inv_coords[slot].x * 3 + inv_pos.x + slot_size / 2,
+    inv_coords[slot].y * 3 + inv_pos.y + slot_size / 2};
     return pos;
 }
 
@@ -161,6 +162,9 @@ int get_slot_from_pos(entity_t *entity, sfVector2i mouse_pos)
         && mouse_pos.y <= (inv_coords[i].y * 3 + inv_pos.y + slot_size)))
                 return i;
     }
+    if (mouse_pos.x >= inv_pos.x && mouse_pos.y >= inv_pos.y &&
+    mouse_pos.x <= inv_pos.x + bounds.x && mouse_pos.y <= inv_pos.y + bounds.y)
+        return -2;
     return -1;
 }
 
@@ -185,7 +189,8 @@ void manage_inv_slots(world_t *world, win_t *window, entity_t *entity)
 
             mouse->comp_mouse.item_picked = false;
             mouse->comp_mouse.item_picked_i = 0;
-            } else {
+            }
+            if (slot == -1) {
                 mouse->comp_mouse.item_picked = false;
                 drop_item(window, entity, &world->entity[items[mouse->comp_mouse.item_picked_i].id_in_world], mouse->comp_mouse.item_picked_i);
                 mouse->comp_mouse.item_picked_i = 0;
@@ -193,12 +198,9 @@ void manage_inv_slots(world_t *world, win_t *window, entity_t *entity)
         }
         return;
     }
-    for (int i = 0; i < entity->comp_inventory.size; i++)
-    {
-        if (entity->comp_inventory.items[i].type_mask != 0)
-        {
-            if (is_mouse_over(mouse_pos, &world->entity[items[i].id_in_world]) && world->mouse_left_pressed)
-            {
+    for (int i = 0; i < entity->comp_inventory.size; i++) {
+        if (entity->comp_inventory.items[i].type_mask != 0) {
+            if (is_mouse_over(mouse_pos, &world->entity[items[i].id_in_world]) && world->mouse_left_pressed) {
                 mouse->comp_mouse.item_picked = true;
                 mouse->comp_mouse.item_picked_i = i;
                 entity->comp_inventory.items[i].is_picked = true;
