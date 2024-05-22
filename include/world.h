@@ -59,7 +59,7 @@ void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
 
 void sys_stat(win_t *window, world_t *world);
 void sys_mob(world_t *world, win_t *win);
-void sys_render(world_t *world);
+void sys_render(win_t *window, world_t *world);
 
 void refresh_sounds(world_t *world, sfClock *clock);
 bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);

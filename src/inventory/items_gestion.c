@@ -40,7 +40,7 @@ static bool item_higlighting(win_t *window, world_t *world,
     sfVector2f item_pos = {0};
 
     if ((entity->mask & COMP_INVENTORY) != COMP_INVENTORY ||
-        entity->comp_inventory.is_open == false)
+        entity->comp_inventory.is_open == false || i >= entity->comp_inventory.size)
         return false;
     items = entity->comp_inventory.items;
     if (items[i].type_mask == 0)
@@ -131,7 +131,8 @@ bool item_collision(world_t *world, entity_t *entity)
     for (int i = 0; i < ENTITY_COUNT; i++) {
         if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM &&
             world->entity[i].comp_render.is_visible &&
-            is_close(&world->entity[i], entity, (sfVector2f) {16, 16})) {
+            is_close(&world->entity[i], entity, (sfVector2f) {10, 10})) {
+                world->entity[i].comp_render.is_visible = false;
             return add_item_to_inv(entity, &world->entity[i], i);
         }
     }

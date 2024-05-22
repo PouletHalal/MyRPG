@@ -31,4 +31,5 @@ typedef struct window_s {
     sfUint32 style;
 } win_t;
 
+
 #endif /* !WINDOW_H_ */

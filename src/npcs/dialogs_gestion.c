@@ -87,12 +87,11 @@ static void delete_mark(world_t *world, entity_t *npc)
 {
     int id = 0;
 
-    if (npc->comp_npc.exclamation_id == 0)
+    if (!npc->comp_npc.exclamation_id || !npc->comp_npc.exclamation_display)
         return;
     id = npc->comp_npc.exclamation_id;
     world->entity[id].comp_render.is_visible = false;
-    sfSprite_destroy(world->entity[id].comp_render.sprite);
-    world->entity[id] = (entity_t) {0};
+    npc->comp_npc.exclamation_end = true;
 }
 
 static bool is_first(entity_t *player, entity_t *entity)
@@ -139,8 +138,8 @@ static void give_item(world_t *world, entity_t *npc, entity_t *player)
     if (npc->comp_npc.gives_item_sentence_id !=
         npc->comp_dialog.current_sentence)
         return;
-    create_item(world, player->comp_position.position, npc->comp_npc.item_id);
     npc->comp_npc.gives_item = false;
+    create_item(world, player->comp_position.position, npc->comp_npc.item_id);
 }
 
 void update_dialog(win_t *window, world_t *world, entity_t *entity)

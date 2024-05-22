@@ -19,13 +19,14 @@ void create_item(world_t *world, sfVector2f pos, int item_id)
     entity_t *entity = &world->entity[free_slot];
 
     entity->entity = free_slot;
-    init_comp_position(entity, pos, world->map_id);
-    init_comp_render(entity, world, &world->animations
-    [world->item_list.items[item_id].animation_id], pos);
     entity->mask |= COMP_ITEM;
     entity->mask |= COMP_STAT;
-    entity->comp_stat = world->item_list.items[item_id].stats;
-    entity->comp_item = world->item_list.items[item_id];
+    entity->comp_stat = *(&world->item_list.items[item_id].stats);
+    entity->comp_item = *(&world->item_list.items[item_id]);
+    entity->comp_item.id_in_world = free_slot;
+    init_comp_render(entity, world, &world->animations
+    [world->item_list.items[item_id].animation_id], pos);
+    init_comp_position(entity, pos, world->map_id);
 }
 
 static int get_item_arg(world_t *world, comp_item_t *item, char *line,
@@ -86,8 +87,8 @@ int read_items_conf(world_t *world)
     world->item_list.nb_items = atoi(line);
     if (world->item_list.nb_items <= 0)
         return int_display_and_return(84, 3, "Invalid items nb: ", line, "\n");
-    world->item_list.items = malloc(sizeof(comp_item_t) *
-    world->item_list.nb_items);
+    world->item_list.items = calloc(world->item_list.nb_items,
+        sizeof(comp_item_t));
     for (int item_id = 0; getline(&line, &len, stream) > 0; ++item_id) {
         if (line[strlen(line) - 1] == '\n')
             line[strlen(line) - 1] = '\0';

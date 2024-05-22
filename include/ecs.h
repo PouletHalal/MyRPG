@@ -151,6 +151,8 @@ typedef struct comp_npc_s {
     sfBool gives_item;
     sfBool need_key_item_to_talk;
     sfBool need_key_item_to_drop;
+    sfBool exclamation_display;
+    sfBool exclamation_end;
     int gives_item_dialog_id;
     int gives_item_sentence_id;
     int key_item_to_talk_id;

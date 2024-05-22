@@ -12,9 +12,12 @@ static void place_item(world_t *world, entity_t *entity, int i,
     sfVector2f start)
 {
     sfVector2f item_pos = {0};
-    animation_t *anim = world->entity[entity->comp_inventory.items[i]
-    .id_in_world].comp_render.current_animation;
+    animation_t *anim = NULL;
 
+    if (i >= entity->comp_inventory.size)
+        return;
+    anim = world->entity[entity->comp_inventory.items[i]
+    .id_in_world].comp_render.current_animation;
     item_pos.x = start.x + (i % 6) * (16 + 3) * 3;
     item_pos.y = start.y + (i / 6) * (16 + 3) * 3;
     world->entity[entity->comp_inventory.items[i].id_in_world].

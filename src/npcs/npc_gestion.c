@@ -15,7 +15,6 @@ static bool need_item(world_t *world, entity_t *npc, entity_t *player)
     if (npc->comp_npc.need_key_item_to_talk == false)
         return true;
     if (is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
-        printf("I have the item\n");
         return true;
     }
     return false;
