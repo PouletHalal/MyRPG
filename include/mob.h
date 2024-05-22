@@ -28,6 +28,7 @@ int set_spawn_rate(world_t *world, entity_t *entity, char *args);
 int set_does_rand(world_t *world, entity_t *entity, char *args);
 void spawn_copy(entity_t *entity, world_t *world, double angle, win_t *window);
 int set_mob_cap(world_t *world, entity_t *entity, char *args);
+int set_exp_loot(world_t *world, entity_t *entity, char *args);
 
 static const ptr_func_t MOB_ARGS[] = {
     {"pos", &set_mob_pos},
@@ -48,6 +49,7 @@ static const ptr_func_t MOB_ARGS[] = {
     {"spawn_rate", &set_spawn_rate},
     {"rand_spawn", &set_does_rand},
     {"mob_cap", &set_mob_cap},
+    {"exp_loot", &set_exp_loot},
     {NULL, NULL},
 };
 
