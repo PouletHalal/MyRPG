@@ -48,7 +48,7 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
 {
     comp_stat_t *stat = &entity->comp_stat;
 
-    if (stat->health <= 0.) {
+    if (stat->health <= 0. && (entity->mask & COMP_ITEM) != COMP_ITEM) {
         if (stat->do_respawn) {
             stat->health = stat->max_health;
             check_player_respawn(entity, window);

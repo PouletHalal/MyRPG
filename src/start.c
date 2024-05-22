@@ -29,6 +29,7 @@ void init_entity(world_t *world, animation_t *anim, sfVector2f position)
     init_comp_hitbox(entity, position);
     init_comp_input(entity, world);
     init_inventory(world, entity, 18);
+    entity->comp_position.can_move = true; 
 }
 
 void init_mob(world_t *world, animation_t *anim, sfVector2f position)

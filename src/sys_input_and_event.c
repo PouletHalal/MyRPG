@@ -21,18 +21,6 @@ sfBool is_key_down(entity_t *entity, sfKeyCode code)
     return entity->comp_input.key_down[code];
 }
 
-static void spawn_entity(world_t *world)
-{
-    int player = find_comp(world, COMP_PLAYER);
-    sfVector2f new_pos = world->entity[player].comp_position.position;
-    sfVector2f offset = {-50 + rand() % 100, -50 + rand() % 100};
-
-    if (offset.x < 20 && offset.x > -20)
-        offset.x += 100;
-    new_pos.x += offset.x;
-    new_pos.y += offset.y;
-}
-
 static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
 {
     sfEvent *event = &window->event;
@@ -70,7 +58,7 @@ static void analyse_events(win_t *window, world_t *world)
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
         if (world->key_pressed[sfKeyK])
             create_item(world, (sfVector2f) {player->comp_position.position.x,
-            player->comp_position.position.y + 50});
+            player->comp_position.position.y + 50}, rand() % world->item_list.nb_items);
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

@@ -33,6 +33,7 @@ typedef struct entity_s {
     comp_inventory_t comp_inventory;
     comp_item_t comp_item;
     comp_hud_t comp_hud;
+    comp_npc_t comp_npc;
 } entity_t;
 
 typedef struct world_s {
@@ -61,7 +62,7 @@ void init_comp_position(entity_t *entity, sfVector2f position, int world_id);
 
 void sys_stat(win_t *window, world_t *world);
 void sys_mob(world_t *world, win_t *win);
-void sys_render(world_t *world);
+void sys_render(win_t *window, world_t *world);
 
 void refresh_sounds(world_t *world, sfClock *clock);
 bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold);
@@ -72,6 +73,8 @@ bool item_collision(world_t *world, entity_t *entity);
 int read_items_conf(world_t *world);
 void read_animconf(world_t *world);
 int get_anim_id(world_t *world, char *name);
-void create_item(world_t *world, sfVector2f pos);
+void create_item(world_t *world, sfVector2f pos, int item_id);
+int get_item_id(item_list_t items, char const *name);
+sfBool is_in_inv(world_t *world, entity_t *entity, int id);
 
 #endif /* !WORLD_H_ */

@@ -66,7 +66,8 @@ static void change_world(world_t *world, entity_t *entity, entity_t *portal)
     portal->comp_portal.dest_pos;
     entity->comp_position.world = world->map_id;
     sfMusic_play(world->map_list[world->map_id]->music);
-    sfSound_play(portal->comp_portal.comp_sound.sound.sound);
+    if (portal->comp_portal.comp_sound.sound.sound != NULL)
+        sfSound_play(portal->comp_portal.comp_sound.sound.sound);
 }
 
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],
@@ -160,8 +161,6 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
 
 void sys_position(world_t *world, win_t *window)
 {
-    if (window->cam.is_moving)
-        return;
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_POSITION) == COMP_POSITION
         && is_in_cam_range(window, &world->entity[i]))

@@ -33,14 +33,16 @@ void draw_hitbox(win_t *window, entity_t *entity)
 void refresh_world(world_t *world, sfClock *clock,
     win_t *window)
 {
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
         return;
     sfClock_restart(clock);
     sys_input_and_event(world, window);
+    sys_player(window, world, player);
+    sys_npc(window, world, player);
     sys_mob(world, window);
     sys_position(world, window);
-    sys_player(window, world);
-    sys_render(world);
+    sys_render(window, world);
     sys_stat(window, world);
 }
 

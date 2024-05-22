@@ -6,7 +6,18 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 #include "temp.h"
+
+int get_item_id(item_list_t items, char const *name)
+{
+    for (int i = 0; i < items.nb_items; i++) {
+        if (strcmp(items.items[i].tooltip.name, name) == 0) {
+            return i;
+        }
+    }
+    return 0;
+}
 
 static bool is_mouse_over(sfVector2i pos, entity_t *entity)
 {
@@ -29,7 +40,7 @@ static bool item_higlighting(win_t *window, world_t *world,
     sfVector2f item_pos = {0};
 
     if ((entity->mask & COMP_INVENTORY) != COMP_INVENTORY ||
-        entity->comp_inventory.is_open == false)
+        entity->comp_inventory.is_open == false || i >= entity->comp_inventory.size)
         return false;
     items = entity->comp_inventory.items;
     if (items[i].type_mask == 0)
@@ -51,7 +62,8 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
 
     if (player->comp_input.mouse_right_down == false)
         return false;
-    if (item->comp_item.type_mask == 0)
+    if (item->comp_item.type_mask == 0 ||
+        (item->comp_item.type_mask & ITEM_KEY) == ITEM_KEY)
         return false;
     if (is_mouse_over(mouse_pos, item)) {
         item->comp_render.is_visible = true;
@@ -60,6 +72,7 @@ static bool drop_item(win_t *window, entity_t *player, entity_t *item, int i)
         item->comp_position.position = player->comp_position.position;
         sfSprite_setPosition(item->comp_render.sprite,
         player->comp_position.position);
+        item->comp_position.world = player->comp_position.world;
         return true;
     }
     return false;
@@ -118,7 +131,8 @@ bool item_collision(world_t *world, entity_t *entity)
     for (int i = 0; i < ENTITY_COUNT; i++) {
         if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM &&
             world->entity[i].comp_render.is_visible &&
-            is_close(&world->entity[i], entity, (sfVector2f) {16, 16})) {
+            is_close(&world->entity[i], entity, (sfVector2f) {10, 10})) {
+                world->entity[i].comp_render.is_visible = false;
             return add_item_to_inv(entity, &world->entity[i], i);
         }
     }
