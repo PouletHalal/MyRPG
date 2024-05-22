@@ -13,15 +13,11 @@
 #include "dialogs.h"
 #include "hud.h"
 
-static void display_exclamation_mark(world_t *world, entity_t *player,
-    entity_t *npc)
+static void init_mark(world_t *world, entity_t *player, entity_t *npc)
 {
-    int free_slot = find_empty(world);
     entity_t *mark = NULL;
+    int free_slot = find_empty(world);
 
-    if (!is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id) ||
-        npc->comp_npc.exclamation_id != 0)
-        return;
     if (free_slot == -1)
         return;
     mark = &world->entity[free_slot];
@@ -33,6 +29,27 @@ static void display_exclamation_mark(world_t *world, entity_t *player,
         npc->comp_position.position.y - 30}, world->map_id);
     mark->comp_position.can_move = false;
     mark->comp_render.is_visible = true;
+}
+
+static void display_exclamation_mark(world_t *world, entity_t *player,
+    entity_t *npc)
+{
+    if (npc->comp_npc.exclamation_id != 0 &&
+        !is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
+            world->entity[npc->comp_npc.exclamation_id].comp_render.is_visible
+            = false;
+        return;
+    }
+    if (npc->comp_npc.exclamation_id != 0 &&
+        is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
+            world->entity[npc->comp_npc.exclamation_id].comp_render.is_visible
+            = true;
+        return;
+    }
+    if (npc->comp_npc.exclamation_id == 0 && !is_in_inv(world, player,
+        npc->comp_npc.key_item_to_talk_id))
+        return;
+    init_mark(world, player, npc);
 }
 
 void sys_npc(win_t *window, world_t *world, entity_t *player)
