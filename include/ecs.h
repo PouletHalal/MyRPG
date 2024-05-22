@@ -247,6 +247,11 @@ typedef struct comp_stat_s {
     sfBool do_respawn;
     double damage;
     double defense;
+    sfBool level_up;
+    double exp_loot;
+    double exp;
+    size_t level;
+    double exp_requiered;
     size_t clock;
     size_t invinsibility_frames;
 } comp_stat_t;

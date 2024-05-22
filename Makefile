@@ -33,6 +33,7 @@ SRC	=	src/animation.c				\
 		src/mob/mob_parsing.c	\
 		src/mob/mob_parsing2.c	\
 		src/mob/mob_parsing3.c	\
+		src/mob/mob_parsing4.c	\
 		src/mob/spawn_mob.c	\
 		src/mob/sys_mob.c	\
 		src/npcs/dialogs_gestion.c	\
