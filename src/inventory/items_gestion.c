@@ -50,8 +50,6 @@ static bool item_higlighting(win_t *window, world_t *world,
 
 bool drop_item(entity_t *player, entity_t *item, sfVector2i mouse_pos, int i)
 {
-    //if (!player->comp_input.key_pressed[sfKeyA])
-    //    return false;
     if (item->comp_item.type_mask == 0)
         return false;
     if (is_mouse_over(mouse_pos, item)) {
@@ -100,14 +98,14 @@ void item_events(win_t *window, world_t *world, entity_t *entity)
         entity->comp_inventory.is_open == false)
         return;
     for (int i = 0; i < entity->comp_inventory.size; i++) {
+        if ((world->key_pressed[sfKeyA]) && (drop_item(entity, &world->entity[
+                entity->comp_inventory.items[i].id_in_world], mouse_pos, i)))
+                    return;
+        if (use_item(window, entity, &world->entity[entity->
+        comp_inventory.items[i].id_in_world], i))
+            return;
         if (item_higlighting(window, world, entity, i))
             return;
-        //if (drop_item(entity, &world->entity[
-        //    entity->comp_inventory.items[i].id_in_world], mouse_pos, i))
-        //    return;
-        //if (use_item(window, entity, &world->entity[entity->
-        //comp_inventory.items[i].id_in_world], i))
-        //    return;
     }
 }
 

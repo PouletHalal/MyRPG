@@ -75,32 +75,45 @@ static void drag_item_inv(entity_t *entity, entity_t *mouse, int slot)
 {
     comp_item_t temp = (comp_item_t) {0};
 
-    if (slot >= 0) {
-        entity->comp_inventory.items[
-            mouse->comp_mouse.item_picked_i].is_picked = false;
-        temp = entity->comp_inventory.items[mouse->comp_mouse.item_picked_i];
-        entity->comp_inventory.items[mouse->comp_mouse.item_picked_i] =
-        entity->comp_inventory.items[slot];
-        entity->comp_inventory.items[slot] = temp;
-        mouse->comp_mouse.item_picked = false;
-        mouse->comp_mouse.item_picked_i = 0;
-    }
+    entity->comp_inventory.items[
+        mouse->comp_mouse.item_picked_i].is_picked = false;
+    temp = entity->comp_inventory.items[mouse->comp_mouse.item_picked_i];
+    entity->comp_inventory.items[mouse->comp_mouse.item_picked_i] =
+    entity->comp_inventory.items[slot];
+    entity->comp_inventory.items[slot] = temp;
+    mouse->comp_mouse.item_picked = false;
+    mouse->comp_mouse.item_picked_i = 0;
 }
 
 static void drop_item_inv(entity_t *entity, world_t *world,
-    sfVector2i mouse_pos, int slot)
+    sfVector2i mouse_pos, entity_t *mouse)
 {
-    int mouse_id = find_comp(world, COMP_MOUSE);
-    entity_t *mouse = &world->entity[mouse_id];
     comp_item_t *items = entity->comp_inventory.items;
 
-    if (slot == -1) {
-        mouse->comp_mouse.item_picked = false;
-        drop_item(entity, &world->entity[items[
-            mouse->comp_mouse.item_picked_i].id_in_world], mouse_pos,
-            mouse->comp_mouse.item_picked_i);
-        mouse->comp_mouse.item_picked_i = -1;
+    mouse->comp_mouse.item_picked = false;
+    drop_item(entity, &world->entity[items[
+        mouse->comp_mouse.item_picked_i].id_in_world], mouse_pos,
+        mouse->comp_mouse.item_picked_i);
+    mouse->comp_mouse.item_picked_i = -1;
+}
+
+void manage_picked_item(world_t *world, entity_t *entity,
+    sfVector2i mouse_pos, entity_t *mouse)
+{
+    int slot = get_slot_from_pos(entity, mouse_pos);
+
+    if (world->key_pressed[sfKeyA]) {
+        drop_item_inv(entity, world, mouse_pos, mouse);
+        return;
     }
+    if (world->mouse_left_pressed) {
+        world->mouse_left_pressed = false;
+        if (slot >= 0)
+            drag_item_inv(entity, mouse, slot);
+        if (slot == -1)
+            drop_item_inv(entity, world, mouse_pos, mouse);
+    }
+    return;
 }
 
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity)
@@ -109,16 +122,11 @@ void manage_inv_slots(world_t *world, win_t *window, entity_t *entity)
     entity_t *mouse = &world->entity[mouse_id];
     sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window->window);
     comp_item_t *items = entity->comp_inventory.items;
-    int slot = get_slot_from_pos(entity, mouse_pos);
 
     if (mouse->comp_mouse.item_picked) {
         world->entity[items[mouse->comp_mouse.item_picked_i].id_in_world]
         .comp_position.position = (sfVector2f){mouse_pos.x, mouse_pos.y};
-        if (world->mouse_left_pressed) {
-            world->mouse_left_pressed = false;
-            drag_item_inv(entity, mouse, slot);
-            drop_item_inv(entity, world, mouse_pos, slot);
-        }
+        manage_picked_item(world, entity, mouse_pos, mouse);
         return;
     }
     pick_item(world, entity, mouse_pos, mouse);
