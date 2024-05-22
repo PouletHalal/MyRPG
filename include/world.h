@@ -66,5 +66,6 @@ bool add_item_to_inv(entity_t *entity, entity_t *item, int i);
 bool item_collision(world_t *world, entity_t *entity);
 int read_items_conf(world_t *world);
 void create_item(world_t *world, sfVector2f pos);
+sfVector2f get_pos_from_slot(entity_t *entity, int slot);
 
 #endif /* !WORLD_H_ */

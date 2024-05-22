@@ -87,7 +87,7 @@ static int init_empty_world(world_t *world)
         world->key_pressed[i] = sfFalse;
     }
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        world->entity[i] = (entity_t) {0};
+        world->entity[i] = (entity_t){0};
     if (world->map_list == NULL || sound_list == NULL)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;

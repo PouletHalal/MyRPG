@@ -7,12 +7,8 @@
 
 #include <stdio.h>
 #include "temp.h"
-
-sfVector2i inv_coords[18] = {
-    {84, 8}, {103, 8}, {122, 8}, {141, 8}, {160, 8}, {179, 8},
-    {84, 27}, {103, 27}, {122, 27}, {141, 27}, {160, 27}, {179, 27},
-    {84, 46}, {103, 46}, {122, 46}, {141, 46}, {160, 46}, {179, 46}
-};
+#include "player.h"
+#include "inventory.h"
 
 static bool is_mouse_over(sfVector2i pos, entity_t *entity)
 {
@@ -87,17 +83,11 @@ static void update_stat(entity_t *player, entity_t *item)
 
 bool use_item(win_t *window, entity_t *player, entity_t *item, int i)
 {
-    if (!player->comp_input.mouse_left_down || !item->comp_item.type_mask ||
+    if (!player->comp_input.mouse_right_down || !item->comp_item.type_mask ||
         !is_mouse_over(sfMouse_getPositionRenderWindow(window->window), item)
         || (item->comp_item.type_mask & ITEM_CONSUMABLE) != ITEM_CONSUMABLE)
         return false;
-    // printf("player health BEFORE = %f\n", player->comp_stat.health);
-    // printf("player defense BEFORE = %f\n", player->comp_stat.defense);
-    // printf("player attack BEFORE = %f\n", player->comp_stat.damage);
     update_stat(player, item);
-    // printf("player health AFTER = %f\n", player->comp_stat.health);
-    // printf("player defense AFTER = %f\n", player->comp_stat.defense);
-    // printf("player attack AFTER = %f\n", player->comp_stat.damage);
     player->comp_inventory.items[i].type_mask = 0;
     item->comp_render.is_visible = false;
     return true;
@@ -114,9 +104,9 @@ void item_events(win_t *window, world_t *world, entity_t *entity)
         if (drop_item(window, entity, &world->entity[entity->
         comp_inventory.items[i].id_in_world], i))
             return;
-        // if (use_item(window, entity, &world->entity[entity->
-        // comp_inventory.items[i].id_in_world], i))
-        //     return;
+         if (use_item(window, entity, &world->entity[entity->
+         comp_inventory.items[i].id_in_world], i))
+             return;
     }
 }
 
@@ -137,9 +127,24 @@ bool item_collision(world_t *world, entity_t *entity)
     return false;
 }
 
-int get_slot_from_mouse_pos(win_t *window, entity_t *entity)
+sfVector2f get_pos_from_slot(entity_t *entity, int slot)
 {
-    sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window->window);
+    sfVector2i bounds = (sfVector2i){sfSprite_getGlobalBounds(
+        entity->comp_inventory.sprite.sprite).width,
+        sfSprite_getGlobalBounds(entity->comp_inventory.sprite.sprite).height};
+    sfVector2i inv_pos = (sfVector2i){sfSprite_getPosition(
+        entity->comp_inventory.sprite.sprite).x - (bounds.x / 2),
+        sfSprite_getPosition(entity->comp_inventory.sprite.sprite).y
+        - (bounds.y / 2)};
+    int slot_size = 19 * 3;
+    sfVector2f pos = (sfVector2f){0};
+
+    pos = (sfVector2f){inv_coords[slot].x * 3 + inv_pos.x + slot_size / 2, inv_coords[slot].y * 3 + inv_pos.y + slot_size / 2};
+    return pos;
+}
+
+int get_slot_from_pos(entity_t *entity, sfVector2i mouse_pos)
+{
     sfVector2i bounds = (sfVector2i){sfSprite_getGlobalBounds(
         entity->comp_inventory.sprite.sprite).width,
         sfSprite_getGlobalBounds(entity->comp_inventory.sprite.sprite).height};
@@ -149,7 +154,7 @@ int get_slot_from_mouse_pos(win_t *window, entity_t *entity)
         - (bounds.y / 2)};
     int slot_size = 19 * 3;
 
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 28; i++) {
         if ((mouse_pos.x >= (inv_coords[i].x * 3+ inv_pos.x)
         && mouse_pos.x <= (inv_coords[i].x * 3+ inv_pos.x + slot_size))
         && (mouse_pos.y >= (inv_coords[i].y * 3+ inv_pos.y)
@@ -166,7 +171,7 @@ void manage_inv_slots(world_t *world, win_t *window, entity_t *entity)
     sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window->window);
     comp_item_t *items = entity->comp_inventory.items;
     comp_item_t temp = (comp_item_t) {0};
-    int slot = get_slot_from_mouse_pos(window, entity);
+    int slot = get_slot_from_pos(entity, mouse_pos);
 
     if (mouse->comp_mouse.item_picked) {
         world->entity[items[mouse->comp_mouse.item_picked_i].id_in_world].comp_position.position = (sfVector2f){mouse_pos.x, mouse_pos.y};

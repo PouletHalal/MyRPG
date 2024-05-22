@@ -7,14 +7,12 @@
 
 #include "temp.h"
 #include "player.h"
+#include "inventory.h"
 
-static void place_item(world_t *world, entity_t *entity, int i,
-    sfVector2f start)
+static void place_item(world_t *world, entity_t *entity, int i)
 {
-    sfVector2f item_pos = {0};
+    sfVector2f item_pos = get_pos_from_slot(entity, i);
 
-    item_pos.x = start.x + (i % 6) * (16 + 3) * 3;
-    item_pos.y = start.y + (i / 6) * (16 + 3) * 3;
     world->entity[entity->comp_inventory.items[i].id_in_world].
     comp_position.position = item_pos;
     world->entity[entity->comp_inventory.items[i].id_in_world].
@@ -33,16 +31,11 @@ static void display_items(win_t *window, world_t *world, entity_t *entity)
     texture);
     sfVector2f inv_pos = sfSprite_getPosition(entity->comp_inventory.sprite.
     sprite);
-    sfVector2f start =
-    {
-        inv_pos.x + 92 * 3 - (inv_size.x / 2) * 3,
-        inv_pos.y + 16 * 3 - (inv_size.y / 2) * 3
-    };
 
     for (int i = 0; i < entity->comp_inventory.size; i++) {
         if (entity->comp_inventory.items[i].type_mask != 0) {
             if (!entity->comp_inventory.items[i].is_picked)
-                place_item(world, entity, i, start);
+                place_item(world, entity, i);
             sfRenderWindow_drawSprite(window->window,
             world->entity[entity->comp_inventory.items[i].id_in_world].
             comp_render.sprite, NULL);

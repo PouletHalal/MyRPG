@@ -12,6 +12,7 @@
     #include "items.h"
 
 
+
 enum EQUIPEMENTS {
     EQUIP_NONE = 0,
     HELMET = 1 << 0,
@@ -63,6 +64,13 @@ static const enum_names_t ITEM_TYPES_NAMES[] = {
     {0, NULL}
 };
 
+static const sfVector2i inv_coords[28] = {
+    {84, 8}, {103, 8}, {122, 8}, {141, 8}, {160, 8}, {179, 8},
+    {84, 27}, {103, 27}, {122, 27}, {141, 27}, {160, 27}, {179, 27},
+    {84, 46}, {103, 46}, {122, 46}, {141, 46}, {160, 46}, {179, 46},
+    {8, 74}, {27, 74}, {46, 74}, {65, 74}, {84, 74}, {103, 74}, {122, 74}, {141, 74}, {160, 74}, {179, 74}
+};
+
 typedef struct item_list_s {
     int nb_items;
     comp_item_t *items;
@@ -74,6 +82,5 @@ typedef struct comp_inventory_s {
     comp_item_t *items;
     sprite_t sprite;
 } comp_inventory_t;
-
 
 #endif /* !INVENTORY_H_ */
