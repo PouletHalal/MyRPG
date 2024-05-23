@@ -62,8 +62,6 @@ static bool item_higlighting(win_t *window, world_t *world,
 
 bool drop_item(entity_t *player, entity_t *item, sfVector2i mouse_pos, int i)
 {
-    if (player->comp_input.mouse_right_down == false)
-        return false;
     if (item->comp_item.type_mask == 0 ||
         (item->comp_item.type_mask & ITEM_KEY) == ITEM_KEY)
         return false;
