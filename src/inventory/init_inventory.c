@@ -28,6 +28,8 @@ int init_inventory(world_t *world, entity_t *entity, int size)
     sfSprite_setTexture(entity->comp_inventory.sprite.sprite,
     entity->comp_inventory.sprite.texture, sfTrue);
     entity->comp_inventory.items = malloc(sizeof(entity_t) * size);
+    entity->comp_inventory.base_rect = sfSprite_getTextureRect(entity->comp_inventory.sprite.sprite);
+    entity->comp_inventory.scale = (sfVector2f){3, 3};
     bounds = sfSprite_getGlobalBounds(entity->comp_inventory.sprite.sprite);
     sfSprite_setOrigin(entity->comp_inventory.sprite.sprite,
     (sfVector2f) {bounds.width / 2, bounds.height / 2});

@@ -82,6 +82,9 @@ typedef struct comp_inventory_s {
     bool is_open;
     comp_item_t *items;
     sprite_t sprite;
+    sfVector2f scale;
+    sfIntRect base_rect;
+    bool is_visible;
 } comp_inventory_t;
 
 #endif /* !INVENTORY_H_ */
