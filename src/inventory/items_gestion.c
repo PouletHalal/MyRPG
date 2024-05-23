@@ -60,11 +60,15 @@ static bool item_higlighting(win_t *window, world_t *world,
     return false;
 }
 
-bool drop_item(entity_t *player, entity_t *item, sfVector2i mouse_pos, int i)
+bool drop_item(world_t *world, entity_t *item, sfVector2i mouse_pos, int i)
 {
-    if (item->comp_item.type_mask == 0 ||
-        (item->comp_item.type_mask & ITEM_KEY) == ITEM_KEY)
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
+
+    if (item->comp_item.type_mask == 0
+    || (item->comp_item.type_mask & ITEM_KEY) == ITEM_KEY) {
+        put_back_item_if_inv_closed(world, player);
         return false;
+    }
     if (is_mouse_over(mouse_pos, item)) {
         item->comp_render.is_visible = true;
         sfSprite_setScale(item->comp_render.sprite, (sfVector2f){0.5, 0.5});
@@ -112,7 +116,7 @@ void item_events(win_t *window, world_t *world, entity_t *entity)
         entity->comp_inventory.is_open == false)
         return;
     for (int i = 0; i < entity->comp_inventory.size; i++) {
-        if ((world->key_pressed[sfKeyA]) && (drop_item(entity, &world->entity[
+        if ((world->key_pressed[sfKeyA]) && (drop_item(world, &world->entity[
                 entity->comp_inventory.items[i].id_in_world], mouse_pos, i)))
                     return;
         if (use_item(window, entity, &world->entity[entity->

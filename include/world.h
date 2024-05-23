@@ -76,7 +76,7 @@ int read_items_conf(world_t *world);
 void create_item(world_t *world, sfVector2f pos, int item_id);
 sfVector2f get_pos_from_slot(entity_t *entity, int slot);
 int get_slot_from_pos(entity_t *entity, sfVector2i mouse_pos);
-bool drop_item(entity_t *player, entity_t *item, sfVector2i mouse_pos, int i);
+bool drop_item(world_t *world, entity_t *item, sfVector2i mouse_pos, int i);
 bool is_mouse_over(sfVector2i pos, entity_t *entity);
 void read_animconf(world_t *world);
 int get_anim_id(world_t *world, char *name);
@@ -91,5 +91,6 @@ void sys_spell(world_t *world);
 void loop_effect(entity_t *entity);
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
 void drag_item_inv(entity_t *entity, entity_t *mouse, int slot);
+void put_back_item_if_inv_closed(world_t *world, entity_t *player);
 
 #endif /* !WORLD_H_ */

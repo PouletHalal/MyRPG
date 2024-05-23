@@ -90,10 +90,10 @@ static void drop_item_inv(entity_t *entity, world_t *world,
 {
     comp_item_t *items = entity->comp_inventory.items;
 
-    mouse->comp_mouse.item_picked = false;
-    drop_item(entity, &world->entity[items[
+    if (drop_item(world, &world->entity[items[
         mouse->comp_mouse.item_picked_i].id_in_world], mouse_pos,
-        mouse->comp_mouse.item_picked_i);
+        mouse->comp_mouse.item_picked_i))
+        mouse->comp_mouse.item_picked = false;
     mouse->comp_mouse.item_picked_i = -1;
 }
 

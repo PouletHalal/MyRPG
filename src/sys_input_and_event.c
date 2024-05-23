@@ -44,13 +44,13 @@ static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
     }
 }
 
-static void put_back_item_if_inv_closed(world_t *world, entity_t *player)
+void put_back_item_if_inv_closed(world_t *world, entity_t *player)
 {
     int mouse_id = find_comp(world, COMP_MOUSE);
     entity_t *mouse = &world->entity[mouse_id];
 
-    if (mouse->comp_mouse.item_picked)
-        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);
+    if (mouse->comp_mouse.item_picked) {
+        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);}
 }
 
 static void analyse_events(win_t *window, world_t *world)
