@@ -50,6 +50,8 @@ SRC	=	src/animation.c				\
 		src/npcs/npc_parsing3.c	\
 		src/npcs/npc_parsing4.c	\
 		src/npcs/sys_npc.c	\
+		src/particle/init_particle.c	\
+		src/particle/particle.c	\
 		src/player/player_collisions.c	\
 		src/player/sys_player.c	\
 		src/portals/init_portals.c	\

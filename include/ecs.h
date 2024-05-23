@@ -55,6 +55,7 @@ enum comp_list {
     COMP_HUD = 1 << 12,
     COMP_NPC = 1 << 13,
     COMP_SPELL = 1 << 14,
+    COMP_PARTICLE = 1 << 15,
 };
 
 enum anim_list {
@@ -173,7 +174,27 @@ typedef struct comp_portal_s {
     comp_sound_t comp_sound;
 } comp_portal_t;
 
+typedef struct particle_s {
+    sfVector2f pos;
+    sfVector2f speed;
+    size_t lifespan;
+    double angle;
+} particle_t;
 
+typedef struct comp_particle_s {
+    sfBool is_active;
+    size_t time_active;
+    sfRectangleShape *rectangle;
+    sfVector2f size;
+    sfIntRect spawn_rect;
+    double speed;
+    int angles[2];
+    size_t max_particles;
+    sfColor color;
+    size_t lifespan;
+    size_t spawn_rate;
+    particle_t *particles;
+} comp_particle_t;
 
 typedef struct comp_mob_s {
     bool is_alive;

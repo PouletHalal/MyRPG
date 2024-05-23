@@ -35,6 +35,7 @@ typedef struct entity_s {
     comp_hud_t comp_hud;
     comp_npc_t comp_npc;
     comp_spell_t comp_spell;
+    comp_particle_t comp_particle;
 } entity_t;
 
 typedef struct world_s {
