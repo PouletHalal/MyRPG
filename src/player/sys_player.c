@@ -39,10 +39,9 @@ static void update_player_animation(world_t *world, entity_t *entity)
     if (velocity.x == 0 && velocity.y == 0)
         return play_animation(world, entity, get_anim_id(world, "prota_idle"),
         true);
-    else {
+    else
         return play_animation(world, entity, get_anim_id(world, "prota_run"),
         true);
-    }
 }
 
 static void next_frame(win_t *window, world_t *world, entity_t *entity)
@@ -61,8 +60,8 @@ static void next_frame(win_t *window, world_t *world, entity_t *entity)
 
 static void player_events(win_t *window, entity_t *entity, world_t *world)
 {
-    if (is_key_pressed(entity, sfKeyR))
-        init_spell(world, entity->comp_position.position, SPELL_DARK);
+    if (is_key_pressed(entity, sfKeyE))
+        create_spell(world, entity->comp_position.position, SPELL_DARK);
     next_frame(window, world, entity);
     sfRenderWindow_setView(window->window, window->cam.view);
 }

@@ -13,6 +13,9 @@ SRC	=	src/animation.c				\
 		src/spell/effect.c		\
 		src/spell/sys_spell.c	\
 		src/spell/init_spell.c	\
+		src/spell/spells_parsing.c	\
+		src/spell/effect_parsing.c	\
+		src/spell/init_effects.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
 		src/free/kill.c	\

@@ -23,6 +23,8 @@
     #define MAX_EFFECT 10
 
 static const char ANIM_CONF[] = "animations/animations.conf";
+static const char SPELL_CONF[] = "maps/spells.conf";
+static const char EFFECT_CONF[] = "maps/effects.conf";
 
 enum map_ids {
     MAIN_WORLD,
@@ -103,6 +105,7 @@ typedef struct comp_npc_s {
     sfBool need_key_item_to_drop;
     sfBool exclamation_display;
     sfBool exclamation_end;
+    sfBool takes_item;
     int gives_item_dialog_id;
     int gives_item_sentence_id;
     int key_item_to_talk_id;
@@ -243,7 +246,7 @@ typedef struct comp_spell_s {
 } comp_spell_t;
 
 static const comp_spell_t spell_list[] = {
-    {20, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
+    {20, ALL_ENNEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
 
 

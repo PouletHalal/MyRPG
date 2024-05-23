@@ -83,7 +83,7 @@ void render_window(win_t *window, world_t *world)
 
     full_screen(world, window);
     sfRenderWindow_clear(window->window, sfBlack);
-    resize_cam(window, world->map_list[world->map_id]);
+    resize_cam(window, world->map_list[world->map_id], world);
     move_cam(window, world->map_list[world->map_id]);
     move_to_destination(window);
     display_map(window, world->map_list[world->map_id], 1);

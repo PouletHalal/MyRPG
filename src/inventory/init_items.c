@@ -41,7 +41,7 @@ static int get_item_arg(world_t *world, comp_item_t *item, char *line,
     return 0;
 }
 
-static int is_eof(char *line)
+int is_eof(char *line)
 {
     if (line == NULL)
         return 1;
