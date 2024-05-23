@@ -32,6 +32,7 @@ typedef struct entity_s {
     comp_stat_t comp_stat;
     comp_inventory_t comp_inventory;
     comp_item_t comp_item;
+    comp_mouse_t comp_mouse;
     comp_hud_t comp_hud;
     comp_npc_t comp_npc;
     comp_spell_t comp_spell;
@@ -72,9 +73,13 @@ int init_inventory(world_t *world, entity_t *entity, int size);
 bool add_item_to_inv(entity_t *entity, entity_t *item, int i);
 bool item_collision(world_t *world, entity_t *entity);
 int read_items_conf(world_t *world);
+void create_item(world_t *world, sfVector2f pos, int item_id);
+sfVector2f get_pos_from_slot(entity_t *entity, int slot);
+int get_slot_from_pos(entity_t *entity, sfVector2i mouse_pos);
+bool drop_item(world_t *world, entity_t *item, sfVector2i mouse_pos, int i);
+bool is_mouse_over(sfVector2i pos, entity_t *entity);
 void read_animconf(world_t *world);
 int get_anim_id(world_t *world, char *name);
-void create_item(world_t *world, sfVector2f pos, int item_id);
 int get_item_id(item_list_t items, char const *name);
 sfBool is_in_inv(world_t *world, entity_t *entity, int id);
 void add_effect(entity_t *entity, enum effect effect_index);
@@ -84,6 +89,8 @@ entity_t *get_closest(entity_t *entity, world_t *world);
 void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr);
 void sys_spell(world_t *world);
 void loop_effect(entity_t *entity);
-
+void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
+void drag_item_inv(entity_t *entity, entity_t *mouse, int slot);
+void put_back_item_if_inv_closed(world_t *world, entity_t *player);
 
 #endif /* !WORLD_H_ */
