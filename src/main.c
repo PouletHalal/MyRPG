@@ -51,6 +51,8 @@ static void init_all(win_t *window, world_t *world)
     }
     init_entity(world, &world->animations[anim_index],
     position_player);
+    read_effect_conf(world);
+    read_spells_conf(world);
     read_items_conf(world);
     init_healthbar(world);
     read_npcconf(world);

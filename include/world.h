@@ -42,9 +42,11 @@ typedef struct world_s {
     map_list_t **map_list;
     sound_list_t **sound_list;
     sfTexture **texture_list;
-    entity_t entity[ENTITY_COUNT];
     item_list_t item_list;
+    effect_t *effect_list;
     animation_t *animations;
+    comp_spell_t *spell_list;
+    entity_t entity[ENTITY_COUNT];
     sfBool key_pressed[NB_KEYS];
     sfBool key_down[NB_KEYS];
     sfBool mouse_left_pressed;
@@ -77,13 +79,16 @@ int get_anim_id(world_t *world, char *name);
 void create_item(world_t *world, sfVector2f pos, int item_id);
 int get_item_id(item_list_t items, char const *name);
 sfBool is_in_inv(world_t *world, entity_t *entity, int id);
-void add_effect(entity_t *entity, enum effect effect_index);
+void add_effect(world_t *world, entity_t *entity, enum effect effect_index);
 void respawn_entity(win_t *window, entity_t *entity);
 void follow_enemy(entity_t *spell, entity_t *enemy);
 entity_t *get_closest(entity_t *entity, world_t *world);
-void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr);
+void create_spell(world_t *world, sfVector2f position, int spell_id);
 void sys_spell(world_t *world);
 void loop_effect(entity_t *entity);
-
+int set_spell_anim(world_t *world, comp_spell_t *spell, char *args);
+int set_spell_target(world_t *world, comp_spell_t *spell, char *args);
+int read_effect_conf(world_t *world);
+int read_spells_conf(world_t *world);
 
 #endif /* !WORLD_H_ */

@@ -23,6 +23,8 @@
     #define MAX_EFFECT 10
 
 static const char ANIM_CONF[] = "animations/animations.conf";
+static const char SPELL_CONF[] = "maps/spells.conf";
+static const char EFFECT_CONF[] = "maps/effects.conf";
 
 enum map_ids {
     MAIN_WORLD,
