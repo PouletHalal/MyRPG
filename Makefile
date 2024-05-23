@@ -5,46 +5,22 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c					\
-		src/start.c					\
-		src/animation.c				\
-		src/sys_render.c			\
-		src/sys_input_and_event.c	\
-		src/position/sys_position.c		\
-		src/position/vectors.c	\
-		src/stats/sys_stat.c	\
-		src/sys_mob.c	\
-		src/camera/view.c	\
+SRC	=	src/animation.c				\
+		src/animation/animations_parsing.c	\
+		src/animation/animations_parsing2.c	\
+		src/animation/init_animations.c	\
 		src/camera/camera_movements.c	\
+		src/spell/effect.c		\
+		src/spell/sys_spell.c	\
+		src/spell/init_spell.c	\
+		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
-		src/player/sys_player.c	\
-		src/player/player_collisions.c	\
-		src/portals/init_portals.c	\
-		src/portals/portal_parsing.c	\
-		src/portals/portal_parsing2.c	\
-		src/map_loading/parsing.c	\
-		src/map_loading/init_tilesets.c	\
-		src/mob/init_mob.c	\
-		src/mob/mob_parsing.c	\
-		src/mob/mob_parsing2.c	\
-		src/ecs/components_inits.c	\
-		src/npcs/init_npc.c	\
-		src/npcs/dialogs_gestion.c	\
-		src/npcs/dialogs_rendering.c	\
-		src/npcs/npc_gestion.c	\
-		src/npcs/no_input_dialogs.c	\
-		src/npcs/npc_parsing.c	\
-		src/npcs/npc_parsing2.c	\
-		src/npcs/npc_parsing3.c	\
-		src/rendering/map_rendering.c	\
-		src/rendering/window_rendering.c	\
-		src/lib/my_str_to_word_array.c	\
-		src/lib/my_strcat.c	\
-		src/sounds/init_sounds.c	\
-		src/sounds/sounds_gestion.c	\
+		src/free/kill.c	\
+		src/hud/hud_gestion.c	\
+		src/hud/init_hud.c	\
 		src/inventory/init_inventory.c	\
-		src/inventory/inventory_rendering.c	\
 		src/inventory/inventory_gestion.c	\
+		src/inventory/inventory_rendering.c	\
 		src/inventory/init_items.c	\
 		src/inventory/items_gestion.c	\
 		src/inventory/items_parsing.c	\
@@ -52,6 +28,45 @@ SRC	=	src/main.c					\
 		src/inventory/items_rendering.c	\
 		src/inventory/items_stats.c	\
 		src/mouse.c 	\
+		src/lib/my_str_to_word_array.c	\
+		src/lib/my_strcat.c	\
+		src/main.c	\
+		src/map_loading/init_tilesets.c	\
+		src/map_loading/parsing.c	\
+		src/memory.c	\
+		src/mob/init_mob.c	\
+		src/mob/mob_parsing.c	\
+		src/mob/mob_parsing2.c	\
+		src/mob/mob_parsing3.c	\
+		src/mob/mob_parsing4.c	\
+		src/mob/spawn_mob.c	\
+		src/mob/sys_mob.c	\
+		src/npcs/dialogs_gestion.c	\
+		src/npcs/dialogs_rendering.c	\
+		src/npcs/init_npc.c	\
+		src/npcs/npc_gestion.c	\
+		src/npcs/no_input_dialogs.c	\
+		src/npcs/npc_parsing.c	\
+		src/npcs/npc_parsing2.c	\
+		src/npcs/npc_parsing3.c	\
+		src/npcs/npc_parsing4.c	\
+		src/npcs/sys_npc.c	\
+		src/player/player_collisions.c	\
+		src/player/sys_player.c	\
+		src/portals/init_portals.c	\
+		src/portals/portal_parsing.c	\
+		src/portals/portal_parsing2.c	\
+		src/rendering/map_rendering.c	\
+		src/rendering/window_rendering.c	\
+		src/sounds/init_sounds.c	\
+		src/sounds/sounds_gestion.c	\
+		src/stats/sys_stat.c	\
+		src/sys_input_and_event.c	\
+		src/sys_render.c			\
+		src/ecs/components_inits.c	\
+		src/position/sys_position.c		\
+		src/position/vectors.c	\
+		src/start.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

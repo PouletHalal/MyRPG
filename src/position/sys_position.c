@@ -66,7 +66,8 @@ static void change_world(world_t *world, entity_t *entity, entity_t *portal)
     portal->comp_portal.dest_pos;
     entity->comp_position.world = world->map_id;
     sfMusic_play(world->map_list[world->map_id]->music);
-    sfSound_play(portal->comp_portal.comp_sound.sound.sound);
+    if (portal->comp_portal.comp_sound.sound.sound != NULL)
+        sfSound_play(portal->comp_portal.comp_sound.sound.sound);
 }
 
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],
@@ -82,8 +83,9 @@ static sfBool check_if_portal(win_t *window, entity_t *entities[2],
         return sfFalse;
     }
     if (((entities[1]->mask & COMP_HITBOX) == COMP_HITBOX) &&
-        entities[1]->comp_hitbox.do_collide &&
-        entities[0]->comp_position.world == world->map_id)
+        entities[1]->comp_hitbox.do_collide && (entities[1]->comp_mob.is_alive
+        || (entities[1]->mask & COMP_MOB) != COMP_MOB)
+        && entities[0]->comp_position.world == world->map_id)
         return collide_entity(entities[0], entities[1], velocity);
     return sfFalse;
 }
@@ -98,7 +100,7 @@ bool is_close(entity_t *entity, entity_t *bis, sfVector2f threshold)
     return false;
 }
 
-static sfBool check_collision(entity_t *entity, world_t *world,
+sfBool check_collision(entity_t *entity, world_t *world,
     sfVector2f velocity, win_t *window)
 {
     sfFloatRect hitbox = entity->comp_hitbox.hitbox;
@@ -114,8 +116,8 @@ static sfBool check_collision(entity_t *entity, world_t *world,
         if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
         && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
         , world, velocity)) {
-            do_attack(entity, &world->entity[i]);
-            do_attack(&world->entity[i], entity);
+            do_attack(world, entity, &world->entity[i]);
+            do_attack(world, &world->entity[i], entity);
             return sfTrue;
         }
     }
@@ -141,7 +143,8 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
 
     no_input_dialogs(window, world);
     item_collision(world, entity);
-    if (entity->comp_position.can_move == false)
+    if (entity->comp_position.can_move == false ||
+    ((entity->mask & COMP_MOB) == COMP_MOB) && !entity->comp_mob.is_alive)
         return;
     sum_vectors_x_y(entity, &yvelo, &xvelo);
     if (xvelo.x != 0. && !check_collision(entity, world, xvelo, window)) {

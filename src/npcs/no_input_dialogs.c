@@ -33,13 +33,13 @@ void no_input_dialogs(win_t *window, world_t *world)
 
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         dialog = &world->entity[i].comp_dialog;
-        if (world->entity[i].comp_position.world == player->comp_position.world
+        if (world->entity[i].comp_position.world == world->map_id
             && (world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
             is_close(player, &world->entity[i], dialog->detection_area) &&
             dialog->need_input == false && dialog->is_displayed != true) {
-                player->comp_position.can_move = !dialog->freeze_player;
+            play_animation(world, player, get_anim_id(world, "prota_idle"), 1);
             update_no_input_dialog(window, world, &world->entity[i], player);
-            play_animation(player, ANIM_PROTA_IDLE, true);
+                player->comp_position.can_move = !dialog->freeze_player;
         }
     }
 }

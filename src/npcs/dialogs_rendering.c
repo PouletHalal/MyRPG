@@ -57,8 +57,6 @@ void display_dialogs(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
     for (int i = 0; i < ENTITY_COUNT; ++i) {
         if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
             player = &world->entity[i];
@@ -71,5 +69,4 @@ void display_dialogs(win_t *window, world_t *world)
             disable_far_dialogs(world, &world->entity[i]);
         }
     }
-    sfRenderWindow_setView(window->window, window->cam.view);
 }

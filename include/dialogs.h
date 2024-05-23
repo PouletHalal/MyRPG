@@ -18,4 +18,5 @@ void update_dialog(win_t *window, world_t *world, entity_t *entity);
 int read_dialogs(world_t *world, entity_t *entity, char *filename);
 void update_substring(entity_t *entity, int dialog, int sentence);
 void no_input_dialogs(win_t *window, world_t *world);
+void sys_npc(win_t *window, world_t *world, entity_t *player);
 #endif /* !DIALOGS_H_ */

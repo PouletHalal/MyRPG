@@ -25,6 +25,8 @@ void read_mobconf(world_t *world);
 
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
 void npc_collision(win_t *window, world_t *world, entity_t *entity);
+sfBool check_collision(entity_t *entity, world_t *world,
+    sfVector2f velocity, win_t *window);
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world, win_t *window);
@@ -36,5 +38,7 @@ void display_inventory(win_t *window, world_t *world);
 void item_events(win_t *window, world_t *world, entity_t *entity);
 void display_tooltips(win_t *window, entity_t *item, sfVector2f pos);
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
+
+void kill_entity(entity_t *entity, world_t *world);
 
 #endif /* !TEMP_H_ */

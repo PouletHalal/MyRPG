@@ -64,8 +64,6 @@ static bool is_last_sentence(entity_t *entity, entity_t *player,
 
 static void mini_update_dialog(win_t *window, world_t *world, entity_t *entity)
 {
-    int dialog = entity->comp_dialog.current_dialog;
-    int sentence = entity->comp_dialog.current_sentence;
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
     if (is_last_sentence(entity, player, window, world) == false) {
@@ -83,6 +81,17 @@ static void mini_update_dialog(win_t *window, world_t *world, entity_t *entity)
         entity->comp_dialog.current_sentence = 0;
         entity->comp_dialog.current_char = 0;
     }
+}
+
+static void delete_mark(world_t *world, entity_t *npc)
+{
+    int id = 0;
+
+    if (!npc->comp_npc.exclamation_id || !npc->comp_npc.exclamation_display)
+        return;
+    id = npc->comp_npc.exclamation_id;
+    world->entity[id].comp_render.is_visible = false;
+    npc->comp_npc.exclamation_end = true;
 }
 
 static bool is_first(entity_t *player, entity_t *entity)
@@ -113,14 +122,24 @@ static void update_npc_direction(entity_t *npc, entity_t *player)
 {
     sfVector2f scale = sfSprite_getScale(npc->comp_render.sprite);
 
-    if (npc->comp_render.current_animation->index == ANIM_INTRO ||
-        npc->comp_render.current_animation->index == ANIM_TRANSPARENT)
-        return;
     if (npc->comp_position.position.x > player->comp_position.position.x)
         scale.x = abs(scale.x) * -1;
     else
         scale.x = abs(scale.x);
     sfSprite_setScale(npc->comp_render.sprite, scale);
+}
+
+static void give_item(world_t *world, entity_t *npc, entity_t *player)
+{
+    if (npc->comp_npc.gives_item == false)
+        return;
+    if (npc->comp_npc.gives_item_dialog_id != npc->comp_dialog.current_dialog)
+        return;
+    if (npc->comp_npc.gives_item_sentence_id !=
+        npc->comp_dialog.current_sentence)
+        return;
+    npc->comp_npc.gives_item = false;
+    create_item(world, player->comp_position.position, npc->comp_npc.item_id);
 }
 
 void update_dialog(win_t *window, world_t *world, entity_t *entity)
@@ -135,8 +154,9 @@ void update_dialog(win_t *window, world_t *world, entity_t *entity)
     }
     player->comp_position.can_move = !entity->comp_dialog.freeze_player;
     update_npc_direction(entity, player);
+    give_item(world, entity, player);
     if (is_first(player, entity))
-        return;
+        return delete_mark(world, entity);
     if (entity->comp_dialog.current_char < strlen(
         entity->comp_dialog.text[dialog][sentence])) {
         entity->comp_dialog.current_char += 1;

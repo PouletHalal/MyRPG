@@ -30,6 +30,7 @@ typedef struct comp_item_s {
     int equip_mask;
     int type_mask;
     int quantity;
+    double drop_rate;
     tooltip_t tooltip;
     comp_stat_t stats;
 } comp_item_t;

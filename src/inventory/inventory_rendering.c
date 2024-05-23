@@ -12,9 +12,12 @@
 static void place_item(world_t *world, entity_t *entity, int i)
 {
     sfVector2f item_pos = get_pos_from_slot(entity, i);
+    animation_t *anim = NULL;
 
     if (!entity->comp_inventory.is_open)
         return;
+    anim = &world->entity[entity->comp_inventory.items[i].id_in_world].
+    comp_render.current_animation;
     world->entity[entity->comp_inventory.items[i].id_in_world].
     comp_position.position = item_pos;
     world->entity[entity->comp_inventory.items[i].id_in_world].
@@ -24,7 +27,7 @@ static void place_item(world_t *world, entity_t *entity, int i)
     item_pos);
     sfSprite_setScale(world->entity[entity->comp_inventory.items[i].
     id_in_world].comp_render.sprite,
-    (sfVector2f) {2, 2});
+    (sfVector2f) {64 / anim->frame_size.x, 64 / anim->frame_size.y});
 }
 
 static void display_items(win_t *window, world_t *world, entity_t *entity)
@@ -84,8 +87,6 @@ void display_inventory(win_t *window, world_t *world)
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
     sfVector2u win_size = sfRenderWindow_getSize(window->window);
 
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
     if (!player->comp_inventory.is_open)
         return turn_off_items(world, player, window, win_size);
     turn_on_items(player, world);

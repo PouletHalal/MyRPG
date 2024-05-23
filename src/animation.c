@@ -5,16 +5,29 @@
 ** Animation file
 */
 
+#include <string.h>
 #include "temp.h"
 #include "rendering.h"
+
+int get_anim_id(world_t *world, char *name)
+{
+    for (int i = 0; world->animations[i].filename != NULL; i++) {
+        if (strcmp(name, world->animations[i].name) == 0)
+            return i;
+    }
+    return 0;
+}
 
 void update_sprite_direction(entity_t *entity)
 {
     comp_render_t *c_render = &(entity->comp_render);
     sfSprite *sprite = c_render->sprite;
-    sfVector2f scale = sfSprite_getScale(c_render->sprite);
+    sfVector2f scale = {0};
     sfVector2f velocity = get_mouv_vector(entity);
 
+    if (c_render->sprite == NULL)
+        return;
+    scale = sfSprite_getScale(c_render->sprite);
     if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0)
         sfSprite_setScale(sprite, (sfVector2f){scale.x * -1, scale.y});
 }
@@ -31,13 +44,20 @@ bool is_in_animation(entity_t *entity)
     return true;
 }
 
-void play_animation(entity_t *entity, int animation_index, sfBool does_loop)
+void play_animation(world_t *world, entity_t *entity, int animation_index,
+    sfBool does_loop)
 {
-    comp_render_t *c_render = &(entity->comp_render);
-    animation_t *anim = &(animation_list[animation_index]);
-    sfIntRect *rect = &(anim->base_text_rect);
-    float mult_scale = (sfSprite_getScale(c_render->sprite).x < 0 ? -1 : 1);
+    comp_render_t *c_render = NULL;
+    animation_t *anim = NULL;
+    sfIntRect *rect = NULL;
+    float mult_scale = 0;
 
+    if (animation_index == -1)
+        animation_index = 0;
+    c_render = &(entity->comp_render);
+    anim = &world->animations[animation_index];
+    rect = &(anim->base_text_rect);
+    mult_scale = (sfSprite_getScale(c_render->sprite).x < 0 ? -1 : 1);
     if (c_render->current_animation == anim && c_render->does_loop == true)
         return;
     c_render->current_animation = anim;

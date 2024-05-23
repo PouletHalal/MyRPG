@@ -23,7 +23,11 @@ int set_loop(world_t *world, entity_t *entity, char *args);
 int set_box_scale(world_t *world, entity_t *entity, char *args);
 int set_input(world_t *world, entity_t *entity, char *args);
 int set_camera_focus(world_t *world, entity_t *entity, char *args);
-
+int gives_item(world_t *world, entity_t *entity, char *args);
+int gives_item_dialog_id(world_t *world, entity_t *entity, char *args);
+int gives_item_sentence_id(world_t *world, entity_t *entity, char *args);
+int set_key_item_to_talk(world_t *world, entity_t *entity, char *args);
+int set_key_item_to_drop(world_t *world, entity_t *entity, char *args);
 typedef struct ptr_funcs {
     char *name;
     int (*ptr)(world_t *world, entity_t *entity, char *args);
@@ -44,6 +48,11 @@ static const ptr_func_t NPC_ARGS[] = {
     {"box_scale", &set_box_scale},
     {"need_input", &set_input},
     {"camera_focus", &set_camera_focus},
+    {"gives_item", &gives_item},
+    {"gives_item_dialog_id", &gives_item_dialog_id},
+    {"gives_item_sentence_id", &gives_item_sentence_id},
+    {"key_item_to_talk", &set_key_item_to_talk},
+    {"key_item_to_drop", &set_key_item_to_drop},
     {NULL, NULL}
 };
 

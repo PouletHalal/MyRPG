@@ -6,14 +6,15 @@
 */
 
 #include <stdlib.h>
+#include "world.h"
 #include <time.h>
 #include "temp.h"
 
+
 void init_comp_render(entity_t *entity, world_t *world,
-    enum anim_list anim_nbr, sfVector2f position)
+    animation_t *anim, sfVector2f position)
 {
     comp_render_t *c_render = &(entity->comp_render);
-    animation_t *anim = &(animation_list[anim_nbr]);
     sfIntRect *rect = &(anim->base_text_rect);
 
     entity->mask |= COMP_RENDER;
@@ -23,7 +24,7 @@ void init_comp_render(entity_t *entity, world_t *world,
     c_render->does_loop = true;
     c_render->is_visible = true;
     c_render->sprite = sfSprite_create();
-    c_render->texture = world->texture_list[anim_nbr];
+    c_render->texture = sfTexture_copy(world->texture_list[anim->index]);
     c_render->texture_list = world->texture_list;
     sfSprite_setTexture(c_render->sprite, c_render->texture, sfFalse);
     sfSprite_setPosition(c_render->sprite, position);
