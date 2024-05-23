@@ -49,7 +49,6 @@ void move_to_destination(win_t *window)
 
     if (window->cam.is_moving == false ||
     (abs(dest.x - cam_center.x)) <= 10 && (abs(dest.y - cam_center.y)) <= 10) {
-        window->cam.is_moving = false;
         return;
     }
     offset.x = cos * window->cam.offset.x;

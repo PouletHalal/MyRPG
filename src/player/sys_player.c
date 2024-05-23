@@ -39,10 +39,9 @@ static void update_player_animation(world_t *world, entity_t *entity)
     if (velocity.x == 0 && velocity.y == 0)
         return play_animation(world, entity, get_anim_id(world, "prota_idle"),
         true);
-    else {
+    else
         return play_animation(world, entity, get_anim_id(world, "prota_run"),
         true);
-    }
 }
 
 static void next_frame(win_t *window, world_t *world, entity_t *entity)

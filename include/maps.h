@@ -52,6 +52,8 @@ typedef struct map_s {
 
 typedef struct map_list_s {
     map_t *maps;
+    sfVector2f cam_size;
+    sfBool has_cam;
     sfMusic *music;
     char *name;
     int nb_layer;

@@ -21,7 +21,7 @@ int set_spell_effect(world_t *world, comp_spell_t *spell, char *args);
 typedef struct spell_ptr_func_s {
     char *name;
     int (*ptr) (world_t *world, comp_spell_t *spell, char *args);
-}spell_ptr_func_t; ;
+} spell_ptr_func_t;
 
 spell_ptr_func_t SPELL_FLAGS[] =
 {

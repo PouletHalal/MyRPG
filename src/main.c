@@ -93,6 +93,8 @@ static int init_empty_world(world_t *world)
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
     }
+    for (int i = 0; world->map_list[i] != NULL; ++i)
+        world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)
         world->entity[i] = (entity_t) {0};
     if (world->map_list == NULL || sound_list == NULL)
