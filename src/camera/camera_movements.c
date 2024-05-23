@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "temp.h"
 #include "maps.h"
 #include "camera.h"
@@ -40,17 +41,19 @@ void move_to_destination(win_t *window)
 {
     sfVector2f cam_center = sfView_getCenter(window->cam.view);
     sfVector2f offset = {0, 0};
+    sfVector2f dest = *window->cam.destination;
+    double hyp = sqrt((dest.x - cam_center.x) * (dest.x - cam_center.x) +
+    ((dest.y - cam_center.y) * (dest.y - cam_center.y)));
+    double cos = (dest.x - cam_center.x) / hyp;
+    double sin = (dest.y - cam_center.y) / hyp;
 
-    if (window->cam.is_moving == false)
+    if (window->cam.is_moving == false ||
+    (abs(dest.x - cam_center.x)) <= 10 && (abs(dest.y - cam_center.y)) <= 10) {
+        window->cam.is_moving = false;
         return;
-    if (abs(window->cam.destination->x - cam_center.x) >= CAM_THRESHOLD)
-        offset.x = window->cam.offset.x *
-        abs(window->cam.destination->x - cam_center.x) /
-        (window->cam.destination->x - cam_center.x);
-    if (abs(window->cam.destination->y - cam_center.y) >= CAM_THRESHOLD)
-        offset.y = window->cam.offset.y *
-        abs(window->cam.destination->y - cam_center.y) /
-        (window->cam.destination->y - cam_center.y);
+    }
+    offset.x = cos * window->cam.offset.x;
+    offset.y = sin * window->cam.offset.y;
     if (offset.x == 0. && offset.y == 0.) {
         window->cam.offset = (sfVector2f) {0.5, 0.5};
         window->cam.is_moving = false;
