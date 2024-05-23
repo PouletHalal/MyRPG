@@ -30,7 +30,8 @@ void init_mouse(world_t *world, win_t *window)
     sfVector2f mouse_pos_f = (sfVector2f){sfMouse_getPositionRenderWindow(
         window->window).x, sfMouse_getPositionRenderWindow(window->window).x};
 
-    init_comp_render(mouse, world, ANIM_MOUSE, mouse_pos_f);
+    init_comp_render(mouse, world,
+    &world->animations[get_anim_id(world, "mouse")], mouse_pos_f);
     init_comp_hitbox(mouse, mouse_pos_f);
     init_comp_position(mouse, mouse_pos_f, world->map_id);
     mouse->comp_render.is_visible = true;

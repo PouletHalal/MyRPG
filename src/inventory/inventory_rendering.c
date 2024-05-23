@@ -16,7 +16,7 @@ static void place_item(world_t *world, entity_t *entity, int i)
 
     if (!entity->comp_inventory.is_open)
         return;
-    anim = &world->entity[entity->comp_inventory.items[i].id_in_world].
+    anim = world->entity[entity->comp_inventory.items[i].id_in_world].
     comp_render.current_animation;
     world->entity[entity->comp_inventory.items[i].id_in_world].
     comp_position.position = item_pos;
