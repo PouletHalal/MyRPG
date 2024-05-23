@@ -34,6 +34,17 @@ static void check_player_respawn(entity_t *entity, win_t *window)
     window->cam.destination = &entity->comp_position.position;
 }
 
+void respawn_entity(win_t *window, entity_t *entity)
+{
+    comp_stat_t *stat = &entity->comp_stat;
+
+    check_player_respawn(entity, window);
+    stat->health = stat->max_health;
+    entity->comp_position.position = entity->comp_position.spawn;
+    for (int i = 0; i < MAX_EFFECT; i++)
+        stat->effect[i] = NULL;
+}
+
 static void do_level_up(comp_stat_t *stat)
 {
     stat->exp -= stat->exp_requiered;
@@ -48,11 +59,10 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
 {
     comp_stat_t *stat = &entity->comp_stat;
 
+    loop_effect(entity);
     if (stat->health <= 0. && (entity->mask & COMP_ITEM) != COMP_ITEM) {
         if (stat->do_respawn) {
-            stat->health = stat->max_health;
-            check_player_respawn(entity, window);
-            return;
+            return respawn_entity(window, entity);
         }
         kill_entity(entity, world);
         return;

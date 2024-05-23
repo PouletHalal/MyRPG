@@ -11,6 +11,7 @@
     #include <SFML/Graphics.h>
     #include <stdbool.h>
     #include "sounds.h"
+    #include "spell.h"
 
     #define ENTITY_COUNT 10000
     #define NB_KEYS 120
@@ -19,6 +20,7 @@
 
     #define MAX_DIALOGS 5
     #define MAX_VECTOR 10
+    #define MAX_EFFECT 10
 
 static const char ANIM_CONF[] = "animations/animations.conf";
 
@@ -52,6 +54,7 @@ enum comp_list {
     COMP_ITEM = 1 << 11,
     COMP_HUD = 1 << 12,
     COMP_NPC = 1 << 13,
+    COMP_SPELL = 1 << 14,
 };
 
 enum anim_list {
@@ -67,6 +70,7 @@ enum anim_list {
     ANIM_INTRO,
     ANIM_BOY_IDLE,
     ANIM_BOY_TALK,
+    ANIM_SPELL_DARK,
     ANIM_SMALL_BLUE_POTION,
     ANIM_MEDIUM_BLUE_POTION,
     ANIM_BIG_BLUE_POTION,
@@ -86,62 +90,6 @@ typedef struct animation_s {
     sfVector2f scale;
     int frame_rate;
 } animation_t;
-
-static const animation_t animation_list[] = {
-/*     {ANIM_PROTA_IDLE, "effect/prota.png", "Prota Idle", {0, 0, 32, 32}, 2, {32, 32},
-        {0.9, 0.9}, 25},
-    {ANIM_PROTA_RUN, "effect/prota.png", "Prota Run", {0, 96, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_JUMP, "effect/prota.png", "Prota Jump", {0, 160, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_ATTACK, "effect/prota.png", "Prota Attack", {0, 256, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 5},
-    {ANIM_PROTA_DODO, "effect/prota.png", "Prota Dodo", {0, 224, 32, 32}, 8, {32, 32},
-        {0.9, 0.9}, 10},
-    {ANIM_MOB_RUN, "effect/FDP.png", "Mob Run", {0, 192, 192, 192}, 6, {192, 192},
-        {.5, .5}, 5},
-    {ANIM_PORTAL_GREEN, "effect/green_portal.png", "Green Portal", {0, 0, 32, 32}, 6, {32, 32},
-        {1., 1.}, 5},
-    {ANIM_BLACKSMITH, "effect/blacksmith.png", "Blacksmith", {0, 0, 32, 32}, 8, {32, 32},
-        {1, 1}, 15},
-    {ANIM_TRANSPARENT, "effect/transparent.png", "Transparent", {0, 0, 32, 32}, 1, {32, 32},
-        {1., 1.}, 5},
-    {ANIM_INTRO, "effect/intro.png", "Intro", {0, 0, 1920, 1080}, 1, {1920, 1080},
-        {1., 1.}, 5},
-    {ANIM_BOY_IDLE, "effect/boy.png", "Boy Idle", {0, 0, 48, 48}, 6, {48, 48},
-        {1., 1.}, 10},
-    {ANIM_BOY_TALK, "effect/boy.png", "Boy Talk", {0, 448, 16, 16}, 6, {16, 16},
-        {1., 1.}, 10},
-    {ANIM_SMALL_BLUE_POTION, "effect/items/small_blue_potion.png", "Small Blue Potion",
-        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_MEDIUM_BLUE_POTION, "effect/items/medium_blue_potion.png", "Medium Blue Potion",
-        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-        {ANIM_BIG_BLUE_POTION, "effect/items/big_blue_potion.png", "Big Blue Potion",
-            {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_SMALL_GREEN_POTION, "effect/items/small_green_potion.png", "Small Green Potion",
-        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_SMALL_RED_POTION, "effect/items/small_red_potion.png", "Small Red Potion",
-        {0, 0, 32, 32}, 1, {32, 32}, {0.5, 0.5}, 5},
-    {ANIM_HEALTHBAR, "effect/healthbar.png", "Healthbar", {0, 0, 100, 6}, 1, {100, 6},
-        {0.5, 0.5}, 5}, */
-/*    {"effect/dark.png", {0, 0, 40, 32}, 10, {40, 32}, {1., 1.}, 5},
-    {"effect/Acid.png", {0, 0, 32, 32}, 16, {32, 32}, {1., 1.}, 5},
-    {"effect/Dark2.png", {0, 0, 48, 64}, 16, {48, 64}, {1., 1.}, 5},
-    {"effect/acid2.png", {0, 0, 56, 32}, 6, {56, 32}, {1., 1.}, 5},
-    {"effect/effect1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/explo.png", {0, 0, 48, 48}, 18, {48, 48}, {1., 1.}, 5},
-    {"effect/explo2.png", {0, 0, 16, 16}, 16, {16, 16}, {1., 1.}, 5},
-    {"effect/holy.png", {0, 0, 48, 48}, 16, {48, 48}, {1., 1.}, 5},
-    {"effect/ice.png", {0, 0, 32, 32}, 8, {32, 32}, {1., 1.}, 5},
-    {"effect/Smear1.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/Smear2.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/Smear3.png", {0, 0, 48, 48}, 6, {48, 48}, {1., 1.}, 5},
-    {"effect/thr1.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr2.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr3.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/thr4.png", {0, 0, 64, 32}, 6, {64, 32}, {1., 1.}, 5},
-    {"effect/prota.png", {0, 96, 32, 32}, 8, {32, 32}, {5., 5.}, 5},*/
-};
 
 typedef struct comp_hud_s {
     int hud_type;
@@ -270,7 +218,25 @@ typedef struct comp_stat_s {
     double exp_requiered;
     size_t clock;
     size_t invinsibility_frames;
+    effect_t *effect[MAX_EFFECT];
+    int effect_duration[MAX_EFFECT];
+    int effect_tick_cooldown[MAX_EFFECT];
 } comp_stat_t;
 
+typedef struct comp_spell_s {
+    enum anim_list index;
+    enum target target;
+    enum move_type move_type;
+    float damage;
+    float duration;
+    float speed;
+    enum effect effect_index;
+    animation_t *animation;
+    memory_t *memory;
+} comp_spell_t;
+
+static const comp_spell_t spell_list[] = {
+    {20, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
+};
 
 #endif /* !ECS_H_ */

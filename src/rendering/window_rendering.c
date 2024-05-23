@@ -42,6 +42,7 @@ void refresh_world(world_t *world, sfClock *clock,
     sys_npc(window, world, player);
     sys_mob(world, window);
     sys_position(world, window);
+    sys_spell(world);
     sys_render(window, world);
     sys_stat(window, world);
 }

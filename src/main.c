@@ -108,7 +108,7 @@ int main(void)
         return close_and_return(world, window, 84);
     srand(time(NULL));
     init_all(window, world);
-    while (sfRenderWindow_isOpen(window->window)) {
+    while (sfRenderWindow_isOpen(window->window)){
         refresh_world(world, clock, window);
         render_window(window, world);
         refresh_sounds(world, clock);

@@ -70,7 +70,8 @@ int set_drop_rate(world_t *world, comp_item_t *item, char *args)
         return int_display_and_return(84, 3, "Invalid args :", args, "\n");
     item->drop_rate = atof(split[1]);
     if (item->drop_rate <= 0)
-        return int_display_and_return(84, 3, "Invalid drop rate:", split[1], "\n");
+        return int_display_and_return(84, 3, "Invalid drop rate:",
+        split[1], "\n");
     free_array(split);
     return 0;
 }

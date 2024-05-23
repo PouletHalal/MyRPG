@@ -20,7 +20,6 @@ static bool need_item(world_t *world, entity_t *npc, entity_t *player)
     return false;
 }
 
-
 void npc_events(win_t *window, world_t *world, entity_t *npc, entity_t *player)
 {
     if (npc->comp_position.world == world->map_id &&

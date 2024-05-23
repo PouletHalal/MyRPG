@@ -22,9 +22,12 @@ void update_sprite_direction(entity_t *entity)
 {
     comp_render_t *c_render = &(entity->comp_render);
     sfSprite *sprite = c_render->sprite;
-    sfVector2f scale = sfSprite_getScale(c_render->sprite);
+    sfVector2f scale = {0};
     sfVector2f velocity = get_mouv_vector(entity);
 
+    if (c_render->sprite == NULL)
+        return;
+    scale = sfSprite_getScale(c_render->sprite);
     if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0)
         sfSprite_setScale(sprite, (sfVector2f){scale.x * -1, scale.y});
 }

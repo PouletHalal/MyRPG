@@ -10,6 +10,9 @@ SRC	=	src/animation.c				\
 		src/animation/animations_parsing2.c	\
 		src/animation/init_animations.c	\
 		src/camera/camera_movements.c	\
+		src/spell/effect.c		\
+		src/spell/sys_spell.c	\
+		src/spell/init_spell.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
 		src/free/kill.c	\
@@ -29,6 +32,7 @@ SRC	=	src/animation.c				\
 		src/main.c	\
 		src/map_loading/init_tilesets.c	\
 		src/map_loading/parsing.c	\
+		src/memory.c	\
 		src/mob/init_mob.c	\
 		src/mob/mob_parsing.c	\
 		src/mob/mob_parsing2.c	\
