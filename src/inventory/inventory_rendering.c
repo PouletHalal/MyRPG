@@ -51,8 +51,6 @@ static void display_items(win_t *window, world_t *world, entity_t *entity)
 static void turn_off_items(world_t *world, entity_t *entity, win_t *window,
     sfVector2u win_size)
 {
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
     sfSprite_setPosition(entity->comp_inventory.sprite.sprite,
     (sfVector2f) {win_size.x / 2, win_size.y / 2 + 500});
     sfSprite_setTextureRect(entity->comp_inventory.sprite.sprite,
@@ -69,8 +67,16 @@ static void turn_off_items(world_t *world, entity_t *entity, win_t *window,
             .comp_inventory.is_visible = false;
         }
     }
-    sfRenderWindow_drawSprite(window->window, entity->comp_inventory.sprite.sprite, NULL);
+    sfRenderWindow_drawSprite(window->window,
+    entity->comp_inventory.sprite.sprite, NULL);
     display_items(window, world, entity);
+}
+
+static void turn_on_items(entity_t *player, world_t *world)
+{
+    for (int i = 0; i < player->comp_inventory.size; i++)
+        world->entity[player->comp_inventory.items[i].id_in_world]
+        .comp_inventory.is_visible = true;
 }
 
 void display_inventory(win_t *window, world_t *world)
@@ -78,13 +84,13 @@ void display_inventory(win_t *window, world_t *world)
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
     sfVector2u win_size = sfRenderWindow_getSize(window->window);
 
-    if (!player->comp_inventory.is_open)
-        return turn_off_items(world, player, window, win_size);
-    for (int i = 0; i < player->comp_inventory.size; i++)
-        world->entity[player->comp_inventory.items[i].id_in_world].comp_inventory.is_visible = true;
     sfRenderWindow_setView(window->window,
     sfRenderWindow_getDefaultView(window->window));
-    sfSprite_setTextureRect(player->comp_inventory.sprite.sprite, player->comp_inventory.base_rect);
+    if (!player->comp_inventory.is_open)
+        return turn_off_items(world, player, window, win_size);
+    turn_on_items(player, world);
+    sfSprite_setTextureRect(player->comp_inventory.sprite.sprite,
+    player->comp_inventory.base_rect);
     sfSprite_setPosition(player->comp_inventory.sprite.sprite,
     (sfVector2f) {win_size.x / 2, win_size.y / 2});
     sfRenderWindow_drawSprite(window->window,
