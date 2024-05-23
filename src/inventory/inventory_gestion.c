@@ -40,7 +40,8 @@ bool add_item_to_inv(entity_t *entity, entity_t *item, int i)
         return false;
     for (int i = 0; i < entity->comp_inventory.size; ++i) {
         if (((entity->comp_inventory.items[i].type_mask != 0) &&
-            entity->comp_inventory.items[i].id_in_world == item->comp_item.id_in_world)) {
+            entity->comp_inventory.items[i].id_in_world ==
+            item->comp_item.id_in_world)) {
             return false;
         }
     }

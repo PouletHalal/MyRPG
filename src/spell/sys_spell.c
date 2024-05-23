@@ -42,6 +42,16 @@ static int get_dist(entity_t *entity1, entity_t *entity2)
         pow((entity1_pos.y - entity2_pos.y), 2));
 }
 
+static sfBool is_targetable(entity_t *entity, int map_id, entity_t *spell)
+{
+    if ((entity->mask & COMP_MOB) != COMP_MOB ||
+        entity->comp_position.world != map_id || 
+        entity->comp_stat.faction == spell->comp_stat.faction ||
+        entity->comp_mob.is_alive == sfFalse)
+        return sfFalse;
+    return sfTrue;
+}
+
 entity_t *get_closest(entity_t *entity, world_t *world)
 {
     entity_t *closest_entity = NULL;
@@ -49,7 +59,7 @@ entity_t *get_closest(entity_t *entity, world_t *world)
     int dist = 0;
 
     for (int i = 0; i < ENTITY_COUNT; ++i){
-        if ((world->entity[i].mask & COMP_MOB) != COMP_MOB)
+        if (!is_targetable(&world->entity[i], world->map_id, entity))
             continue;
         dist = get_dist(entity, &world->entity[i]);
         if (dist < closest_dist){
@@ -57,7 +67,7 @@ entity_t *get_closest(entity_t *entity, world_t *world)
             closest_entity = &world->entity[i];
         }
     }
-    if (closest_entity == NULL)
+    if (closest_entity == NULL || closest_dist > 300.)
         return NULL;
     return closest_entity;
 }
@@ -65,9 +75,12 @@ entity_t *get_closest(entity_t *entity, world_t *world)
 static void follow_closest(entity_t *entity, world_t *world)
 {
     entity_t *closest_entity = get_closest(entity, world);
+    entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
 
-    if (closest_entity == NULL)
+    if (closest_entity == NULL) {
+        add_vector(entity, get_mouv_vector(player), 2);
         return;
+    }
     follow_enemy(entity, closest_entity);
 }
 

@@ -12,7 +12,7 @@
 void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr)
 {
     int free = find_empty(world);
-    entity_t *entity;
+    entity_t *entity = NULL;
 
     if (free == -1)
         return;

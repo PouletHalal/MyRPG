@@ -40,7 +40,8 @@ static bool item_higlighting(win_t *window, world_t *world,
     sfVector2f item_pos = {0};
 
     if ((entity->mask & COMP_INVENTORY) != COMP_INVENTORY ||
-        entity->comp_inventory.is_open == false || i >= entity->comp_inventory.size)
+        entity->comp_inventory.is_open == false ||
+        i >= entity->comp_inventory.size)
         return false;
     items = entity->comp_inventory.items;
     if (items[i].type_mask == 0)
