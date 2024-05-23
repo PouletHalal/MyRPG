@@ -79,6 +79,7 @@ int get_anim_id(world_t *world, char *name);
 void create_item(world_t *world, sfVector2f pos, int item_id);
 int get_item_id(item_list_t items, char const *name);
 sfBool is_in_inv(world_t *world, entity_t *entity, int id);
+int find_item_in_inv(entity_t *entity, int id);
 void add_effect(world_t *world, entity_t *entity, enum effect effect_index);
 void respawn_entity(win_t *window, entity_t *entity);
 void follow_enemy(entity_t *spell, entity_t *enemy);

@@ -10,6 +10,8 @@
 #include "npcs.h"
 #include "dialogs.h"
 
+
+
 static bool need_item(world_t *world, entity_t *npc, entity_t *player)
 {
     if (npc->comp_npc.need_key_item_to_talk == false)

@@ -57,6 +57,10 @@ static bool is_last_sentence(entity_t *entity, entity_t *player,
         player->comp_position.can_move = true;
         if (entity->comp_dialog.camera_focus == true)
             set_destination(window, &player->comp_position.position);
+        if (entity->comp_npc.need_key_item_to_talk &&
+            entity->comp_npc.takes_item)
+            player->comp_inventory.items[find_item_in_inv(player,
+            entity->comp_npc.key_item_to_talk_id)].type_mask = 0;
         return true;
     }
     return false;
