@@ -14,6 +14,7 @@
 #include "error_handling.h"
 #include "sounds.h"
 #include "player.h"
+#include "mouse.h"
 #include "hud.h"
 
 int find_empty(world_t *world)
@@ -37,6 +38,7 @@ static win_t *create_win(void)
     | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
+    //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
 
@@ -59,6 +61,7 @@ static void init_all(win_t *window, world_t *world)
     read_portalconf(world);
     read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+    init_mouse(world, window);
 }
 
 void full_screen(world_t *world, win_t *window)
@@ -96,7 +99,7 @@ static int init_empty_world(world_t *world)
     for (int i = 0; world->map_list[i] != NULL; ++i)
         world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        world->entity[i] = (entity_t) {0};
+        world->entity[i] = (entity_t){0};
     if (world->map_list == NULL || sound_list == NULL)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
@@ -116,6 +119,7 @@ int main(void)
         refresh_world(world, clock, window);
         render_window(window, world);
         refresh_sounds(world, clock);
+        move_mouse(world, window);
     }
     return close_and_return(world, window, 0);
 }

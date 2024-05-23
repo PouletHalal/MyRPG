@@ -30,6 +30,8 @@ SRC	=	src/animation.c				\
 		src/inventory/items_parsing2.c	\
 		src/inventory/items_rendering.c	\
 		src/inventory/items_stats.c	\
+		src/inventory/slots.c	\
+		src/mouse.c 	\
 		src/lib/my_str_to_word_array.c	\
 		src/lib/my_strcat.c	\
 		src/main.c	\

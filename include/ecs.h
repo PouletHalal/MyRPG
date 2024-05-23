@@ -57,6 +57,7 @@ enum comp_list {
     COMP_HUD = 1 << 12,
     COMP_NPC = 1 << 13,
     COMP_SPELL = 1 << 14,
+    COMP_MOUSE = 1 << 15,
 };
 
 enum anim_list {
@@ -78,6 +79,7 @@ enum anim_list {
     ANIM_BIG_BLUE_POTION,
     ANIM_SMALL_GREEN_POTION,
     ANIM_SMALL_RED_POTION,
+    ANIM_MOUSE,
     ANIM_HEALTHBAR,
     ANIM_END,
 };
@@ -226,6 +228,11 @@ typedef struct comp_stat_s {
     int effect_tick_cooldown[MAX_EFFECT];
 } comp_stat_t;
 
+typedef struct comp_mouse_s {
+    sfBool item_picked;
+    int item_picked_i;
+} comp_mouse_t;
+
 typedef struct comp_spell_s {
     enum anim_list index;
     enum target target;
@@ -241,5 +248,6 @@ typedef struct comp_spell_s {
 static const comp_spell_t spell_list[] = {
     {20, ALL_ENNEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
+
 
 #endif /* !ECS_H_ */

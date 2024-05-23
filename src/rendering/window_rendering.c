@@ -59,6 +59,8 @@ static bool is_renderable(entity_t *entity, int map_id)
 
 static void hud_rendering(win_t *window, world_t *world, entity_t *player)
 {
+    entity_t *mouse = &world->entity[find_comp(world, COMP_MOUSE)];
+
     sfRenderWindow_setView(window->window,
     sfRenderWindow_getDefaultView(window->window));
     display_dialogs(window, world);
@@ -72,6 +74,7 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
                 world->entity[i].comp_render.sprite, NULL);
             }
     sfRenderWindow_setView(window->window, window->cam.view);
+    sfRenderWindow_drawSprite(window->window, mouse->comp_render.sprite, NULL);
 }
 
 void render_window(win_t *window, world_t *world)
