@@ -25,7 +25,5 @@ bool add_item_to_inv(entity_t *entity, entity_t *item, int i)
     item->comp_render.is_visible = false;
     item->comp_item.id_in_world = i;
     entity->comp_inventory.items[slot] = item->comp_item;
-    if (slot > 17)
-        entity->comp_inventory.is_visible = true;
     return true;
 }

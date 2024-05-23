@@ -35,33 +35,38 @@ static void display_items(win_t *window, world_t *world, entity_t *entity)
     sprite);
 
     for (int i = 0; i < entity->comp_inventory.size; i++) {
-        if (entity->comp_inventory.items[i].type_mask != 0) {
-            if (!entity->comp_inventory.items[i].is_picked)
-                place_item(world, entity, i);
-            if (world->entity[entity->comp_inventory.items[i].id_in_world].comp_inventory.is_visible) {
-                sfRenderWindow_drawSprite(window->window,world->entity[entity->comp_inventory.items[i].id_in_world].comp_render.sprite, NULL);
-                printf("i %d\n", i);
-            }
+        if (entity->comp_inventory.items[i].type_mask != 0
+        && !entity->comp_inventory.items[i].is_picked)
+            place_item(world, entity, i);
+        if (entity->comp_inventory.items[i].type_mask != 0
+        && world->entity[entity->comp_inventory.items[i].id_in_world]
+        .comp_inventory.is_visible) {
+            sfRenderWindow_drawSprite(window->window, world->entity[
+                entity->comp_inventory.items[i].id_in_world]
+                .comp_render.sprite, NULL);
         }
     }
 }
 
-static void turn_off_items(world_t *world, entity_t *entity, win_t *window)
+static void turn_off_items(world_t *world, entity_t *entity, win_t *window,
+    sfVector2u win_size)
 {
-    sfVector2u win_size = sfRenderWindow_getSize(window->window);
-    sfVector2f temp;
-
-    sfRenderWindow_setView(window->window, sfRenderWindow_getDefaultView(window->window));
-    sfSprite_setPosition(entity->comp_inventory.sprite.sprite, (sfVector2f) {win_size.x / 2, win_size.y / 2 + 500});
-    sfSprite_setTextureRect(entity->comp_inventory.sprite.sprite, (sfIntRect){0, 67, 203, 30});
+    sfRenderWindow_setView(window->window,
+    sfRenderWindow_getDefaultView(window->window));
+    sfSprite_setPosition(entity->comp_inventory.sprite.sprite,
+    (sfVector2f) {win_size.x / 2, win_size.y / 2 + 500});
+    sfSprite_setTextureRect(entity->comp_inventory.sprite.sprite,
+    (sfIntRect){0, 67, 203, 30});
     for (int i = 0; i < entity->comp_inventory.size; i++) {
-        if (entity->comp_inventory.items[i].type_mask != 0) {
-            if (i > 17 && i < 28) {
-                temp = (sfVector2f){world->entity[entity->comp_inventory.items[i].id_in_world].comp_position.position.x, win_size.y / 2 + 402};
-                world->entity[entity->comp_inventory.items[i].id_in_world].comp_position.position = temp;
-            } else {
-                world->entity[entity->comp_inventory.items[i].id_in_world].comp_inventory.is_visible = false;
-            }
+        if (entity->comp_inventory.items[i].type_mask != 0 && i > 17) {
+            world->entity[entity->comp_inventory.items[i].id_in_world].
+            comp_position.position = (sfVector2f){world->entity[entity->
+            comp_inventory.items[i].id_in_world].comp_position.position.x,
+            win_size.y / 2 + 402};
+        }
+        if (entity->comp_inventory.items[i].type_mask != 0 && i <= 17) {
+            world->entity[entity->comp_inventory.items[i].id_in_world]
+            .comp_inventory.is_visible = false;
         }
     }
     sfRenderWindow_drawSprite(window->window, entity->comp_inventory.sprite.sprite, NULL);
@@ -74,7 +79,7 @@ void display_inventory(win_t *window, world_t *world)
     sfVector2u win_size = sfRenderWindow_getSize(window->window);
 
     if (!player->comp_inventory.is_open)
-        return turn_off_items(world, player, window);
+        return turn_off_items(world, player, window, win_size);
     for (int i = 0; i < player->comp_inventory.size; i++)
         world->entity[player->comp_inventory.items[i].id_in_world].comp_inventory.is_visible = true;
     sfRenderWindow_setView(window->window,
