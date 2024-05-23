@@ -61,7 +61,7 @@ static void next_frame(win_t *window, world_t *world, entity_t *entity)
 
 static void player_events(win_t *window, entity_t *entity, world_t *world)
 {
-    if (is_key_pressed(entity, sfKeyR))
+    if (is_key_pressed(entity, sfKeyE))
         create_spell(world, entity->comp_position.position, SPELL_DARK);
     next_frame(window, world, entity);
     sfRenderWindow_setView(window->window, window->cam.view);

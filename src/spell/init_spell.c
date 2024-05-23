@@ -34,8 +34,9 @@ int get_move_id(char *name)
 int get_target_id(char *name)
 {
     for (int i = 0; TARGET_NAMES[i].name != NULL; i++) {
-        if (strcmp(name, TARGET_NAMES[i].name) == 0)
+        if (strcmp(name, TARGET_NAMES[i].name) == 0) {
             return TARGET_NAMES[i].target;
+        }
     }
     return 0;
 }

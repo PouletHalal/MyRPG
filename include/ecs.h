@@ -238,7 +238,7 @@ typedef struct comp_spell_s {
 } comp_spell_t;
 
 static const comp_spell_t spell_list[] = {
-    {20, ALL_ENEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
+    {20, ALL_ENNEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
 
 #endif /* !ECS_H_ */

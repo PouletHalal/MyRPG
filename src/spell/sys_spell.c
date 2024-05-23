@@ -95,7 +95,7 @@ static void destroy_spell(entity_t *entity, world_t *world)
 static sfBool is_piercing(entity_t *entity)
 {
     if (entity->comp_spell.target == ONE_ALLY
-        || entity->comp_spell.target == ONE_ENEMY
+        || entity->comp_spell.target == ONE_ENNEMY
         || entity->comp_spell.target == SELF)
         return sfFalse;
     return sfTrue;

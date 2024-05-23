@@ -16,8 +16,8 @@ typedef struct memory_s {
 enum target {
     NONE,
     SELF,
-    ONE_ENEMY,
-    ALL_ENEMY,
+    ONE_ENNEMY,
+    ALL_ENNEMY,
     ONE_ALLY,
     ALL_ALLY,
 };
@@ -31,8 +31,8 @@ static const target_names_t TARGET_NAMES[] =
 {
     {"none", NONE},
     {"self", SELF},
-    {"one_enemy", ONE_ENEMY},
-    {"all_enemy", ALL_ENEMY},
+    {"one_ennemy", ONE_ENNEMY},
+    {"all_ennemy", ALL_ENNEMY},
     {"one_ally", ONE_ALLY},
     {"all_ally", ALL_ALLY},
     {NULL, NONE},
