@@ -90,5 +90,6 @@ void init_spell(world_t *world, sfVector2f position, enum spell spell_nbr);
 void sys_spell(world_t *world);
 void loop_effect(entity_t *entity);
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
+void drag_item_inv(entity_t *entity, entity_t *mouse, int slot);
 
 #endif /* !WORLD_H_ */

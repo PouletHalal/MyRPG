@@ -71,7 +71,7 @@ static void pick_item(world_t *world, entity_t *entity,
     }
 }
 
-static void drag_item_inv(entity_t *entity, entity_t *mouse, int slot)
+void drag_item_inv(entity_t *entity, entity_t *mouse, int slot)
 {
     comp_item_t temp = (comp_item_t) {0};
 
