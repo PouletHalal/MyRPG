@@ -68,6 +68,7 @@ SRC	=	src/animation.c				\
 		src/portals/init_portals.c	\
 		src/portals/portal_parsing.c	\
 		src/portals/portal_parsing2.c	\
+		src/read_config.c	\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/sounds/init_sounds.c	\
@@ -85,6 +86,8 @@ SRC	=	src/animation.c				\
 		src/ui/sys_ui.c	\
 		src/map_loading/map_drawing.c	\
 		src/spell/spell_parsing2.c	\
+		src/inventory/item_stats2.c	\
+		src/ui/button_functs.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

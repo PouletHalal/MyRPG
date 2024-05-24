@@ -77,16 +77,6 @@ typedef struct animation_s {
     int frame_rate;
 } animation_t;
 
-typedef struct comp_ui_s {
-    int ui_mask;
-    int next_mask;
-    char *name;
-    sfText *text;
-    sfFont *font;
-    animation_t *hover;
-    animation_t *base;
-} comp_ui_t;
-
 typedef struct comp_hud_s {
     int hud_type;
 } comp_hud_t;
@@ -100,6 +90,8 @@ typedef struct comp_npc_s {
     sfBool takes_item;
     int gives_item_dialog_id;
     int gives_item_sentence_id;
+    int takes_item_dialog_id;
+    int takes_item_sentence_id;
     int key_item_to_talk_id;
     int key_item_to_drop_id;
     int item_id;
@@ -155,7 +147,6 @@ typedef struct comp_position_s {
 typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
-    sfClock *clock;
     bool mouse_left_down;
     bool mouse_right_down;
     sfVector2f mouse_pos;

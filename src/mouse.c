@@ -25,12 +25,12 @@ void init_mouse(world_t *world, win_t *window)
 {
     int free_slot = find_empty(world);
     entity_t *mouse = &world->entity[free_slot];
-    sfTexture *texture = sfTexture_createFromFile("effect/mouse.png", NULL);
+    sfTexture *texture = sfTexture_createFromFile("effect/empty.png", NULL);
     sfVector2f mouse_pos_f = (sfVector2f){sfMouse_getPositionRenderWindow(
         window->window).x, sfMouse_getPositionRenderWindow(window->window).x};
 
     init_comp_render(mouse, world,
-    &world->animations[get_anim_id(world, "mouse")], mouse_pos_f);
+        &world->animations[get_anim_id(world, "mouse")], mouse_pos_f);
     init_comp_hitbox(mouse, mouse_pos_f);
     init_comp_position(mouse, mouse_pos_f, world->map_id);
     mouse->comp_render.is_visible = true;

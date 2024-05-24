@@ -1,4 +1,1 @@
-bonjour:je suis un forgeron
-laisse moi taffer
-nan sah:arrete
-stop
+bonjour, je suis un forgeron:tu sors d'ou comme ca?:comment ca "aucune idee"?:Ok, je sais comment t'aider,:mais faudra me donner quelque chose en echange:je suis fatigué de forger sah:ramene moi une potion,:OH mais je vois que tu en as une:merci chef, tiens prends ça:vous avez recu nan mdr t'as cru t'etais le mc:va a la librairie pour apprendre a lire:espece d'analphabete

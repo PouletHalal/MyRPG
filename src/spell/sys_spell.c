@@ -87,8 +87,10 @@ static void follow_closest(entity_t *entity, world_t *world)
 static void destroy_spell(entity_t *entity, world_t *world)
 {
     free_memory(entity->comp_spell.memory);
-    if ((entity->mask & COMP_RENDER) == COMP_RENDER)
+    if ((entity->mask & COMP_RENDER) == COMP_RENDER) {
+        sfTexture_destroy(entity->comp_render.texture);
         sfSprite_destroy(entity->comp_render.sprite);
+    }
     entity->mask = COMP_NONE;
 }
 

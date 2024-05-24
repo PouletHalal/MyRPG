@@ -65,9 +65,14 @@ static void change_world(world_t *world, entity_t *entity, entity_t *portal)
     entity->comp_position.position =
     portal->comp_portal.dest_pos;
     entity->comp_position.world = world->map_id;
+    sfMusic_setVolume(world->map_list[world->map_id]->music,
+    world->music_volume);
     sfMusic_play(world->map_list[world->map_id]->music);
-    if (portal->comp_portal.comp_sound.sound.sound != NULL)
+    if (portal->comp_portal.comp_sound.sound.sound != NULL) {
+        sfSound_setVolume(portal->comp_portal.comp_sound.sound.sound,
+        world->sound_volume);
         sfSound_play(portal->comp_portal.comp_sound.sound.sound);
+    }
 }
 
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],

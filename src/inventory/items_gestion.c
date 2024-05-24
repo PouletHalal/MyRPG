@@ -93,6 +93,10 @@ static void update_stat(entity_t *player, entity_t *item)
     player->comp_stat.defense += item->comp_stat.defense;
     if (player->comp_stat.defense < 0)
         player->comp_stat.defense = 0;
+    player->comp_stat.mana += item->comp_stat.mana;
+    if (player->comp_stat.mana > player->comp_stat.mana_max)
+        player->comp_stat.mana = player->comp_stat.mana_max;
+    player->comp_stat.exp += item->comp_stat.exp;
     item->comp_stat = (comp_stat_t){0};
 }
 

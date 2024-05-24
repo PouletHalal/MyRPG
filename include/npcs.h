@@ -29,6 +29,8 @@ int gives_item_sentence_id(world_t *world, entity_t *entity, char *args);
 int set_key_item_to_talk(world_t *world, entity_t *entity, char *args);
 int set_key_item_to_drop(world_t *world, entity_t *entity, char *args);
 int set_takes_item(world_t *world, entity_t *entity, char *args);
+int takes_item_dialog_id(world_t *world, entity_t *entity, char *args);
+int takes_item_sentence_id(world_t *world, entity_t *entity, char *args);
 typedef struct ptr_funcs {
     char *name;
     int (*ptr)(world_t *world, entity_t *entity, char *args);
@@ -55,6 +57,8 @@ static const ptr_func_t NPC_ARGS[] = {
     {"key_item_to_talk", &set_key_item_to_talk},
     {"key_item_to_drop", &set_key_item_to_drop},
     {"takes_item", &set_takes_item},
+    {"takes_item_dialog_id", &takes_item_dialog_id},
+    {"takes_item_sentence_id", &takes_item_sentence_id},
     {NULL, NULL}
 };
 

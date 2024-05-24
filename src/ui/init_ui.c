@@ -52,7 +52,6 @@ static void init_button(world_t *world, char *filename)
         if (line[0] == '\0' || line[0] == '\n')
             break;
         split = my_str_to_word_array(line, "=\n ");
-        entity->mask |= COMP_DIALOG;
         if (get_ui_arg(world, entity, split, line) == 84) {
             entity->mask = COMP_NONE;
             break;
