@@ -82,3 +82,14 @@ int set_button_pos(world_t *world, entity_t *entity, char *args)
     init_comp_position(entity, (sfVector2f) {atof(temp[0]), atof(temp[1])}, 0);
     return 0;   
 }
+
+int set_button_fun(world_t *world, entity_t *entity, char *args)
+{
+    char **split = my_str_to_word_array(args, " =\t\n");
+    
+    if (split == NULL || split[1] == NULL)
+        return int_display_and_return(84, 2, "Invalid arguments ->", args);
+    entity->mask |= COMP_UI;
+    entity->comp_ui.func_name = strdup(split[1]);
+    return 0;
+}

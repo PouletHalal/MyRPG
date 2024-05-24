@@ -16,6 +16,7 @@ int set_base_anim(world_t *world, entity_t *entity, char *args);
 int set_next_mask(world_t *world, entity_t *entity, char *args);
 int set_button_name(world_t *world, entity_t *entity, char *args);
 int set_button_pos(world_t *world, entity_t *entity, char *args);
+int set_button_fun(world_t *world, entity_t *entity, char *args);
 
 static const ptr_func_t UI_FLAGS[] = {
     {"base_anim", &set_base_anim},
@@ -24,6 +25,7 @@ static const ptr_func_t UI_FLAGS[] = {
     {"next_mask", &set_next_mask},
     {"name", &set_button_name},
     {"pos", &set_button_pos},
+    {"func", &set_button_fun},
     {NULL, NULL}
 };
 
