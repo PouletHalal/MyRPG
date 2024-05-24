@@ -59,7 +59,6 @@ static void next_frame(entity_t *entity, world_t *world, win_t *win)
         return;
     if (entity->comp_position.world != world->map_id)
         return check_clone_dispawn(entity, &world->entity[player], world);
-    play_animation(world, entity, entity->comp_mob.anim_id, true);
     if (entity->comp_mob.does_follow && entity->comp_mob.is_alive) {
         if (check_range(entity, &world->entity[player]))
             follow_move(entity, &world->entity[player]);

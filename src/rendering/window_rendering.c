@@ -67,13 +67,8 @@ static bool is_renderable(entity_t *entity, int map_id, int ui_id)
     return false;
 }
 
-static void hud_rendering(win_t *window, world_t *world, entity_t *player)
+static void inventory_render(win_t *window, world_t *world, entity_t *player)
 {
-    entity_t *mouse = &world->entity[find_comp(world, COMP_MOUSE)];
-
-    sfRenderWindow_setView(window->window,
-    sfRenderWindow_getDefaultView(window->window));
-    display_dialogs(window, world);
     display_inventory(window, world);
     for (int i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
@@ -83,7 +78,18 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
                 update_hud(world, player);
                 sfRenderWindow_drawSprite(window->window,
                 world->entity[i].comp_render.sprite, NULL);
-            }
+        }
+}
+
+static void hud_rendering(win_t *window, world_t *world, entity_t *player)
+{
+    entity_t *mouse = &world->entity[find_comp(world, COMP_MOUSE)];
+
+    sfRenderWindow_setView(window->window,
+    sfRenderWindow_getDefaultView(window->window));
+    display_dialogs(window, world);
+    if (world->map_list[world->map_id]->display_hud == true)
+        inventory_render(window, world, player);
     sfRenderWindow_setView(window->window, window->cam.view);
     sfRenderWindow_drawSprite(window->window, mouse->comp_render.sprite, NULL);
 }

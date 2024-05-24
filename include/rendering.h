@@ -24,4 +24,5 @@ void set_sprite(entity_t *entity, animation_t *anim,
 void update_sprite_direction(entity_t *entity);
 bool is_in_animation(entity_t *entity);
 
+
 #endif /* !RENDERING_H_ */
