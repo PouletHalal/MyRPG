@@ -55,6 +55,8 @@ static bool is_renderable(entity_t *entity, int map_id, int ui_id)
     if (ui_id != UI_NONE && (entity->mask & COMP_UI) == COMP_UI &&
         entity->comp_ui.ui_mask == ui_id)
         return true;
+    if ((entity->mask & COMP_UI) == COMP_UI)
+        return false;
     if (ui_id != UI_NONE)
         return false;
     if ((entity->mask & COMP_RENDER) == COMP_RENDER &&
@@ -76,7 +78,8 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
     for (int i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER &&
             world->entity[i].comp_render.is_visible == true &&
-            (world->entity[i].mask & COMP_HUD) == COMP_HUD) {
+            (world->entity[i].mask & COMP_HUD) == COMP_HUD &&
+            (world->entity[i].mask & COMP_UI) != COMP_UI) {
                 update_hud(world, player);
                 sfRenderWindow_drawSprite(window->window,
                 world->entity[i].comp_render.sprite, NULL);
