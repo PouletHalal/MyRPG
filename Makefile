@@ -68,6 +68,7 @@ SRC	=	src/animation.c				\
 		src/portals/init_portals.c	\
 		src/portals/portal_parsing.c	\
 		src/portals/portal_parsing2.c	\
+		src/read_config.c	\
 		src/rendering/map_rendering.c	\
 		src/rendering/window_rendering.c	\
 		src/sounds/init_sounds.c	\

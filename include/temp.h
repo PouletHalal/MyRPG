@@ -45,5 +45,6 @@ void mob_death(world_t *world, entity_t *entity);
 
 void kill_entity(entity_t *entity, world_t *world);
 void kill_world(world_t *world);
+void read_configs(world_t *world, win_t *window);
 
 #endif /* !TEMP_H_ */
