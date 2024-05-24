@@ -56,8 +56,8 @@ static void init_all(win_t *window, world_t *world)
     read_npcconf(world);
     read_portalconf(world);
     read_mobconf(world);
+    read_partconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
-    init_particle(world);
 }
 
 void full_screen(world_t *world, win_t *window)

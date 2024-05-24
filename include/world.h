@@ -17,6 +17,7 @@
 
     #define RENDER_DISTANCE 600. * 600.
     #define DISPAWN_RANGE 800. * 800.
+    #define WEATHER_RATE 0.01
 
 typedef struct entity_s {
     int mask;
@@ -38,6 +39,12 @@ typedef struct entity_s {
     comp_particle_t comp_particle;
 } entity_t;
 
+enum weather {
+    CLEAR,
+    RAIN,
+    MAX_WEATHER,
+};
+
 typedef struct world_s {
     enum map_ids map_id;
     map_list_t **map_list;
@@ -50,6 +57,7 @@ typedef struct world_s {
     sfBool key_down[NB_KEYS];
     sfBool mouse_left_pressed;
     sfBool mouse_right_pressed;
+    enum weather weather;
 } world_t;
 
 void init_entity(world_t *world, animation_t *anim, sfVector2f position);

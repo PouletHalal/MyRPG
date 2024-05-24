@@ -5,6 +5,7 @@
 ** window_rendering
 */
 
+#include <stdlib.h>
 #include "temp.h"
 #include "maps.h"
 #include "player.h"
@@ -30,22 +31,30 @@ void draw_hitbox(win_t *window, entity_t *entity)
     sfRectangleShape_destroy(hitbox);
 }
 
+static void change_weather(world_t *world)
+{
+    if (rand() % 100000 / 1000. < WEATHER_RATE)
+        world->weather = rand() % MAX_WEATHER;
+}
+
 void refresh_world(world_t *world, sfClock *clock,
     win_t *window)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
+
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
         return;
     sfClock_restart(clock);
+    change_weather(world);
     sys_input_and_event(world, window);
     sys_player(window, world, player);
     sys_npc(window, world, player);
     sys_mob(world, window);
+    sys_particle(world);
     sys_position(world, window);
     sys_spell(world);
     sys_render(window, world);
     sys_stat(window, world);
-    sys_particle(world);
 }
 
 static bool is_renderable(entity_t *entity, int map_id)
@@ -73,27 +82,6 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
                 world->entity[i].comp_render.sprite, NULL);
             }
     sfRenderWindow_setView(window->window, window->cam.view);
-}
-
-static void display_particle(win_t *window, comp_particle_t *particle)
-{
-    sfRectangleShape *rect = particle->rectangle;
-
-    for (int i = 0; i < particle->max_particles; ++i)
-        if (particle->particles[i].lifespan > 0) {
-            sfRectangleShape_setPosition(rect, particle->particles[i].pos);
-            sfRectangleShape_setRotation(rect, particle->particles[i].angle);
-            sfRenderWindow_drawRectangleShape(window->window, rect, NULL);
-            sfRectangleShape_setRotation(rect, -particle->particles[i].angle);
-        }
-}
-
-static void display_particles(win_t *window, world_t *world)
-{
-    for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PARTICLE) == COMP_PARTICLE
-        && world->entity[i].comp_particle.is_active)
-            display_particle(window, &world->entity[i].comp_particle);
 }
 
 void render_window(win_t *window, world_t *world)

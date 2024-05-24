@@ -6,37 +6,77 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "particle.h"
 #include "temp.h"
+#include "player.h"
+#include "error_handling.h"
+#include "particle.h"
 
-static void init_particle2(entity_t *entity)
+static int get_arg(char **split, world_t *world, entity_t *entity, char *line)
 {
-    entity->comp_particle.particles = calloc(1000, sizeof(particle_t));
-    entity->comp_particle.spawn_rate = 30;
-    entity->comp_particle.speed[0] = 3;
-    entity->comp_particle.speed[1] = 6;
-    entity->comp_particle.time_active = 10000;
-    entity->comp_particle.is_active = sfTrue;
-    entity->comp_particle.lifespan = 50;
+    for (int i = 0; PART_ARGS[i].name != NULL; i++) {
+        if (strcmp(split[0], PART_ARGS[i].name) == 0) {
+            free_array(split);
+            return PART_ARGS[i].ptr(world, entity, line);
+        }
+    }
+    free_array(split);
+    return 0;
 }
 
-void init_particle(world_t *world)
+static void init_rect(entity_t *entity)
 {
-    int free = find_empty(world);
-    sfRectangleShape *rect = NULL;
-    entity_t *entity = NULL;
-
-    if (free == -1)
+    if (entity->comp_particle.particles == NULL) {
+        entity->mask = COMP_NONE;
         return;
-    entity = &world->entity[free];
-    entity->mask = COMP_PARTICLE;
+    }
     entity->comp_particle.rectangle = sfRectangleShape_create();
-    rect = entity->comp_particle.rectangle;
-    sfRectangleShape_setFillColor(rect, sfBlue);
-    sfRectangleShape_setSize(rect, (sfVector2f){3., 6.});
-    entity->comp_particle.angles[0] = 90;
-    entity->comp_particle.angles[1] = 90;
-    entity->comp_particle.spawn_rect = (sfIntRect) {0, -200, 1280, 960};
-    entity->comp_particle.max_particles = 1000;
-    init_particle2(entity);
+    sfRectangleShape_setSize(entity->comp_particle.rectangle,
+    entity->comp_particle.size);
+    sfRectangleShape_setFillColor(entity->comp_particle.rectangle,
+    entity->comp_particle.color);
+}
+
+static void read_part(world_t *world, char *filename)
+{
+    FILE *stream = fopen(filename, "r");
+    char *line = NULL;
+    size_t len = 0;
+    entity_t *entity = &world->entity[find_empty(world)];
+    char **split = NULL;
+
+    if (test_open(stream, filename) == -1)
+        return;
+    while (getline(&line, &len, stream) > 0) {
+        if (line[0] == '\0' || line[0] == '\n')
+            break;
+        split = my_str_to_word_array(line, "=\n ");
+        entity->mask |= COMP_PARTICLE;
+        if (get_arg(split, world, entity, line) == 84) {
+            entity->mask = COMP_NONE;
+            break;
+        }
+    }
+    init_rect(entity);
+    fclose(stream);
+}
+
+void read_partconf(world_t *world)
+{
+    FILE *stream = fopen(PART_CONF, "r");
+    char *line = NULL;
+    size_t len = 0;
+
+    if (test_open(stream, PART_CONF) == -1)
+        return;
+    while (getline(&line, &len, stream) > 0) {
+        if (line[strlen(line) - 1] == '\n')
+            line[strlen(line) - 1] = '\0';
+        if (line[0] == '\0')
+            break;
+        read_part(world, line);
+    }
+    fclose(stream);
 }

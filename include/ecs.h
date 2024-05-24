@@ -181,19 +181,27 @@ typedef struct particle_s {
     double angle;
 } particle_t;
 
+enum PARTICLE_CONDITION {
+    PART_NONE = 0,
+    PART_MOVE = 1 << 0,
+    PART_RAIN = 1 << 1,
+};
+
 typedef struct comp_particle_s {
-    sfBool is_active;
-    size_t time_active;
+    int condition_mask;
     sfRectangleShape *rectangle;
-    sfVector2f size;
     sfIntRect spawn_rect;
-    int speed[2];
+    sfVector2f size;
+    double speed[2];
     int angles[2];
     size_t max_particles;
     sfColor color;
     size_t lifespan;
     size_t spawn_rate;
     particle_t *particles;
+    sfBool is_entity_centered;
+    int entity;
+    int world;
 } comp_particle_t;
 
 typedef struct comp_mob_s {
