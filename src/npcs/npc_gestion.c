@@ -14,9 +14,11 @@
 
 static bool need_item(world_t *world, entity_t *npc, entity_t *player)
 {
+    printf("need item = %i\n", npc->comp_npc.need_key_item_to_talk);
     if (npc->comp_npc.need_key_item_to_talk == false)
         return true;
     if (is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
+        npc->comp_npc.need_key_item_to_talk = false;
         return true;
     }
     return false;
@@ -26,7 +28,7 @@ void npc_events(win_t *window, world_t *world, entity_t *npc, entity_t *player)
 {
     if (npc->comp_position.world == world->map_id &&
         ((npc->mask & COMP_DIALOG) == COMP_DIALOG)) {
-        if (((is_close(player, npc, (sfVector2f) {16, 16}) ||
+        if (((is_close(player, npc, (sfVector2f) {32, 32}) ||
             npc->comp_dialog.is_displayed == true)) &&
             npc->comp_dialog.is_finished == false &&
             need_item(world, npc, player)) {

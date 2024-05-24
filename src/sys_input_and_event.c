@@ -71,6 +71,9 @@ static void analyse_events(win_t *window, world_t *world)
             put_back_item_if_inv_closed(world, player);
         }
     }
+    if (world->key_pressed[sfKeyK])
+        create_item(world, (sfVector2f) {player->comp_position.position.x,
+            player->comp_position.position.y - 10}, rand() % world->item_list.nb_items);
     if (event->type == sfEvtKeyReleased)
         world->key_down[event->key.code] = sfFalse;
     if (world->key_down[sfKeyF8])
