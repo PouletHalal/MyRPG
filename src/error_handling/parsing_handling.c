@@ -74,6 +74,9 @@ int close_and_return(world_t *world, win_t *window, int nb)
 {
     sfRenderWindow_close(window->window);
     sfRenderWindow_destroy(window->window);
+    for (int i = 0; i < ENTITY_COUNT; ++i)
+        kill_entity(&world->entity[i], world);
+    kill_world(world);
     free(window);
     free(world);
     return nb;
