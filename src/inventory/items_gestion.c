@@ -135,12 +135,10 @@ bool item_collision(world_t *world, entity_t *entity)
     if (world->key_pressed[sfKeyF] == false)
         return false;
     for (int i = 0; i < ENTITY_COUNT; i++) {
-        if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM &&
-            world->entity[i].comp_render.is_visible &&
-            is_close(&world->entity[i], entity, (sfVector2f){16, 16})) {
-                world->entity[i].comp_render.is_visible = false;
+        if ((world->entity[i].mask & COMP_ITEM) == COMP_ITEM
+        && world->entity[i].comp_render.is_visible
+        && is_close(&world->entity[i], entity, (sfVector2f){16, 16}))
             return add_item_to_inv(entity, &world->entity[i], i);
-        }
     }
     return false;
 }

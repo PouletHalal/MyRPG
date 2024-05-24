@@ -8,6 +8,7 @@
 #include <SFML/Graphics.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "temp.h"
 #include "rendering.h"
 #include "player.h"
