@@ -10,6 +10,7 @@ SRC	=	src/animation.c				\
 		src/animation/animations_parsing2.c	\
 		src/animation/init_animations.c	\
 		src/camera/camera_movements.c	\
+		src/light/light.c				\
 		src/spell/effect.c		\
 		src/spell/sys_spell.c	\
 		src/spell/init_spell.c	\

@@ -116,6 +116,7 @@ static int init_empty_world(world_t *world)
 
     read_animconf(world);
     init_textures(world);
+    world->light_sprite = create_light(200, (sfColor) {255, 255, 153, 255});
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
     world->map_id = INTRO;
