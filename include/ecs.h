@@ -77,16 +77,6 @@ typedef struct animation_s {
     int frame_rate;
 } animation_t;
 
-typedef struct comp_ui_s {
-    int ui_mask;
-    int next_mask;
-    char *name;
-    sfText *text;
-    sfFont *font;
-    animation_t *hover;
-    animation_t *base;
-} comp_ui_t;
-
 typedef struct comp_hud_s {
     int hud_type;
 } comp_hud_t;

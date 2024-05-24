@@ -19,6 +19,16 @@
     #define DISPAWN_RANGE 800. * 800.
     #define WEATHER_RATE 0.01
 
+typedef struct comp_ui_s {
+    int ui_mask;
+    int next_mask;
+    char *name;
+    sfText *text;
+    sfFont *font;
+    animation_t *hover;
+    animation_t *base;
+    char *func_name;
+} comp_ui_t;
 
 typedef struct entity_s {
     int mask;
@@ -65,6 +75,8 @@ typedef struct world_s {
     sfBool mouse_right_pressed;
     enum weather weather;
     sfSprite *light_sprite;
+    int sound_volume;
+    int music_volume;
 } world_t;
 
 void init_entity(world_t *world, animation_t *anim, sfVector2f position);
