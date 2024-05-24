@@ -21,15 +21,21 @@ static int find_empty_particle(comp_particle_t *particle)
 
 static void create_particle(comp_particle_t *parent, particle_t *particle)
 {
-    int ran = rand();
     double angle = parent->angles[0] * M_PI / 180.;
+    double speed = parent->speed[0];
 
-    particle->pos.x = ran % parent->spawn_rect.width + parent->spawn_rect.left;
-    particle->pos.y = ran % parent->spawn_rect.height + parent->spawn_rect.top;
+    particle->pos.x = rand() % parent->spawn_rect.width
+    + parent->spawn_rect.left;
+    particle->pos.y = rand() % parent->spawn_rect.height
+    + parent->spawn_rect.top;
     if (parent->angles[1] - parent->angles[0] > 0)
-        angle = ran % (parent->angles[1] - parent->angles[0]) * M_PI / 180.;
-    particle->speed.x = cos(angle) * parent->speed;
-    particle->speed.y = sin(angle) * parent->speed;
+        angle = rand() % (parent->angles[1] - parent->angles[0]) * M_PI / 180.
+        + parent->angles[0];
+    if (parent->speed[1] - parent->speed[0] > 0)
+        speed = rand() % (parent->speed[1] - parent->speed[0])
+        + parent->speed[0];
+    particle->speed.x = cos(angle) * speed;
+    particle->speed.y = sin(angle) * speed;
     particle->lifespan = parent->lifespan;
 }
 

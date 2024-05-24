@@ -187,7 +187,7 @@ typedef struct comp_particle_s {
     sfRectangleShape *rectangle;
     sfVector2f size;
     sfIntRect spawn_rect;
-    double speed;
+    int speed[2];
     int angles[2];
     size_t max_particles;
     sfColor color;
