@@ -27,7 +27,7 @@ void init_view(win_t *window)
     window->cam.view_rect = (sfFloatRect) {0., 0., 624, 351};
     window->cam.view = sfView_createFromRect(window->cam.view_rect);
     window->cam.is_moving = false;
-    window->cam.offset = (sfVector2f) {0.5, 0.5};
+    window->cam.offset = (sfVector2f) {6, 6};
     window->cam.destination = &dest;
 }
 

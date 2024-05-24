@@ -25,6 +25,7 @@
 static const char ANIM_CONF[] = "animations/animations.conf";
 static const char SPELL_CONF[] = "maps/spells.conf";
 static const char EFFECT_CONF[] = "maps/effects.conf";
+static const char BUTTON_CONF[] = "ui/buttons.conf";
 
 enum map_ids {
     MAIN_WORLD,
@@ -58,34 +59,12 @@ enum comp_list {
     COMP_NPC = 1 << 13,
     COMP_SPELL = 1 << 14,
     COMP_MOUSE = 1 << 15,
+    COMP_UI = 1 << 17,
 };
 
-enum anim_list {
-    ANIM_PROTA_IDLE,
-    ANIM_PROTA_RUN,
-    ANIM_PROTA_JUMP,
-    ANIM_PROTA_ATTACK,
-    ANIM_PROTA_DODO,
-    ANIM_MOB_RUN,
-    ANIM_PORTAL_GREEN,
-    ANIM_BLACKSMITH,
-    ANIM_TRANSPARENT,
-    ANIM_INTRO,
-    ANIM_BOY_IDLE,
-    ANIM_BOY_TALK,
-    ANIM_SPELL_DARK,
-    ANIM_SMALL_BLUE_POTION,
-    ANIM_MEDIUM_BLUE_POTION,
-    ANIM_BIG_BLUE_POTION,
-    ANIM_SMALL_GREEN_POTION,
-    ANIM_SMALL_RED_POTION,
-    ANIM_MOUSE,
-    ANIM_HEALTHBAR,
-    ANIM_END,
-};
 
 typedef struct animation_s {
-    enum anim_list index;
+    int index;
     char *filename;
     char *name;
     sfIntRect base_text_rect;
@@ -94,6 +73,16 @@ typedef struct animation_s {
     sfVector2f scale;
     int frame_rate;
 } animation_t;
+
+typedef struct comp_ui_s {
+    int ui_mask;
+    int next_mask;
+    char *name;
+    sfText *text;
+    sfFont *font;
+    animation_t *hover;
+    animation_t *base;  
+} comp_ui_t;
 
 typedef struct comp_hud_s {
     int hud_type;
@@ -179,7 +168,6 @@ typedef struct comp_portal_s {
 } comp_portal_t;
 
 
-
 typedef struct comp_mob_s {
     bool is_alive;
     bool does_follow;
@@ -234,7 +222,7 @@ typedef struct comp_mouse_s {
 } comp_mouse_t;
 
 typedef struct comp_spell_s {
-    enum anim_list index;
+    int index;
     enum target target;
     enum move_type move_type;
     float damage;
@@ -248,6 +236,5 @@ typedef struct comp_spell_s {
 static const comp_spell_t spell_list[] = {
     {20, ALL_ENNEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
 };
-
 
 #endif /* !ECS_H_ */

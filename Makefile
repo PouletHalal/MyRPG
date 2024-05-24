@@ -71,6 +71,9 @@ SRC	=	src/animation.c				\
 		src/position/sys_position.c		\
 		src/position/vectors.c	\
 		src/start.c	\
+		src/ui/init_ui.c	\
+		src/ui/ui_parsing.c	\
+		src/ui/sys_ui.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

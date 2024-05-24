@@ -1,14 +1,13 @@
 /*
 ** EPITECH PROJECT, 2024
-** My rpg
+** MyRPG
 ** File description:
-** Sys render
+** sys_ui
 */
 
-#include <SFML/Graphics.h>
-#include <stdlib.h>
-#include "temp.h"
-#include "camera.h"
+#include "ui.h"
+#include "world.h"
+#include "rendering.h"
 
 static void update_texture_rect(comp_render_t *c_render)
 {
@@ -46,23 +45,34 @@ static void next_frame(entity_t *entity, world_t *world)
     update_texture_rect(c_render);
 }
 
-sfBool has_comp(entity_t *entity, int comp)
+static void ui_events(win_t *win, world_t *world, entity_t *button)
 {
-    if ((entity->mask & comp) == comp)
-        return sfTrue;
-    return sfFalse;
+    if (is_mouse_over(sfMouse_getPositionRenderWindow(win->window), button)) {
+        play_animation(world, button, button->comp_ui.hover->index, true);
+    } else {
+        return play_animation(world, button, button->comp_ui.base->index, true);
+    }
+    if (world->mouse_left_pressed == false)
+        return;
+    world->ui_id = button->comp_ui.next_mask;
 }
 
-void sys_render(win_t *window, world_t *world)
+void sys_ui(win_t *window, world_t *world)
 {
-    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
-        if (has_comp(&world->entity[i], COMP_RENDER) &&
-        (is_in_cam_range(window, &world->entity[i]) ||
-        has_comp(&world->entity[i], COMP_HUD) ||
-        has_comp(&world->entity[i], COMP_ITEM)))
+    if (world->ui_id == UI_NONE)
+        return;
+    sfRenderWindow_setView(window->window,
+    sfRenderWindow_getDefaultView(window->window));
+    for (int i = 0; i < ENTITY_COUNT; i++) {
+        if ((world->entity[i].mask & COMP_UI) == COMP_UI &&
+            world->entity[i].comp_ui.ui_mask == world->ui_id) {
+            ui_events(window, world, &world->entity[i]);
             next_frame(&world->entity[i], world);
-        if (world->is_paused && has_comp(&world->entity[i], COMP_RENDER)
-            && has_comp(&world->entity[i], COMP_UI))
-            next_frame(&world->entity[i], world);
+            sfRenderWindow_drawSprite(window->window,
+            world->entity[i].comp_render.sprite, NULL);
+        }
     }
+    sfRenderWindow_setView(window->window, window->cam.view);
+    sfRenderWindow_display(window->window);
 }
+

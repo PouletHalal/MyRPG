@@ -16,6 +16,7 @@
 #include "player.h"
 #include "mouse.h"
 #include "hud.h"
+#include "ui.h"
 
 int find_empty(world_t *world)
 {
@@ -38,6 +39,7 @@ static win_t *create_win(void)
     | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
+    sfRenderWindow_setFramerateLimit(window->window, 60);
     //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
@@ -62,6 +64,9 @@ static void init_all(win_t *window, world_t *world)
     read_mobconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
     init_mouse(world, window);
+    read_ui_conf(world);
+    world->is_paused = true; 
+    world->ui_id = UI_MAIN;
 }
 
 void full_screen(world_t *world, win_t *window)
@@ -76,6 +81,7 @@ void full_screen(world_t *world, win_t *window)
         window->window = sfRenderWindow_create(window->mode, "SFML window",
         window->style, NULL);
         sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+        sfRenderWindow_setFramerateLimit(window->window, 60);
         window->fullscreen = !window->fullscreen;
     }
 }
