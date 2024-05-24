@@ -23,12 +23,14 @@ typedef struct tooltip_s {
 } tooltip_t;
 
 typedef struct comp_item_s {
+    sfBool is_picked;
     int id_in_world;
     int id;
     int animation_id;
     int equip_mask;
     int type_mask;
     int quantity;
+    double drop_rate;
     tooltip_t tooltip;
     comp_stat_t stats;
 } comp_item_t;

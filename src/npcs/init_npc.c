@@ -29,11 +29,14 @@ static int store_dialog(entity_t *entity, char *line, int id)
 
 static void init_mandatories(entity_t *entity)
 {
+    entity->mask |= COMP_NPC;
     entity->comp_dialog.current_dialog = -1;
     entity->comp_dialog.current_sentence = 0;
     entity->comp_dialog.current_char = 0;
     entity->comp_dialog.substring = NULL;
     entity->comp_dialog.clock = sfClock_create();
+    entity->comp_npc.exclamation_display = true;
+    entity->comp_dialog.detection_area = (sfVector2f) {30, 30};
 }
 
 int read_dialogs(world_t *world, entity_t *entity, char *filename)
@@ -46,7 +49,6 @@ int read_dialogs(world_t *world, entity_t *entity, char *filename)
 
     if (test_open(stream, split[1]) == -1)
         return 84;
-    init_mandatories(entity);
     while (getline(&line, &len, stream) > 0) {
         if (store_dialog(entity, line, id))
             return 84;
@@ -60,6 +62,11 @@ int read_dialogs(world_t *world, entity_t *entity, char *filename)
 
 static int get_arg(char **split, world_t *world, entity_t *entity, char *line)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return 84;
+    }
+    entity->mask |= COMP_DIALOG;
     for (int i = 0; NPC_ARGS[i].name != NULL; i++) {
         if (strcmp(split[0], NPC_ARGS[i].name) == 0) {
             free_array(split);
@@ -81,11 +88,11 @@ static void init_npc(world_t *world, char *filename)
 
     if (test_open(stream, filename) == -1)
         return;
+    init_mandatories(entity);
     while (getline(&line, &len, stream) > 0) {
         if (line[0] == '\0' || line[0] == '\n')
             break;
         split = my_str_to_word_array(line, "=\n ");
-        entity->mask |= COMP_DIALOG;
         if (get_arg(split, world, entity, line) == 84) {
             entity->mask = COMP_NONE;
             break;

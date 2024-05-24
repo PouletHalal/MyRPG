@@ -26,23 +26,17 @@ static void update_player_animation(world_t *world, entity_t *entity)
 {
     sfVector2f velocity = get_mouv_vector(entity);
 
-    if (entity->comp_position.can_move == false)
-        return;
     if (is_in_animation(entity))
         return;
     if (is_key_down(entity, sfKeyE))
         return play_animation(world, entity, get_anim_id(world, "prota_attack")
         , false);
-    if (is_key_down(entity, sfKeyA))
-        return play_animation(world, entity, get_anim_id(world, "prota_dodo"),
-        false);
     if (velocity.x == 0 && velocity.y == 0)
         return play_animation(world, entity, get_anim_id(world, "prota_idle"),
         true);
-    else {
+    else
         return play_animation(world, entity, get_anim_id(world, "prota_run"),
         true);
-    }
 }
 
 static void next_frame(win_t *window, world_t *world, entity_t *entity)
@@ -61,13 +55,14 @@ static void next_frame(win_t *window, world_t *world, entity_t *entity)
 
 static void player_events(win_t *window, entity_t *entity, world_t *world)
 {
+    if (is_key_pressed(entity, sfKeyE))
+        create_spell(world, entity,
+        entity->comp_position.position, SPELL_DARK);
     next_frame(window, world, entity);
     sfRenderWindow_setView(window->window, window->cam.view);
 }
 
-void sys_player(win_t *window, world_t *world)
+void sys_player(win_t *window, world_t *world, entity_t *player)
 {
-    for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PLAYER) == COMP_PLAYER)
-            player_events(window, &(world->entity[i]), world);
+    player_events(window, player, world);
 }

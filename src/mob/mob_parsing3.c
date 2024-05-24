@@ -83,3 +83,16 @@ int set_anim(world_t *world, entity_t *entity, char *args)
         entity->comp_hitbox.do_collide = sfFalse;
     return 0;
 }
+
+int set_mob_cap(world_t *world, entity_t *entity, char *args)
+{
+    char **split = my_str_to_word_array(args, " =\n");
+
+    if (split == NULL || split[1] == NULL || atoi(split[1]) < 0) {
+        free_array(split);
+        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
+    }
+    entity->comp_mob.mob_cap = atoi(split[1]);
+    free_array(split);
+    return 0;
+}

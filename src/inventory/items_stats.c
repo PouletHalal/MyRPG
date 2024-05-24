@@ -61,3 +61,17 @@ int set_item_health(world_t *world, comp_item_t *item, char *args)
     free_array(split);
     return 0;
 }
+
+int set_drop_rate(world_t *world, comp_item_t *item, char *args)
+{
+    char **split = my_str_to_word_array(args, "= \n\t");
+
+    if (split == NULL || split[0] == NULL || split[1] == NULL)
+        return int_display_and_return(84, 3, "Invalid args :", args, "\n");
+    item->drop_rate = atof(split[1]);
+    if (item->drop_rate <= 0)
+        return int_display_and_return(84, 3, "Invalid drop rate:",
+        split[1], "\n");
+    free_array(split);
+    return 0;
+}

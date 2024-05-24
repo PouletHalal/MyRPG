@@ -10,6 +10,7 @@
 #include "temp.h"
 #include "camera.h"
 #include "player.h"
+#include "inventory.h"
 
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code)
 {
@@ -19,18 +20,6 @@ sfBool is_key_pressed(entity_t *entity, sfKeyCode code)
 sfBool is_key_down(entity_t *entity, sfKeyCode code)
 {
     return entity->comp_input.key_down[code];
-}
-
-static void spawn_entity(world_t *world)
-{
-    int player = find_comp(world, COMP_PLAYER);
-    sfVector2f new_pos = world->entity[player].comp_position.position;
-    sfVector2f offset = {-50 + rand() % 100, -50 + rand() % 100};
-
-    if (offset.x < 20 && offset.x > -20)
-        offset.x += 100;
-    new_pos.x += offset.x;
-    new_pos.y += offset.y;
 }
 
 static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
@@ -55,6 +44,16 @@ static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
     }
 }
 
+void put_back_item_if_inv_closed(world_t *world, entity_t *player)
+{
+    int mouse_id = find_comp(world, COMP_MOUSE);
+    entity_t *mouse = &world->entity[mouse_id];
+
+    if (mouse->comp_mouse.item_picked) {
+        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);
+    }
+}
+
 static void analyse_events(win_t *window, world_t *world)
 {
     sfEvent *event = &window->event;
@@ -66,11 +65,10 @@ static void analyse_events(win_t *window, world_t *world)
     if (event->type == sfEvtKeyPressed && event->key.code != -1){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
-        if (world->key_pressed[sfKeyTab])
+        if (world->key_pressed[sfKeyTab]) {
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
-        if (world->key_pressed[sfKeyK])
-            create_item(world, (sfVector2f) {player->comp_position.position.x,
-            player->comp_position.position.y + 50});
+            put_back_item_if_inv_closed(world, player);
+        }
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

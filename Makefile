@@ -10,8 +10,16 @@ SRC	=	src/animation.c				\
 		src/animation/animations_parsing2.c	\
 		src/animation/init_animations.c	\
 		src/camera/camera_movements.c	\
+		src/light/light.c				\
+		src/spell/effect.c		\
+		src/spell/sys_spell.c	\
+		src/spell/init_spell.c	\
+		src/spell/spells_parsing.c	\
+		src/spell/effect_parsing.c	\
+		src/spell/init_effects.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
+		src/free/kill.c	\
 		src/hud/hud_gestion.c	\
 		src/hud/init_hud.c	\
 		src/inventory/init_inventory.c	\
@@ -23,15 +31,20 @@ SRC	=	src/animation.c				\
 		src/inventory/items_parsing2.c	\
 		src/inventory/items_rendering.c	\
 		src/inventory/items_stats.c	\
+		src/inventory/slots.c	\
+		src/mouse.c 	\
 		src/lib/my_str_to_word_array.c	\
 		src/lib/my_strcat.c	\
 		src/main.c	\
 		src/map_loading/init_tilesets.c	\
 		src/map_loading/parsing.c	\
+		src/memory.c	\
 		src/mob/init_mob.c	\
+		src/mob/mob_death.c	\
 		src/mob/mob_parsing.c	\
 		src/mob/mob_parsing2.c	\
 		src/mob/mob_parsing3.c	\
+		src/mob/mob_parsing4.c	\
 		src/mob/spawn_mob.c	\
 		src/mob/sys_mob.c	\
 		src/npcs/dialogs_gestion.c	\
@@ -42,6 +55,14 @@ SRC	=	src/animation.c				\
 		src/npcs/npc_parsing.c	\
 		src/npcs/npc_parsing2.c	\
 		src/npcs/npc_parsing3.c	\
+		src/npcs/npc_parsing4.c	\
+		src/npcs/sys_npc.c	\
+		src/particle/disp_part.c	\
+		src/particle/init_particle.c	\
+		src/particle/part_parsing.c	\
+		src/particle/part_parsing1.c	\
+		src/particle/part_parsing2.c	\
+		src/particle/particle.c	\
 		src/player/player_collisions.c	\
 		src/player/sys_player.c	\
 		src/portals/init_portals.c	\
@@ -58,6 +79,12 @@ SRC	=	src/animation.c				\
 		src/position/sys_position.c		\
 		src/position/vectors.c	\
 		src/start.c	\
+		src/ui/init_ui.c	\
+		src/ui/ui_parsing.c	\
+		src/ui/ui_parsing2.c	\
+		src/ui/sys_ui.c	\
+		src/map_loading/map_drawing.c	\
+		src/spell/spell_parsing2.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

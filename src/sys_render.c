@@ -8,6 +8,7 @@
 #include <SFML/Graphics.h>
 #include <stdlib.h>
 #include "temp.h"
+#include "camera.h"
 
 static void update_texture_rect(comp_render_t *c_render)
 {
@@ -45,9 +46,23 @@ static void next_frame(entity_t *entity, world_t *world)
     update_texture_rect(c_render);
 }
 
-void sys_render(world_t *world)
+sfBool has_comp(entity_t *entity, int comp)
 {
-    for (size_t i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_RENDER) == COMP_RENDER)
+    if ((entity->mask & comp) == comp)
+        return sfTrue;
+    return sfFalse;
+}
+
+void sys_render(win_t *window, world_t *world)
+{
+    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
+        if (has_comp(&world->entity[i], COMP_RENDER) &&
+        (is_in_cam_range(window, &world->entity[i]) ||
+        has_comp(&world->entity[i], COMP_HUD) ||
+        has_comp(&world->entity[i], COMP_ITEM)))
             next_frame(&world->entity[i], world);
+        if (world->is_paused && has_comp(&world->entity[i], COMP_RENDER)
+            && has_comp(&world->entity[i], COMP_UI))
+            next_frame(&world->entity[i], world);
+    }
 }

@@ -14,7 +14,9 @@
 #include "error_handling.h"
 #include "sounds.h"
 #include "player.h"
+#include "mouse.h"
 #include "hud.h"
+#include "ui.h"
 
 int find_empty(world_t *world)
 {
@@ -37,7 +39,33 @@ static win_t *create_win(void)
     | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
+    sfRenderWindow_setFramerateLimit(window->window, 60);
+    window->sound = 100;
+    window->music = 100;
+    sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
+}
+
+static void read_configs(world_t *world, win_t *window)
+{
+    sfVector2f position_player = {636, 489};
+    int anim_index = get_anim_id(world, "prota_idle");
+
+    init_entity(world, &world->animations[anim_index],
+    position_player);
+    read_effect_conf(world);
+    read_spells_conf(world);
+    read_items_conf(world);
+    init_healthbar(world);
+    init_xpbar(world);
+    init_manabar(world);
+    read_npcconf(world);
+    read_portalconf(world);
+    read_mobconf(world);
+    read_partconf(world);
+    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+    init_mouse(world, window);
+    read_ui_conf(world);
 }
 
 static void init_all(win_t *window, world_t *world)
@@ -49,14 +77,9 @@ static void init_all(win_t *window, world_t *world)
         int_display_and_return(0, 2, "Player Animation not found", "\n");
         anim_index = 0;
     }
-    init_entity(world, &world->animations[anim_index],
-    position_player);
-    init_healthbar(world);
-    read_npcconf(world);
-    read_portalconf(world);
-    read_items_conf(world);
-    read_mobconf(world);
-    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+    read_configs(world, window);
+    world->is_paused = true;
+    world->ui_id = UI_MAIN;
 }
 
 void full_screen(world_t *world, win_t *window)
@@ -71,7 +94,18 @@ void full_screen(world_t *world, win_t *window)
         window->window = sfRenderWindow_create(window->mode, "SFML window",
         window->style, NULL);
         sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+        sfRenderWindow_setFramerateLimit(window->window, 60);
         window->fullscreen = !window->fullscreen;
+    }
+}
+
+static void init_inputs(world_t *world)
+{
+    world->mouse_right_pressed = false;
+    world->mouse_left_pressed = false;
+    for (int i = 0; i < NB_KEYS; ++i) {
+        world->key_down[i] = sfFalse;
+        world->key_pressed[i] = sfFalse;
     }
 }
 
@@ -82,17 +116,15 @@ static int init_empty_world(world_t *world)
 
     read_animconf(world);
     init_textures(world);
+    world->light_sprite = create_light(200, (sfColor) {255, 255, 153, 255});
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
     world->map_id = INTRO;
-    world->mouse_right_pressed = false;
-    world->mouse_left_pressed = false;
-    for (int i = 0; i < NB_KEYS; ++i) {
-        world->key_down[i] = sfFalse;
-        world->key_pressed[i] = sfFalse;
-    }
+    init_inputs(world);
+    for (int i = 0; world->map_list[i] != NULL; ++i)
+        world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        world->entity[i] = (entity_t) {0};
+        world->entity[i] = (entity_t){0};
     if (world->map_list == NULL || sound_list == NULL)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
@@ -108,10 +140,11 @@ int main(void)
         return close_and_return(world, window, 84);
     srand(time(NULL));
     init_all(window, world);
-    while (sfRenderWindow_isOpen(window->window)) {
+    while (sfRenderWindow_isOpen(window->window)){
         refresh_world(world, clock, window);
         render_window(window, world);
         refresh_sounds(world, clock);
+        move_mouse(world, window);
     }
     return close_and_return(world, window, 0);
 }

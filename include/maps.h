@@ -17,6 +17,7 @@ static const char PORTAL_CONF[] = "maps/portals.conf";
 static const char NPC_CONF[] = "maps/npcs.conf";
 static const char ITEM_CONF[] = "maps/items.conf";
 static const char MOB_CONF[] = "maps/mobs.conf";
+static const char PART_CONF[] = "maps/part.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080
@@ -47,13 +48,18 @@ typedef struct map_s {
     sfRenderTexture *map;
     sfTexture *spritesheet;
     sprite_t sprite;
+    sfVector2f tile_size;
 } map_t;
 
 typedef struct map_list_s {
-    map_t *maps;
-    sfMusic *music;
-    char *name;
+    sfBool has_cam;
+    sfBool display_hud;
+    sfBool can_attack;
     int nb_layer;
+    sfVector2f cam_size;
+    char *name;
+    sfMusic *music;
+    map_t *maps;
 } map_list_t;
 
 typedef struct portal_s {
@@ -65,4 +71,5 @@ typedef struct portal_s {
 tileset_t *init_tilesets(void);
 map_list_t **init_map(char const *map_file, tileset_t *tileset_list);
 int **get_layer(map_list_t *map_list, char const *name);
+void parse_map(map_t *map, char const *name, tileset_t *tileset);
 #endif

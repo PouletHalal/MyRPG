@@ -29,6 +29,9 @@ typedef struct window_s {
     cam_t cam;
     bool fullscreen;
     sfUint32 style;
+    int sound;
+    int music;
 } win_t;
+
 
 #endif /* !WINDOW_H_ */
