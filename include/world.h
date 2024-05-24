@@ -18,6 +18,7 @@
     #define RENDER_DISTANCE 600. * 600.
     #define DISPAWN_RANGE 800. * 800.
 
+
 typedef struct entity_s {
     int mask;
     int entity;
@@ -28,7 +29,6 @@ typedef struct entity_s {
     comp_hitbox_t comp_hitbox;
     comp_portal_t comp_portal;
     comp_dialog_t comp_dialog;
-    comp_input_t comp_ui;
     comp_stat_t comp_stat;
     comp_inventory_t comp_inventory;
     comp_item_t comp_item;
@@ -36,9 +36,12 @@ typedef struct entity_s {
     comp_hud_t comp_hud;
     comp_npc_t comp_npc;
     comp_spell_t comp_spell;
+    comp_ui_t comp_ui;
 } entity_t;
 
 typedef struct world_s {
+    bool is_paused;
+    int ui_id;
     enum map_ids map_id;
     map_list_t **map_list;
     sound_list_t **sound_list;
@@ -99,5 +102,6 @@ int read_spells_conf(world_t *world);
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
 void drag_item_inv(entity_t *entity, entity_t *mouse, int slot);
 void put_back_item_if_inv_closed(world_t *world, entity_t *player);
+void read_ui_conf(world_t *world);
 
 #endif /* !WORLD_H_ */

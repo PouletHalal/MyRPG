@@ -36,6 +36,7 @@ static void init_mandatories(entity_t *entity)
     entity->comp_dialog.substring = NULL;
     entity->comp_dialog.clock = sfClock_create();
     entity->comp_npc.exclamation_display = true;
+    entity->comp_dialog.detection_area = (sfVector2f) {30, 30};
 }
 
 int read_dialogs(world_t *world, entity_t *entity, char *filename)
@@ -48,7 +49,6 @@ int read_dialogs(world_t *world, entity_t *entity, char *filename)
 
     if (test_open(stream, split[1]) == -1)
         return 84;
-    init_mandatories(entity);
     while (getline(&line, &len, stream) > 0) {
         if (store_dialog(entity, line, id))
             return 84;
@@ -83,6 +83,7 @@ static void init_npc(world_t *world, char *filename)
 
     if (test_open(stream, filename) == -1)
         return;
+    init_mandatories(entity);
     while (getline(&line, &len, stream) > 0) {
         if (line[0] == '\0' || line[0] == '\n')
             break;

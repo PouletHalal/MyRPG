@@ -13,7 +13,21 @@
 #include "window.h"
 #include "mob.h"
 
-static void follow_move(entity_t *mob, entity_t *player)
+static void update_mob_healthbar(world_t *world, entity_t *mob,
+    sfVector2f mob_pos)
+{
+    world->entity[mob->comp_mob.healthbar_id].comp_render.is_visible = 1;
+    world->entity[mob->comp_mob.healthbar_id].comp_render.current_animation->
+    frame_size.x =
+    mob->comp_stat.health / mob->comp_stat.max_health *
+    world->entity[mob->comp_mob.healthbar_id].comp_render.current_animation->
+    base_text_rect.width;
+    world->entity[mob->comp_mob.healthbar_id].comp_position.position =
+    (sfVector2f){mob_pos.x, mob_pos.y - mob->comp_render.current_animation->
+    frame_size.y * mob->comp_render.current_animation->scale.y / 3};
+}
+
+static void follow_move(entity_t *mob, entity_t *player, world_t *world)
 {
     sfVector2f mob_pos = mob->comp_position.position;
     sfVector2f player_pos = player->comp_position.position;
@@ -24,6 +38,7 @@ static void follow_move(entity_t *mob, entity_t *player)
 
     add_vector(mob, (sfVector2f)
     {cos * mob->comp_mob.speed, sin * mob->comp_mob.speed}, 1);
+    update_mob_healthbar(world, mob, mob_pos);
 }
 
 static sfBool check_range(entity_t *mob, entity_t *player)
@@ -48,6 +63,8 @@ static void check_clone_dispawn(entity_t *mob, entity_t *player,
     || (mob_pos.x - player_pos.x) * (mob_pos.x - player_pos.x) +
     (mob_pos.y - player_pos.y) * (mob_pos.y - player_pos.y) > DISPAWN_RANGE))
         kill_entity(mob, world);
+    if (mob->comp_mob.healthbar_id != 0)
+        world->entity[mob->comp_mob.healthbar_id].comp_render.is_visible = 0;
 }
 
 static void next_frame(entity_t *entity, world_t *world, win_t *win)
@@ -59,10 +76,9 @@ static void next_frame(entity_t *entity, world_t *world, win_t *win)
         return;
     if (entity->comp_position.world != world->map_id)
         return check_clone_dispawn(entity, &world->entity[player], world);
-    play_animation(world, entity, entity->comp_mob.anim_id, true);
     if (entity->comp_mob.does_follow && entity->comp_mob.is_alive) {
         if (check_range(entity, &world->entity[player]))
-            follow_move(entity, &world->entity[player]);
+            follow_move(entity, &world->entity[player], world);
         else
             check_clone_dispawn(entity, &world->entity[player], world);
     }

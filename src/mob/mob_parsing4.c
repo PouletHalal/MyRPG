@@ -9,6 +9,7 @@
 #include <string.h>
 #include "error_handling.h"
 #include "mob.h"
+#include "temp.h"
 #include "ecs.h"
 
 int set_exp_loot(world_t *world, entity_t *entity, char *args)
