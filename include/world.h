@@ -64,6 +64,7 @@ typedef struct world_s {
     sfBool mouse_left_pressed;
     sfBool mouse_right_pressed;
     enum weather weather;
+    sfSprite *light_sprite;
 } world_t;
 
 void init_entity(world_t *world, animation_t *anim, sfVector2f position);
@@ -113,5 +114,6 @@ void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
 void drag_item_inv(entity_t *entity, entity_t *mouse, int slot);
 void put_back_item_if_inv_closed(world_t *world, entity_t *player);
 void read_ui_conf(world_t *world);
+sfSprite *create_light(int size, sfColor color);
 
 #endif /* !WORLD_H_ */

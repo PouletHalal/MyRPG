@@ -17,7 +17,6 @@ void init_textures(world_t *world);
 int len_array(char **array);
 int find_empty(world_t *world);
 
-
 void read_portalconf(world_t *world);
 void read_npcconf(world_t *world);
 void read_mobconf(world_t *world);
@@ -42,6 +41,9 @@ void item_events(win_t *window, world_t *world, entity_t *entity);
 void display_tooltips(win_t *window, entity_t *item, sfVector2f pos);
 void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
 
+void mob_death(world_t *world, entity_t *entity);
+
 void kill_entity(entity_t *entity, world_t *world);
+void kill_world(world_t *world);
 
 #endif /* !TEMP_H_ */

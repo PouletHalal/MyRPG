@@ -157,7 +157,6 @@ typedef struct comp_position_s {
 typedef struct comp_input_s {
     sfBool *key_pressed;
     sfBool *key_down;
-    sfClock *clock;
     bool mouse_left_down;
     bool mouse_right_down;
     sfVector2f mouse_pos;

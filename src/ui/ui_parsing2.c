@@ -25,5 +25,5 @@ int set_button_pos(world_t *world, entity_t *entity, char *args)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_POSITION;
     init_comp_position(entity, (sfVector2f) {atof(temp[0]), atof(temp[1])}, 0);
-    return 0;   
+    return 0;
 }
