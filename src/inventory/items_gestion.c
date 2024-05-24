@@ -11,6 +11,7 @@
 #include "player.h"
 #include "inventory.h"
 #include "world.h"
+#include "error_handling.h"
 
 int get_item_id(item_list_t items, char const *name)
 {
@@ -19,7 +20,7 @@ int get_item_id(item_list_t items, char const *name)
             return i;
         }
     }
-    return 0;
+    return int_display_and_return(0, 3, "Invalid item :", name, "\n");
 }
 
 bool is_mouse_over(sfVector2i pos, entity_t *entity)

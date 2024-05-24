@@ -48,11 +48,11 @@ void refresh_world(world_t *world, sfClock *clock,
     change_weather(world);
     sys_input_and_event(world, window);
     if (world->ui_id == UI_NONE) {
+        sys_position(world, window);
         sys_player(window, world, player);
         sys_npc(window, world, player);
         sys_mob(world, window);
         sys_particle(world);
-        sys_position(world, window);
         sys_spell(world);
         sys_render(window, world);
         sys_stat(window, world);

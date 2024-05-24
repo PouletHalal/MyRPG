@@ -26,6 +26,9 @@ static void update_player_animation(world_t *world, entity_t *entity)
 {
     sfVector2f velocity = get_mouv_vector(entity);
 
+    if (entity->comp_position.can_move == false)
+        return play_animation(world, entity, get_anim_id(world, "prota_idle"),
+        true);
     if (is_in_animation(entity))
         return;
     if (is_key_down(entity, sfKeyE))

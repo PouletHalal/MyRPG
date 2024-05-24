@@ -61,6 +61,7 @@ void sys_render(win_t *window, world_t *world)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i) {
         if (has_comp(&world->entity[i], COMP_RENDER) &&
+        world->entity[i].comp_position.world == world->map_id &&
         (is_in_cam_range(window, &world->entity[i]) ||
         has_comp(&world->entity[i], COMP_HUD) ||
         has_comp(&world->entity[i], COMP_ITEM)))

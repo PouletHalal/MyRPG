@@ -71,9 +71,6 @@ static void analyse_events(win_t *window, world_t *world)
             put_back_item_if_inv_closed(world, player);
         }
     }
-    if (world->key_pressed[sfKeyK])
-        create_item(world, (sfVector2f) {player->comp_position.position.x,
-            player->comp_position.position.y - 10}, rand() % world->item_list.nb_items);
     if (event->type == sfEvtKeyReleased)
         world->key_down[event->key.code] = sfFalse;
     if (world->key_down[sfKeyF8])
@@ -100,6 +97,7 @@ void sys_input_and_event(world_t *world, win_t *window)
     while (sfRenderWindow_pollEvent(window->window, &(window->event)))
         analyse_events(window, world);
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_INPUT) == COMP_INPUT)
+        if ((world->entity[i].mask & COMP_INPUT) == COMP_INPUT) {
             exec_input(world, &world->entity[i], window);
+        }
 }

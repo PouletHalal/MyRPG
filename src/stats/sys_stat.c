@@ -41,6 +41,10 @@ void respawn_entity(win_t *window, entity_t *entity)
     entity->comp_position.position = entity->comp_position.spawn;
     for (int i = 0; i < MAX_EFFECT; i++)
         stat->effect[i] = NULL;
+    if ((entity->mask & COMP_PLAYER) == COMP_PLAYER) {
+        entity->comp_stat.exp /= 2;
+        entity->comp_stat.level *= 0.8;
+    }
 }
 
 static void do_level_up(comp_stat_t *stat)

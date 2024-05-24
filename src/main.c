@@ -98,14 +98,14 @@ static int init_empty_world(world_t *world)
     world->light_sprite = create_light(200, (sfColor) {255, 255, 153, 255});
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
+    if (world->map_list == NULL || sound_list == NULL)
+        return EXIT_FAILURE;
     world->map_id = INTRO;
     init_inputs(world);
     for (int i = 0; world->map_list[i] != NULL; ++i)
         world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)
         world->entity[i] = (entity_t){0};
-    if (world->map_list == NULL || sound_list == NULL)
-        return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 

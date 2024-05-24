@@ -42,6 +42,7 @@ static void follow_move(entity_t *mob, entity_t *player, world_t *world)
     add_vector(mob, (sfVector2f)
     {cos * mob->comp_mob.speed, sin * mob->comp_mob.speed}, 1);
     update_mob_healthbar(world, mob, mob_pos);
+    update_sprite_direction(mob);
 }
 
 static sfBool check_range(entity_t *mob, entity_t *player)
@@ -82,7 +83,6 @@ static void next_frame(entity_t *entity, world_t *world, win_t *win)
     if (entity->comp_mob.does_follow && entity->comp_mob.is_alive)
         if (check_range(entity, &world->entity[player]))
             return follow_move(entity, &world->entity[player], world);
-    update_sprite_direction(entity);
     if (entity->comp_mob.does_rand_spawn &&
     entity->comp_mob.mob_count < entity->comp_mob.mob_cap
     && (ran % 10000) / 100. < entity->comp_mob.spawn_rate)

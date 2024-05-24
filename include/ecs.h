@@ -65,7 +65,6 @@ enum comp_list {
     COMP_UI = 1 << 17,
 };
 
-
 typedef struct animation_s {
     int index;
     char *filename;

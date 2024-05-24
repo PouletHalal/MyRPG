@@ -18,10 +18,16 @@ void quit(win_t *window, world_t *world)
 void mute_unmute_music(win_t *window, world_t *world)
 {
     if (world->music_volume == 100) {
+        sfMusic_pause(world->map_list[world->map_id]->music);
+        sfMusic_setVolume(world->map_list[world->map_id]->music, 0);
+        sfMusic_play(world->map_list[world->map_id]->music);
         world->music_volume = 0;
         return;
     }
     if (world->music_volume == 0) {
+        sfMusic_pause(world->map_list[world->map_id]->music);
+        sfMusic_setVolume(world->map_list[world->map_id]->music, 100);
+        sfMusic_play(world->map_list[world->map_id]->music);
         world->music_volume = 100;
         return;
     }

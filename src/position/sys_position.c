@@ -60,17 +60,17 @@ sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity)
 
 static void change_world(world_t *world, entity_t *entity, entity_t *portal)
 {
-    sfMusic_stop(world->map_list[world->map_id]->music);
+    sfMusic_pause(world->map_list[world->map_id]->music);
     world->map_id = portal->comp_portal.dest_id;
     entity->comp_position.position =
     portal->comp_portal.dest_pos;
     entity->comp_position.world = world->map_id;
     sfMusic_setVolume(world->map_list[world->map_id]->music,
-    world->music_volume);
+    world->music_volume * 0.5);
     sfMusic_play(world->map_list[world->map_id]->music);
     if (portal->comp_portal.comp_sound.sound.sound != NULL) {
         sfSound_setVolume(portal->comp_portal.comp_sound.sound.sound,
-        world->sound_volume);
+        world->sound_volume * 0.3);
         sfSound_play(portal->comp_portal.comp_sound.sound.sound);
     }
 }
@@ -118,8 +118,9 @@ sfBool check_collision(entity_t *entity, world_t *world,
     if (is_colliding(world, entity, velocity))
         return sfTrue;
     for (int i = 0; i < ENTITY_COUNT; ++i) {
-        if (entity->entity != i && is_in_cam_range(window, &world->entity[i])
-        && check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
+        if (entity->entity != i && world->entity[i].comp_position.world ==
+        world->map_id && is_in_cam_range(window, &world->entity[i]) &&
+        check_if_portal(window, (entity_t *[2]) {entity, &world->entity[i]}
         , world, velocity)) {
             do_attack(world, entity, &world->entity[i]);
             do_attack(world, &world->entity[i], entity);
@@ -153,14 +154,14 @@ static void next_frame(entity_t *entity, world_t *world, win_t *window)
         return;
     sum_vectors_x_y(entity, &yvelo, &xvelo);
     if (xvelo.x != 0. && !check_collision(entity, world, xvelo, window)) {
-            if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
-                update_cam(window, entity, map, xvelo);
-            entity->comp_position.position.x += xvelo.x;
-        }
+        if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
+            update_cam(window, entity, map, xvelo);
+        entity->comp_position.position.x += xvelo.x;
+    }
     if (yvelo.y != 0. && !check_collision(entity, world, yvelo, window)) {
         if ((entity->mask & COMP_PLAYER) == COMP_PLAYER)
                 update_cam(window, entity, map, yvelo);
-            entity->comp_position.position.y += yvelo.y;
+        entity->comp_position.position.y += yvelo.y;
     }
 }
 
@@ -168,6 +169,7 @@ void sys_position(world_t *world, win_t *window)
 {
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         if ((world->entity[i].mask & COMP_POSITION) == COMP_POSITION
+        && world->entity[i].comp_position.world == world->map_id
         && is_in_cam_range(window, &world->entity[i]))
             next_frame(&world->entity[i], world, window);
 }

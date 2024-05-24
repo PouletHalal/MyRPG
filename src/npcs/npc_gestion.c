@@ -30,7 +30,7 @@ void npc_events(win_t *window, world_t *world, entity_t *npc, entity_t *player)
             npc->comp_dialog.is_finished == false &&
             need_item(world, npc, player)) {
                 npc->comp_dialog.is_displayed = true;
-                update_dialog(window, world, npc);
+                return update_dialog(window, world, npc);
         }
     }
 }
@@ -43,4 +43,6 @@ void npc_collision(win_t *window, world_t *world, entity_t *entity)
         return;
     for (size_t i = 0; i < ENTITY_COUNT; ++i)
         npc_events(window, world, &world->entity[i], entity);
+    world->key_pressed[sfKeySpace] = false;
+    world->key_down[sfKeySpace] = false;
 }

@@ -64,6 +64,8 @@ static void free_int_array(int **array)
 
 static void free_maps(map_list_t **maps)
 {
+    if (maps == NULL)
+        return;
     for (int i = 0; maps[i] != NULL; ++i) {
         for (int j = 0; j < maps[i]->nb_layer; ++j) {
             free_int_array(maps[i]->maps[j].csv_map);
