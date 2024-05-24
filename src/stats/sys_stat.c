@@ -21,8 +21,6 @@ void do_attack(world_t *world, entity_t *attack, entity_t *defense)
     defense->comp_stat.clock = defense->comp_stat.invinsibility_frames;
     if ((defense->mask & COMP_PLAYER) == COMP_PLAYER)
         play_animation(world, defense, get_anim_id(world, "prota_hurt"), 0);
-    if (defense->comp_stat.health <= 1e-7 && attack->comp_stat.level_up)
-        attack->comp_stat.exp += defense->comp_stat.exp_loot;
 }
 
 static void check_player_respawn(entity_t *entity, win_t *window)
@@ -63,9 +61,9 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
 
     loop_effect(entity);
     if (stat->health <= 0. && (entity->mask & COMP_ITEM) != COMP_ITEM) {
-        if (stat->do_respawn) {
+        mob_death(world, entity);
+        if (stat->do_respawn)
             return respawn_entity(window, entity);
-        }
         kill_entity(entity, world);
         return;
     }

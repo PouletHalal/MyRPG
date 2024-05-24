@@ -39,6 +39,7 @@ SRC	=	src/animation.c				\
 		src/map_loading/parsing.c	\
 		src/memory.c	\
 		src/mob/init_mob.c	\
+		src/mob/mob_death.c	\
 		src/mob/mob_parsing.c	\
 		src/mob/mob_parsing2.c	\
 		src/mob/mob_parsing3.c	\
