@@ -26,6 +26,7 @@ static void display_particle(win_t *window, comp_particle_t *particle,
 void display_particles(win_t *window, world_t *world)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PARTICLE) == COMP_PARTICLE)
+        if ((world->entity[i].mask & COMP_PARTICLE) == COMP_PARTICLE
+        && world->map_id == world->entity->comp_particle.world)
             display_particle(window, &world->entity[i].comp_particle, world);
 }

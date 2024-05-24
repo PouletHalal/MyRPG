@@ -94,6 +94,7 @@ static void next_frame(entity_t *entity, world_t *world)
 void sys_particle(world_t *world)
 {
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        if ((world->entity[i].mask & COMP_PARTICLE) == COMP_PARTICLE)
+        if ((world->entity[i].mask & COMP_PARTICLE) == COMP_PARTICLE
+        && world->map_id == world->entity[i].comp_particle.world)
             next_frame(&world->entity[i], world);
 }
