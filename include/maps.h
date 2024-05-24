@@ -17,6 +17,7 @@ static const char PORTAL_CONF[] = "maps/portals.conf";
 static const char NPC_CONF[] = "maps/npcs.conf";
 static const char ITEM_CONF[] = "maps/items.conf";
 static const char MOB_CONF[] = "maps/mobs.conf";
+static const char PART_CONF[] = "maps/part.conf";
 
     #define WIDTH 1920
     #define HEIGHT 1080

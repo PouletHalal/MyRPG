@@ -62,6 +62,7 @@ static void read_configs(world_t *world, win_t *window)
     read_npcconf(world);
     read_portalconf(world);
     read_mobconf(world);
+    read_partconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
     init_mouse(world, window);
     read_ui_conf(world);

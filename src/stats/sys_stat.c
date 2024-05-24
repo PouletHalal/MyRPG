@@ -21,7 +21,7 @@ void do_attack(world_t *world, entity_t *attack, entity_t *defense)
     defense->comp_stat.clock = defense->comp_stat.invinsibility_frames;
     if ((defense->mask & COMP_PLAYER) == COMP_PLAYER)
         play_animation(world, defense, get_anim_id(world, "prota_hurt"), 0);
-    if (defense->comp_stat.health < 0. && attack->comp_stat.level_up)
+    if (defense->comp_stat.health <= 1e-7 && attack->comp_stat.level_up)
         attack->comp_stat.exp += defense->comp_stat.exp_loot;
 }
 
@@ -54,6 +54,7 @@ static void do_level_up(comp_stat_t *stat)
     stat->damage *= 1.1;
     stat->defense *= 1.1;
     stat->mana_max *= 1.1;
+    stat->health_regen *= 1.1;
 }
 
 static void next_frame(win_t *window, entity_t *entity, world_t *world)

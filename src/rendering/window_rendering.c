@@ -5,6 +5,7 @@
 ** window_rendering
 */
 
+#include <stdlib.h>
 #include "temp.h"
 #include "maps.h"
 #include "player.h"
@@ -30,6 +31,12 @@ void draw_hitbox(win_t *window, entity_t *entity)
     sfRectangleShape_destroy(hitbox);
 }
 
+static void change_weather(world_t *world)
+{
+    if (rand() % 100000 / 1000. < WEATHER_RATE)
+        world->weather = rand() % MAX_WEATHER;
+}
+
 void refresh_world(world_t *world, sfClock *clock,
     win_t *window)
 {
@@ -38,11 +45,13 @@ void refresh_world(world_t *world, sfClock *clock,
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
         return;
     sfClock_restart(clock);
+    change_weather(world);
     sys_input_and_event(world, window);
     if (world->ui_id == UI_NONE) {
         sys_player(window, world, player);
         sys_npc(window, world, player);
         sys_mob(world, window);
+        sys_particle(world);
         sys_position(world, window);
         sys_spell(world);
         sys_render(window, world);
@@ -112,6 +121,7 @@ void render_window(win_t *window, world_t *world)
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
         }
+    display_particles(window, world);
     display_map(window, world->map_list[world->map_id], 2);
     hud_rendering(window, world, player);
     sfRenderWindow_display(window->window);

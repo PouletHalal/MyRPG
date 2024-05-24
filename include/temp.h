@@ -21,7 +21,7 @@ int find_empty(world_t *world);
 void read_portalconf(world_t *world);
 void read_npcconf(world_t *world);
 void read_mobconf(world_t *world);
-
+void read_partconf(world_t *world);
 
 sfBool collide_entity(entity_t *entity, entity_t *bis, sfVector2f velocity);
 void npc_collision(win_t *window, world_t *world, entity_t *entity);
@@ -30,9 +30,12 @@ sfBool check_collision(entity_t *entity, world_t *world,
 
 void sys_input_and_event(world_t *world, win_t *window);
 void sys_position(world_t *world, win_t *window);
+void sys_particle(world_t *world);
 
 void add_vector(entity_t *entity, sfVector2f vector, size_t lenght);
 sfVector2f get_mouv_vector(entity_t *entity);
+
+void display_particles(win_t *window, world_t *world);
 
 void display_inventory(win_t *window, world_t *world);
 void item_events(win_t *window, world_t *world, entity_t *entity);
