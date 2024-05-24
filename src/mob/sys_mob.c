@@ -76,17 +76,15 @@ static void next_frame(entity_t *entity, world_t *world, win_t *win)
         return;
     if (entity->comp_position.world != world->map_id)
         return check_clone_dispawn(entity, &world->entity[player], world);
-    if (entity->comp_mob.does_follow && entity->comp_mob.is_alive) {
+    if (entity->comp_mob.does_follow && entity->comp_mob.is_alive)
         if (check_range(entity, &world->entity[player]))
-            follow_move(entity, &world->entity[player], world);
-        else
-            check_clone_dispawn(entity, &world->entity[player], world);
-    }
+            return follow_move(entity, &world->entity[player], world);
     update_sprite_direction(entity);
     if (entity->comp_mob.does_rand_spawn &&
     entity->comp_mob.mob_count < entity->comp_mob.mob_cap
     && (ran % 10000) / 100. < entity->comp_mob.spawn_rate)
         spawn_copy(entity, world, (ran % 360) * M_PI / 180., win);
+    check_clone_dispawn(entity, &world->entity[player], world);
 }
 
 void sys_mob(world_t *world, win_t *win)

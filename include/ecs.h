@@ -59,6 +59,7 @@ enum comp_list {
     COMP_NPC = 1 << 13,
     COMP_SPELL = 1 << 14,
     COMP_MOUSE = 1 << 15,
+    COMP_PARTICLE = 1 << 16,
     COMP_UI = 1 << 17,
 };
 
@@ -167,6 +168,35 @@ typedef struct comp_portal_s {
     comp_sound_t comp_sound;
 } comp_portal_t;
 
+typedef struct particle_s {
+    sfVector2f pos;
+    sfVector2f speed;
+    size_t lifespan;
+    double angle;
+} particle_t;
+
+enum PARTICLE_CONDITION {
+    PART_NONE = 0,
+    PART_MOVE = 1 << 0,
+    PART_RAIN = 1 << 1,
+};
+
+typedef struct comp_particle_s {
+    int condition_mask;
+    sfRectangleShape *rectangle;
+    sfIntRect spawn_rect;
+    sfVector2f size;
+    double speed[2];
+    int angles[2];
+    size_t max_particles;
+    sfColor color;
+    size_t lifespan;
+    size_t spawn_rate;
+    particle_t *particles;
+    sfBool is_entity_centered;
+    int entity;
+    int world;
+} comp_particle_t;
 
 typedef struct comp_mob_s {
     int healthbar_id;
