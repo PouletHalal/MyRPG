@@ -169,6 +169,10 @@ typedef struct comp_portal_s {
 
 
 typedef struct comp_mob_s {
+    int healthbar_id;
+    animation_t *hurt;
+    animation_t *death;
+    animation_t *attack;
     bool is_alive;
     bool does_follow;
     double range;

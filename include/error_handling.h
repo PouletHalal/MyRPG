@@ -1,4 +1,4 @@
-/*
+    /*
 ** EPITECH PROJECT, 2024
 ** MyRPG
 ** File description:
