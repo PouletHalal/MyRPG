@@ -111,6 +111,8 @@ void create_spell(world_t *world, sfVector2f position, int spell_id)
 
     if (free == -1)
         return;
+    if (world->map_list[world->map_id]->can_attack == sfFalse)
+        return;
     entity = &world->entity[free];
     *entity = (entity_t){0};
     entity->entity = free;
