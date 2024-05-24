@@ -43,7 +43,6 @@ static win_t *create_win(void)
     sfRenderWindow_setFramerateLimit(window->window, 60);
     window->sound = 100;
     window->music = 100;
-    sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
 
@@ -72,7 +71,6 @@ void full_screen(world_t *world, win_t *window)
             window->style = (sfUint32){sfClose | sfResize};
         window->window = sfRenderWindow_create(window->mode, "SFML window",
         window->style, NULL);
-        sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
         sfRenderWindow_setFramerateLimit(window->window, 60);
         window->fullscreen = !window->fullscreen;
     }

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "temp.h"
 #include "camera.h"
+#include <string.h>
 
 static void update_texture_rect(comp_render_t *c_render)
 {
@@ -43,6 +44,9 @@ static void next_frame(entity_t *entity, world_t *world)
             return;
         else
             c_render->act_frame = 0;
+    if (strcmp(c_render->current_animation->filename,
+        "effect/mob_healthbar.png") == 0)
+        return;
     update_texture_rect(c_render);
 }
 

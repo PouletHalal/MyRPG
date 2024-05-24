@@ -16,12 +16,15 @@
 static void update_mob_healthbar(world_t *world, entity_t *mob,
     sfVector2f mob_pos)
 {
-    world->entity[mob->comp_mob.healthbar_id].comp_render.is_visible = 1;
-    world->entity[mob->comp_mob.healthbar_id].comp_render.current_animation->
-    frame_size.x =
-    mob->comp_stat.health / mob->comp_stat.max_health *
+    sfIntRect rect = world->entity[mob->comp_mob.healthbar_id].comp_render.
+    current_animation->base_text_rect;
+
+    rect.width = mob->comp_stat.health / mob->comp_stat.max_health *
     world->entity[mob->comp_mob.healthbar_id].comp_render.current_animation->
     base_text_rect.width;
+    world->entity[mob->comp_mob.healthbar_id].comp_render.is_visible = 1;
+    sfSprite_setTextureRect(
+        world->entity[mob->comp_mob.healthbar_id].comp_render.sprite, rect);
     world->entity[mob->comp_mob.healthbar_id].comp_position.position =
     (sfVector2f){mob_pos.x, mob_pos.y - mob->comp_render.current_animation->
     frame_size.y * mob->comp_render.current_animation->scale.y / 3};
