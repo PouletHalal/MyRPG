@@ -84,6 +84,8 @@ static void init_inputs(world_t *world)
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
     }
+    world->sound_volume = 100;
+    world->music_volume = 100;
 }
 
 static int init_empty_world(world_t *world)
