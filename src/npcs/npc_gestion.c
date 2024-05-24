@@ -10,11 +10,8 @@
 #include "npcs.h"
 #include "dialogs.h"
 
-
-
 static bool need_item(world_t *world, entity_t *npc, entity_t *player)
 {
-    printf("need item = %i\n", npc->comp_npc.need_key_item_to_talk);
     if (npc->comp_npc.need_key_item_to_talk == false)
         return true;
     if (is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
