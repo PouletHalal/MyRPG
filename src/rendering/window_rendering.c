@@ -104,6 +104,20 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
     sfRenderWindow_drawSprite(window->window, mouse->comp_render.sprite, NULL);
 }
 
+static void render_light(win_t *window, world_t *world)
+{
+    sfRenderStates state = {0};
+    int player_index = find_comp(world, COMP_PLAYER);
+
+    if (world->map_id != INTRO)
+        return;
+    sfSprite_setPosition(world->light_sprite,
+        world->entity[player_index].comp_position.position);
+    state.blendMode = sfBlendAdd;
+    state.transform = sfTransform_Identity;
+    sfRenderWindow_drawSprite(window->window, world->light_sprite, &state);
+}
+
 void render_window(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
@@ -121,6 +135,7 @@ void render_window(win_t *window, world_t *world)
             sfRenderWindow_drawSprite(window->window,
             world->entity[i].comp_render.sprite, NULL);
         }
+    render_light(window, world);
     display_particles(window, world);
     display_map(window, world->map_list[world->map_id], 2);
     hud_rendering(window, world, player);
