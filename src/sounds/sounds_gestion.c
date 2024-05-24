@@ -48,5 +48,6 @@ void refresh_sounds(world_t *world, sfClock *clock)
         sfClock_restart(world->sound_list[sound_map[y][x]]->clock);
     } else
         return;
+    sfSound_setVolume(world->sound_list[sound_map[y][x]]->sounds[random].sound, world->sound_volume);
     sfSound_play(world->sound_list[sound_map[y][x]]->sounds[random].sound);
 }

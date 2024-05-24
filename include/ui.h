@@ -22,17 +22,17 @@ typedef struct UI_MASKS_NAMES {
     char *name;
 } ui_masks_names_t;
 
-void quit(win_t *window, world_t *world, int id_in_world);
-void mute_unmute_music(win_t *window, world_t *world, int id_in_world);
-void mute_unmute_audio(win_t *window, world_t *world, int id_in_world);
+void quit(win_t *window, world_t *world);
+void mute_unmute_music(win_t *window, world_t *world);
+void mute_unmute_audio(win_t *window, world_t *world);
 
 
 typedef struct ui_ptr_funcs {
     char *name;
-    void (*callback)(win_t *win, world_t *world, int id_in_world);
+    void (*callback)(win_t *win, world_t *world);
 } ui_ptr_func_t;
 
-static const ui_ptr_func_t BUTTONS[] = {
+static const ui_ptr_func_t BUTTONS_FUNCS[] = {
     {"quit", &quit},
     {"mute_unmute_music", &mute_unmute_music},
     {"mute_unmute_audio", &mute_unmute_audio},
@@ -47,6 +47,7 @@ static const ui_masks_names_t UI_MASKS_NAMES[] = {
     {0, NULL}
 };
 
+int get_button_func_from_func_name(char *func_name);
 int get_ui_mask(char *name);
 void sys_ui(win_t *win, world_t *world);
 #endif /* !UI_H_ */

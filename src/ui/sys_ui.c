@@ -5,6 +5,7 @@
 ** sys_ui
 */
 
+#include <string.h>
 #include "ui.h"
 #include "world.h"
 #include "rendering.h"
@@ -50,11 +51,16 @@ static void ui_events(win_t *win, world_t *world, entity_t *button)
     if (is_mouse_over(sfMouse_getPositionRenderWindow(win->window), button)) {
         play_animation(world, button, button->comp_ui.hover->index, true);
     } else {
-        return play_animation(world, button, button->comp_ui.base->index, true);
+        return play_animation(world, button,
+        button->comp_ui.base->index, true);
     }
     if (world->mouse_left_pressed == false)
         return;
     world->ui_id = button->comp_ui.next_mask;
+    if (strcmp("none", button->comp_ui.func_name) != 0)
+        BUTTONS_FUNCS[get_button_func_from_func_name(
+            button->comp_ui.func_name)].callback(win, world);
+    world->mouse_left_pressed = false;
 }
 
 void sys_ui(win_t *window, world_t *world)
@@ -65,7 +71,8 @@ void sys_ui(win_t *window, world_t *world)
     sfRenderWindow_getDefaultView(window->window));
     for (int i = 0; i < ENTITY_COUNT; i++) {
         if ((world->entity[i].mask & COMP_UI) == COMP_UI &&
-            (world->entity[i].comp_ui.ui_mask & world->ui_id) == world->ui_id) {
+            (world->entity[i].comp_ui.ui_mask
+            & world->ui_id) == world->ui_id) {
             ui_events(window, world, &world->entity[i]);
             next_frame(&world->entity[i], world);
             sfRenderWindow_drawSprite(window->window,

@@ -15,18 +15,18 @@
 int set_hover(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
-    entity->comp_ui.hover = &world->animations[get_anim_id(world, split[1])]; 
+    entity->comp_ui.hover = &world->animations[get_anim_id(world, split[1])];
     return 0;
 }
 
 int set_ui_mask(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
@@ -37,7 +37,7 @@ int set_ui_mask(world_t *world, entity_t *entity, char *args)
 int set_base_anim(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
@@ -49,7 +49,7 @@ int set_base_anim(world_t *world, entity_t *entity, char *args)
 int set_next_mask(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
@@ -60,7 +60,7 @@ int set_next_mask(world_t *world, entity_t *entity, char *args)
 int set_button_name(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
@@ -72,7 +72,7 @@ int set_button_pos(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
     char **temp = NULL;
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     temp = my_str_to_word_array(split[1], ", \n\t");
@@ -80,13 +80,13 @@ int set_button_pos(world_t *world, entity_t *entity, char *args)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_POSITION;
     init_comp_position(entity, (sfVector2f) {atof(temp[0]), atof(temp[1])}, 0);
-    return 0;   
+    return 0;
 }
 
 int set_button_fun(world_t *world, entity_t *entity, char *args)
 {
     char **split = my_str_to_word_array(args, " =\t\n");
-    
+
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;

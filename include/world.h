@@ -65,6 +65,8 @@ typedef struct world_s {
     sfBool key_down[NB_KEYS];
     sfBool mouse_left_pressed;
     sfBool mouse_right_pressed;
+    int sound_volume;
+    int music_volume;
 } world_t;
 
 void init_entity(world_t *world, animation_t *anim, sfVector2f position);

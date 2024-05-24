@@ -40,8 +40,8 @@ static win_t *create_win(void)
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
     sfRenderWindow_setFramerateLimit(window->window, 60);
-    window->sound = 100;
-    window->music = 100;
+    //window->sound = 100;
+    //window->music = 100;
     //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
@@ -100,6 +100,8 @@ static int init_empty_world(world_t *world)
     world->map_id = INTRO;
     world->mouse_right_pressed = false;
     world->mouse_left_pressed = false;
+    world->sound_volume = 100;
+    world->music_volume = 100;
     for (int i = 0; i < NB_KEYS; ++i) {
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
