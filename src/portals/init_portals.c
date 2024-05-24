@@ -14,6 +14,10 @@
 
 static int get_arg(char **split, world_t *world, entity_t *entity, char *line)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return int_display_and_return(84, 3, "Invalid line: ", line, "\n");
+    }
     for (int i = 0; PORTAL_FLAGS[i].name != NULL; i++) {
         if (strcmp(split[0], PORTAL_FLAGS[i].name) == 0 &&
             PORTAL_FLAGS[i].ptr != NULL) {

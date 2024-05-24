@@ -45,7 +45,7 @@ static int get_dist(entity_t *entity1, entity_t *entity2)
 static sfBool is_targetable(entity_t *entity, int map_id, entity_t *spell)
 {
     if ((entity->mask & COMP_MOB) != COMP_MOB ||
-        entity->comp_position.world != map_id || 
+        entity->comp_position.world != map_id ||
         entity->comp_stat.faction == spell->comp_stat.faction ||
         entity->comp_mob.is_alive == sfFalse)
         return sfFalse;
@@ -114,7 +114,7 @@ static void next_frame(entity_t *entity, world_t *world)
             continue;
         world->entity[i].comp_stat.health -= c_spell->damage;
         if (entity->comp_spell.effect_index != NO_EFFECT)
-            add_effect(world, &world->entity[i], entity->comp_spell.effect_index);
+            add_effect(world, &world->entity[i], c_spell->effect_index);
         add_to_memory(&entity->comp_spell.memory, &world->entity[i]);
         if (!is_piercing(entity))
             return destroy_spell(entity, world);

@@ -42,8 +42,30 @@ static win_t *create_win(void)
     sfRenderWindow_setFramerateLimit(window->window, 60);
     window->sound = 100;
     window->music = 100;
-    //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+    sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
+}
+
+static void read_configs(world_t *world, win_t *window)
+{
+    sfVector2f position_player = {636, 489};
+    int anim_index = get_anim_id(world, "prota_idle");
+
+    init_entity(world, &world->animations[anim_index],
+    position_player);
+    read_effect_conf(world);
+    read_spells_conf(world);
+    read_items_conf(world);
+    init_healthbar(world);
+    init_xpbar(world);
+    init_manabar(world);
+    read_npcconf(world);
+    read_portalconf(world);
+    read_mobconf(world);
+    read_partconf(world);
+    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+    init_mouse(world, window);
+    read_ui_conf(world);
 }
 
 static void init_all(win_t *window, world_t *world)
@@ -55,20 +77,8 @@ static void init_all(win_t *window, world_t *world)
         int_display_and_return(0, 2, "Player Animation not found", "\n");
         anim_index = 0;
     }
-    init_entity(world, &world->animations[anim_index],
-    position_player);
-    read_effect_conf(world);
-    read_spells_conf(world);
-    read_items_conf(world);
-    init_healthbar(world);
-    read_npcconf(world);
-    read_portalconf(world);
-    read_mobconf(world);
-    read_partconf(world);
-    init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
-    init_mouse(world, window);
-    read_ui_conf(world);
-    world->is_paused = true; 
+    read_configs(world, window);
+    world->is_paused = true;
     world->ui_id = UI_MAIN;
 }
 
@@ -89,6 +99,16 @@ void full_screen(world_t *world, win_t *window)
     }
 }
 
+static void init_inputs(world_t *world)
+{
+    world->mouse_right_pressed = false;
+    world->mouse_left_pressed = false;
+    for (int i = 0; i < NB_KEYS; ++i) {
+        world->key_down[i] = sfFalse;
+        world->key_pressed[i] = sfFalse;
+    }
+}
+
 static int init_empty_world(world_t *world)
 {
     tileset_t *tileset_list = init_tilesets();
@@ -99,12 +119,7 @@ static int init_empty_world(world_t *world)
     world->map_list = init_map(MAP_FILE, tileset_list);
     world->sound_list = sound_list;
     world->map_id = INTRO;
-    world->mouse_right_pressed = false;
-    world->mouse_left_pressed = false;
-    for (int i = 0; i < NB_KEYS; ++i) {
-        world->key_down[i] = sfFalse;
-        world->key_pressed[i] = sfFalse;
-    }
+    init_inputs(world);
     for (int i = 0; world->map_list[i] != NULL; ++i)
         world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)

@@ -39,6 +39,8 @@ enum hud_list {
     HUD_HEALTHBAR = 1,
     HUD_PLATE = 1 << 2,
     HUD_INVENTORY = 1 << 3,
+    HUD_XPBAR = 1 << 4,
+    HUD_MANABAR = 1 << 5,
 };
 
 enum comp_list {
@@ -82,7 +84,7 @@ typedef struct comp_ui_s {
     sfText *text;
     sfFont *font;
     animation_t *hover;
-    animation_t *base;  
+    animation_t *base;
 } comp_ui_t;
 
 typedef struct comp_hud_s {
@@ -248,6 +250,9 @@ typedef struct comp_stat_s {
     effect_t *effect[MAX_EFFECT];
     int effect_duration[MAX_EFFECT];
     int effect_tick_cooldown[MAX_EFFECT];
+    double mana;
+    double mana_max;
+    double mana_regen;
 } comp_stat_t;
 
 typedef struct comp_mouse_s {
@@ -262,13 +267,11 @@ typedef struct comp_spell_s {
     float damage;
     float duration;
     float speed;
+    float cost;
     enum effect effect_index;
     animation_t *animation;
     memory_t *memory;
 } comp_spell_t;
 
-static const comp_spell_t spell_list[] = {
-    {20, ALL_ENNEMY, DIRECT, 5, 80, 8, EFFECT_BURN, NULL, NULL},
-};
 
 #endif /* !ECS_H_ */

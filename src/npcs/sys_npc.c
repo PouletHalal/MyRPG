@@ -60,7 +60,8 @@ void sys_npc(win_t *window, world_t *world, entity_t *player)
             continue;
         npc = &world->entity[i];
         if ((npc->mask & COMP_DIALOG) == COMP_DIALOG &&
-            (npc->mask & COMP_NPC) == COMP_NPC && npc->comp_npc.need_key_item_to_talk) {
+            (npc->mask & COMP_NPC) == COMP_NPC &&
+            npc->comp_npc.need_key_item_to_talk) {
                 display_exclamation_mark(world, player, npc);
         }
     }

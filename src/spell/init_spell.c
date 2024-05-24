@@ -15,6 +15,8 @@
 
 int get_effect_id(char *name)
 {
+    if (name == NULL)
+        return 0;
     for (int i = 0; EFFECT_NAMES[i].name != NULL; i++) {
         if (strcmp(name, EFFECT_NAMES[i].name) == 0)
             return i;
@@ -24,6 +26,8 @@ int get_effect_id(char *name)
 
 int get_move_id(char *name)
 {
+    if (name == NULL)
+        return 0;
     for (int i = 0; MOVE_NAMES[i].name != NULL; i++) {
         if (strcmp(name, MOVE_NAMES[i].name) == 0)
             return MOVE_NAMES[i].move_type;
@@ -33,6 +37,8 @@ int get_move_id(char *name)
 
 int get_target_id(char *name)
 {
+    if (name == NULL)
+        return 0;
     for (int i = 0; TARGET_NAMES[i].name != NULL; i++) {
         if (strcmp(name, TARGET_NAMES[i].name) == 0) {
             return TARGET_NAMES[i].target;
@@ -44,6 +50,10 @@ int get_target_id(char *name)
 static int get_spell_arg(world_t *world, comp_spell_t *spell, char *line,
     char **split)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return int_display_and_return(84, 3, "Invalid line: ", line, "\n");
+    }
     for (int i = 0; SPELL_FLAGS[i].name != NULL; i++) {
         if (strcmp(split[0], SPELL_FLAGS[i].name) == 0 &&
             SPELL_FLAGS[i].ptr != NULL) {
@@ -71,8 +81,21 @@ static int init_spell(world_t *world, char *filename, int spell_id)
         if (get_spell_arg(world, &world->spell_list[spell_id], line, split))
             return 84;
         free_array(split);
-    }   
+    }
     return fclose(stream);
+}
+
+static void remove_last_char(char *line)
+{
+    if (line[strlen(line) - 1] == '\n')
+        line[strlen(line) - 1] = '\0';
+}
+
+static void set_last_spell(world_t *world, int spell_id)
+{
+    world->spell_list = realloc(world->spell_list,
+        sizeof(comp_spell_t) * (spell_id + 1));
+    world->spell_list[spell_id].animation = NULL;
 }
 
 int read_spells_conf(world_t *world)
@@ -86,8 +109,7 @@ int read_spells_conf(world_t *world)
         return int_display_and_return(84, 1, "Invalid file\n");
     world->spell_list = NULL;
     for (spell_id = 0; getline(&line, &len, stream) > 0; ++spell_id) {
-        if (line[strlen(line) - 1] == '\n')
-            line[strlen(line) - 1] = '\0';
+        remove_last_char(line);
         if (line[0] == '\0')
             break;
         world->spell_list = realloc(world->spell_list,
@@ -96,28 +118,38 @@ int read_spells_conf(world_t *world)
         if (init_spell(world, line, spell_id) == 84)
             return 84;
     }
-    world->spell_list = realloc(world->spell_list,
-        sizeof(comp_spell_t) * (spell_id + 1));
-    world->spell_list[spell_id].animation = NULL;
+    set_last_spell(world, spell_id);
     return fclose(stream);
 }
 
+static sfBool can_create(world_t *world, int free, entity_t *player,
+    comp_spell_t *spell)
+{
+    if (free == -1)
+        return sfFalse;
+    if (world->map_list[world->map_id]->can_attack == sfFalse)
+        return sfFalse;
+    if (player->comp_stat.mana < spell->cost)
+        return sfFalse;
+    player->comp_stat.mana -= spell->cost;
+    return sfTrue;
+}
 
-void create_spell(world_t *world, sfVector2f position, int spell_id)
+void create_spell(world_t *world, entity_t *player,
+    sfVector2f position, int spell_id)
 {
     int free = find_empty(world);
     entity_t *entity = NULL;
     comp_spell_t *spell = &world->spell_list[spell_id];
 
-    if (free == -1)
-        return;
-    if (world->map_list[world->map_id]->can_attack == sfFalse)
+    if (!can_create(world, free, player, spell))
         return;
     entity = &world->entity[free];
-    *entity = (entity_t){0};
+    *entity = (entity_t) {0};
     entity->entity = free;
     init_comp_position(entity, position, world->map_id);
-    init_comp_render(entity, world, &world->animations[spell->index], position);
+    init_comp_render(entity, world, &world->animations[spell->index],
+    position);
     init_comp_hitbox(entity, position);
     entity->mask |= COMP_SPELL;
     entity->comp_hitbox.do_collide = sfFalse;

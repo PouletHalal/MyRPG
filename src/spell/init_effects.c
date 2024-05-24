@@ -18,6 +18,10 @@
 static int get_effect_arg(world_t *world, effect_t *effect, char *line,
     char **split)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return int_display_and_return(84, 3, "Invalid line: ", line, "\n");
+    }
     for (int i = 0; EFFECT_FLAG[i].name != NULL; i++) {
         if (strcmp(split[0], EFFECT_FLAG[i].name) == 0 &&
             EFFECT_FLAG[i].ptr != NULL) {
@@ -50,6 +54,19 @@ static int init_effect(world_t *world, char *filename, int effect_id)
     return fclose(stream);
 }
 
+static void remove_last_char(char *line)
+{
+    if (line[strlen(line) - 1] == '\n')
+        line[strlen(line) - 1] = '\0';
+}
+
+static void set_last_effect(world_t *world, int effect_id)
+{
+    world->effect_list = realloc(world->effect_list,
+        sizeof(effect_t) * (effect_id + 1));
+    world->effect_list[effect_id].name = NULL;
+}
+
 int read_effect_conf(world_t *world)
 {
     FILE *stream = fopen(EFFECT_CONF, "r");
@@ -61,8 +78,7 @@ int read_effect_conf(world_t *world)
         return int_display_and_return(84, 1, "Invalid file\n");
     world->effect_list = NULL;
     for (effect_id = 0; getline(&line, &len, stream) > 0; ++effect_id) {
-        if (line[strlen(line) - 1] == '\n')
-            line[strlen(line) - 1] = '\0';
+        remove_last_char(line);
         if (line[0] == '\0')
             break;
         world->effect_list = realloc(world->effect_list,
@@ -70,8 +86,6 @@ int read_effect_conf(world_t *world)
         if (init_effect(world, line, effect_id) == 84)
             return 84;
     }
-    world->effect_list = realloc(world->effect_list,
-        sizeof(effect_t) * (effect_id + 1));
-    world->effect_list[effect_id].name = NULL;
+    set_last_effect(world, effect_id);
     return fclose(stream);
 }

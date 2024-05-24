@@ -11,7 +11,9 @@
     #include "world.h"
 
 void init_healthbar(world_t *world);
-void place_bar(entity_t *hb, world_t *world, int anim_id);
+void init_xpbar(world_t *world);
 void update_hud(world_t *world, entity_t *player);
+void init_manabar(world_t *world);
+void update_healthbar(world_t *world, int i, entity_t *player);
 
 #endif /* !HUD_H_ */

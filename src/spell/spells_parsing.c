@@ -78,29 +78,3 @@ int set_spell_duration(world_t *world, comp_spell_t *spell, char *args)
     free_array(split);
     return 0;
 }
-
-int set_spell_speed(world_t *world, comp_spell_t *spell, char *args)
-{
-    char **split = my_str_to_word_array(args, " =\n");
-
-    if (split == NULL || split[1] == NULL) {
-        free_array(split);
-        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
-    }
-    spell->speed = atof(split[1]);
-    free_array(split);
-    return 0;
-}
-
-int set_spell_effect(world_t *world, comp_spell_t *spell, char *args)
-{
-    char **split = my_str_to_word_array(args, " =\n");
-
-    if (split == NULL || split[1] == NULL) {
-        free_array(split);
-        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
-    }
-    spell->effect_index = get_effect_id(split[1]);
-    free_array(split);
-    return 0;
-}

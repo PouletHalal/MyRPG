@@ -62,6 +62,11 @@ int read_dialogs(world_t *world, entity_t *entity, char *filename)
 
 static int get_arg(char **split, world_t *world, entity_t *entity, char *line)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return 84;
+    }
+    entity->mask |= COMP_DIALOG;
     for (int i = 0; NPC_ARGS[i].name != NULL; i++) {
         if (strcmp(split[0], NPC_ARGS[i].name) == 0) {
             free_array(split);
@@ -88,7 +93,6 @@ static void init_npc(world_t *world, char *filename)
         if (line[0] == '\0' || line[0] == '\n')
             break;
         split = my_str_to_word_array(line, "=\n ");
-        entity->mask |= COMP_DIALOG;
         if (get_arg(split, world, entity, line) == 84) {
             entity->mask = COMP_NONE;
             break;

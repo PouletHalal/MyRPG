@@ -19,7 +19,6 @@ void move_mouse(world_t *world, win_t *window)
 
     mouse->comp_position.position = sfRenderWindow_mapPixelToCoords(
         window->window, mouse_pos, window->cam.view);
-    //play_animation(mouse, ANIM_MOUSE, true);
 }
 
 void init_mouse(world_t *world, win_t *window)

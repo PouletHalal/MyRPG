@@ -25,6 +25,10 @@ static bool is_valid_line(char *line)
 
 static int get_anim_arg(animation_t *anim, char **split, char *args)
 {
+    if (split == NULL || split[0] == NULL) {
+        free_array(split);
+        return int_display_and_return(84, 3, "Invalid line: ", args, "\n");
+    }
     for (int i = 0; ANIM_FLAGS[i].name != NULL; ++i) {
         if (strcmp(ANIM_FLAGS[i].name, split[0]) == 0)
             return ANIM_FLAGS[i].ptr(anim, args);

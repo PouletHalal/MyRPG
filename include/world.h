@@ -101,7 +101,8 @@ void add_effect(world_t *world, entity_t *entity, enum effect effect_index);
 void respawn_entity(win_t *window, entity_t *entity);
 void follow_enemy(entity_t *spell, entity_t *enemy);
 entity_t *get_closest(entity_t *entity, world_t *world);
-void create_spell(world_t *world, sfVector2f position, int spell_id);
+void create_spell(world_t *world, entity_t *player,
+    sfVector2f position, int spell_id);
 void sys_spell(world_t *world);
 void loop_effect(entity_t *entity);
 int set_spell_anim(world_t *world, comp_spell_t *spell, char *args);

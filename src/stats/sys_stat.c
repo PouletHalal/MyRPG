@@ -53,6 +53,7 @@ static void do_level_up(comp_stat_t *stat)
     stat->max_health *= 1.1;
     stat->damage *= 1.1;
     stat->defense *= 1.1;
+    stat->mana_max *= 1.1;
     stat->health_regen *= 1.1;
 }
 
@@ -69,8 +70,11 @@ static void next_frame(win_t *window, entity_t *entity, world_t *world)
         return;
     }
     stat->health += stat->health_regen;
+    stat->mana += stat->mana_regen;
     if (stat->health > stat->max_health)
         stat->health = stat->max_health;
+    if (stat->mana > stat->mana_max)
+        stat->mana = stat->mana_max;
     stat->clock -= (stat->clock > 0) ? 1 : 0;
     if (stat->level_up && stat->exp_requiered > 0.)
         while (stat->exp > stat->exp_requiered)

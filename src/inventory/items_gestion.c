@@ -96,7 +96,7 @@ static void update_stat(entity_t *player, entity_t *item)
     item->comp_stat = (comp_stat_t){0};
 }
 
-bool use_item(win_t *window, entity_t *player, entity_t *item, int i)
+static bool use_item(win_t *window, entity_t *player, entity_t *item, int i)
 {
     if (!player->comp_input.mouse_right_down || !item->comp_item.type_mask ||
         !is_mouse_over(sfMouse_getPositionRenderWindow(window->window), item)

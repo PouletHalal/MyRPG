@@ -23,7 +23,8 @@ void init_entity(world_t *world, animation_t *anim, sfVector2f position)
     entity->comp_input.pressed_func[sfKeySpace] = &npc_collision;
     entity->comp_stat = (comp_stat_t)
     {FRIENDLY, 100., 50., 0.01, sfTrue, sfTrue, 30., 5.,
-    sfTrue, 0., 0., 0, 10., 0., 20.};
+    sfTrue, 0., 0., 0, 10., 0., 20., .mana = 20., .mana_max = 20.,
+    .mana_regen = 0.1};
     init_comp_position(entity, position, world->map_id);
     init_comp_render(entity, world, anim, position);
     init_comp_hitbox(entity, position);

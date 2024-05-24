@@ -17,6 +17,7 @@ int set_spell_damage(world_t *world, comp_spell_t *spell, char *args);
 int set_spell_duration(world_t *world, comp_spell_t *spell, char *args);
 int set_spell_speed(world_t *world, comp_spell_t *spell, char *args);
 int set_spell_effect(world_t *world, comp_spell_t *spell, char *args);
+int set_spell_cost(world_t *world, comp_spell_t *spell, char *args);
 
 typedef struct spell_ptr_func_s {
     char *name;
@@ -32,6 +33,7 @@ spell_ptr_func_t SPELL_FLAGS[] =
     {"duration", &set_spell_duration},
     {"speed", &set_spell_speed},
     {"effect", &set_spell_effect},
+    {"cost", &set_spell_cost},
     {NULL, NULL},
 };
 
