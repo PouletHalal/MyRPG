@@ -13,6 +13,9 @@ SRC	=	src/animation.c				\
 		src/spell/effect.c		\
 		src/spell/sys_spell.c	\
 		src/spell/init_spell.c	\
+		src/spell/spells_parsing.c	\
+		src/spell/effect_parsing.c	\
+		src/spell/init_effects.c	\
 		src/camera/view.c	\
 		src/error_handling/parsing_handling.c	\
 		src/free/kill.c	\
@@ -27,6 +30,8 @@ SRC	=	src/animation.c				\
 		src/inventory/items_parsing2.c	\
 		src/inventory/items_rendering.c	\
 		src/inventory/items_stats.c	\
+		src/inventory/slots.c	\
+		src/mouse.c 	\
 		src/lib/my_str_to_word_array.c	\
 		src/lib/my_strcat.c	\
 		src/main.c	\
@@ -72,6 +77,10 @@ SRC	=	src/animation.c				\
 		src/position/sys_position.c		\
 		src/position/vectors.c	\
 		src/start.c	\
+		src/ui/init_ui.c	\
+		src/ui/ui_parsing.c	\
+		src/ui/sys_ui.c	\
+		src/map_loading/map_drawing.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

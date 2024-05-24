@@ -20,6 +20,19 @@ sfBool is_in_inv(world_t *world, entity_t *entity, int id)
     return sfFalse;
 }
 
+int find_item_in_inv(entity_t *entity, int id)
+{
+    if ((entity->mask & COMP_INVENTORY) != COMP_INVENTORY)
+        return -1;
+    for (int i = 0; i < entity->comp_inventory.size; ++i) {
+        if (entity->comp_inventory.items[i].type_mask != 0
+            && entity->comp_inventory.items[i].id == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 int find_empty_slot(entity_t *entity)
 {
     for (int i = 0; i < entity->comp_inventory.size; i++) {

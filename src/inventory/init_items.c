@@ -41,7 +41,7 @@ static int get_item_arg(world_t *world, comp_item_t *item, char *line,
     return 0;
 }
 
-static int is_eof(char *line)
+int is_eof(char *line)
 {
     if (line == NULL)
         return 1;
@@ -66,6 +66,7 @@ static int init_item(world_t *world, char *filename, int item_id)
             break;
         split = my_str_to_word_array(line, "= \n\t");
         world->item_list.items[item_id].stats = (comp_stat_t) {0};
+        world->item_list.items[item_id].is_picked = false;
         world->item_list.items[item_id].id = item_id;
         if (split == NULL)
             return int_display_and_return(84, 3, "Invalid line: ", line, "\n");

@@ -10,6 +10,25 @@
 #include "player.h"
 #include "rendering.h"
 
+
+static void init_mob_heatlhbar(world_t *world, entity_t *mob)
+{
+    int free = find_empty(world);
+    entity_t *healthbar = NULL;
+
+    if (free == -1)
+        return;
+    healthbar = &world->entity[free];
+    init_comp_render(healthbar, world, &world->animations[get_anim_id(world,
+    "mob_healthbar")], (sfVector2f){0, 0});
+    init_comp_position(healthbar, (sfVector2f)
+    {mob->comp_position.position.x, mob->comp_position.position.y -
+    mob->comp_render.current_animation->frame_size.y *
+    mob->comp_render.current_animation->scale.y / 3},
+    mob->comp_position.world);
+    mob->comp_mob.healthbar_id = free;
+}
+
 static void check_spawn(entity_t *new, world_t *world, win_t *window,
     entity_t *entity)
 {
@@ -22,6 +41,7 @@ static void check_spawn(entity_t *new, world_t *world, win_t *window,
     new->comp_mob.clone = entity->entity;
     if (!check_collision(new, world, (sfVector2f) {0, 0}, window)) {
         entity->comp_mob.mob_count += 1;
+        init_mob_heatlhbar(world, new);
         return;
     }
     sfSprite_destroy(new->comp_render.sprite);

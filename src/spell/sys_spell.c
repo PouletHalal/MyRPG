@@ -95,7 +95,7 @@ static void destroy_spell(entity_t *entity, world_t *world)
 static sfBool is_piercing(entity_t *entity)
 {
     if (entity->comp_spell.target == ONE_ALLY
-        || entity->comp_spell.target == ONE_ENEMY
+        || entity->comp_spell.target == ONE_ENNEMY
         || entity->comp_spell.target == SELF)
         return sfFalse;
     return sfTrue;
@@ -114,7 +114,7 @@ static void next_frame(entity_t *entity, world_t *world)
             continue;
         world->entity[i].comp_stat.health -= c_spell->damage;
         if (entity->comp_spell.effect_index != NO_EFFECT)
-            add_effect(&world->entity[i], entity->comp_spell.effect_index);
+            add_effect(world, &world->entity[i], entity->comp_spell.effect_index);
         add_to_memory(&entity->comp_spell.memory, &world->entity[i]);
         if (!is_piercing(entity))
             return destroy_spell(entity, world);

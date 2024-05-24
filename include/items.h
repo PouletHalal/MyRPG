@@ -23,6 +23,7 @@ typedef struct tooltip_s {
 } tooltip_t;
 
 typedef struct comp_item_s {
+    sfBool is_picked;
     int id_in_world;
     int id;
     int animation_id;

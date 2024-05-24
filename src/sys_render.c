@@ -55,10 +55,14 @@ sfBool has_comp(entity_t *entity, int comp)
 
 void sys_render(win_t *window, world_t *world)
 {
-    for (size_t i = 0; i < ENTITY_COUNT; ++i)
+    for (size_t i = 0; i < ENTITY_COUNT; ++i) {
         if (has_comp(&world->entity[i], COMP_RENDER) &&
         (is_in_cam_range(window, &world->entity[i]) ||
         has_comp(&world->entity[i], COMP_HUD) ||
         has_comp(&world->entity[i], COMP_ITEM)))
             next_frame(&world->entity[i], world);
+        if (world->is_paused && has_comp(&world->entity[i], COMP_RENDER)
+            && has_comp(&world->entity[i], COMP_UI))
+            next_frame(&world->entity[i], world);
+    }
 }

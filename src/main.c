@@ -14,7 +14,9 @@
 #include "error_handling.h"
 #include "sounds.h"
 #include "player.h"
+#include "mouse.h"
 #include "hud.h"
+#include "ui.h"
 
 int find_empty(world_t *world)
 {
@@ -37,6 +39,10 @@ static win_t *create_win(void)
     | sfResize, NULL);
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
+    sfRenderWindow_setFramerateLimit(window->window, 60);
+    window->sound = 100;
+    window->music = 100;
+    //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
 
@@ -51,6 +57,8 @@ static void init_all(win_t *window, world_t *world)
     }
     init_entity(world, &world->animations[anim_index],
     position_player);
+    read_effect_conf(world);
+    read_spells_conf(world);
     read_items_conf(world);
     init_healthbar(world);
     read_npcconf(world);
@@ -58,6 +66,10 @@ static void init_all(win_t *window, world_t *world)
     read_mobconf(world);
     read_partconf(world);
     init_cam(window, world, &world->entity[find_comp(world, COMP_PLAYER)]);
+    init_mouse(world, window);
+    read_ui_conf(world);
+    world->is_paused = true; 
+    world->ui_id = UI_MAIN;
 }
 
 void full_screen(world_t *world, win_t *window)
@@ -72,6 +84,7 @@ void full_screen(world_t *world, win_t *window)
         window->window = sfRenderWindow_create(window->mode, "SFML window",
         window->style, NULL);
         sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
+        sfRenderWindow_setFramerateLimit(window->window, 60);
         window->fullscreen = !window->fullscreen;
     }
 }
@@ -92,8 +105,10 @@ static int init_empty_world(world_t *world)
         world->key_down[i] = sfFalse;
         world->key_pressed[i] = sfFalse;
     }
+    for (int i = 0; world->map_list[i] != NULL; ++i)
+        world->map_list[i]->has_cam = false;
     for (int i = 0; i < ENTITY_COUNT; ++i)
-        world->entity[i] = (entity_t) {0};
+        world->entity[i] = (entity_t){0};
     if (world->map_list == NULL || sound_list == NULL)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
@@ -113,6 +128,7 @@ int main(void)
         refresh_world(world, clock, window);
         render_window(window, world);
         refresh_sounds(world, clock);
+        move_mouse(world, window);
     }
     return close_and_return(world, window, 0);
 }

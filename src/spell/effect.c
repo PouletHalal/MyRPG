@@ -12,15 +12,15 @@
 #include "rendering.h"
 #include "player.h"
 
-void add_effect(entity_t *entity, enum effect effect_index)
+void add_effect(world_t *world, entity_t *entity, enum effect effect_index)
 {
     for (int i = 0; i < MAX_EFFECT; i++){
         if (entity->comp_stat.effect[i] == NULL){
-            entity->comp_stat.effect[i] = &effect_list[effect_index];
+            entity->comp_stat.effect[i] = &world->effect_list[effect_index];
             entity->comp_stat.effect_duration[i] =
-                effect_list[effect_index].duration;
+                world->effect_list[effect_index].duration;
             entity->comp_stat.effect_tick_cooldown[i] =
-                effect_list[effect_index].base_tick_cooldown;
+                world->effect_list[effect_index].base_tick_cooldown;
             return;
         }
     }

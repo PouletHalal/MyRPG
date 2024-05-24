@@ -40,6 +40,7 @@ void display_particles(win_t *window, world_t *world);
 void display_inventory(win_t *window, world_t *world);
 void item_events(win_t *window, world_t *world, entity_t *entity);
 void display_tooltips(win_t *window, entity_t *item, sfVector2f pos);
+void manage_inv_slots(world_t *world, win_t *window, entity_t *entity);
 
 void kill_entity(entity_t *entity, world_t *world);
 
