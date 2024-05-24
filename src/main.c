@@ -40,6 +40,8 @@ static win_t *create_win(void)
     window->windows_scale = (sfVector2f) {1, 1};
     init_view(window);
     sfRenderWindow_setFramerateLimit(window->window, 60);
+    window->sound = 100;
+    window->music = 100;
     //sfRenderWindow_setMouseCursorVisible(window->window, sfFalse);
     return window;
 }
