@@ -100,6 +100,8 @@ typedef struct comp_npc_s {
     sfBool takes_item;
     int gives_item_dialog_id;
     int gives_item_sentence_id;
+    int takes_item_dialog_id;
+    int takes_item_sentence_id;
     int key_item_to_talk_id;
     int key_item_to_drop_id;
     int item_id;

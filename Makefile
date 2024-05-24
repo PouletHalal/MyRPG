@@ -86,6 +86,7 @@ SRC	=	src/animation.c				\
 		src/ui/sys_ui.c	\
 		src/map_loading/map_drawing.c	\
 		src/spell/spell_parsing2.c	\
+		src/inventory/item_stats2.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

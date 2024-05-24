@@ -37,6 +37,7 @@ void no_input_dialogs(win_t *window, world_t *world)
             && (world->entity[i].mask & COMP_DIALOG) == COMP_DIALOG &&
             is_close(player, &world->entity[i], dialog->detection_area) &&
             dialog->need_input == false && dialog->is_displayed != true) {
+                dialog->need_input = true;
             play_animation(world, player, get_anim_id(world, "prota_idle"), 1);
             update_no_input_dialog(window, world, &world->entity[i], player);
                 player->comp_position.can_move = !dialog->freeze_player;

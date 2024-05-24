@@ -50,8 +50,7 @@ void put_back_item_if_inv_closed(world_t *world, entity_t *player)
     entity_t *mouse = &world->entity[mouse_id];
 
     if (mouse->comp_mouse.item_picked) {
-        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);
-    }
+        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i)};
 }
 
 static void analyse_events(win_t *window, world_t *world)
