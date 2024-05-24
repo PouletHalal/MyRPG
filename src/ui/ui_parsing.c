@@ -30,7 +30,7 @@ int set_ui_mask(world_t *world, entity_t *entity, char *args)
     if (split == NULL || split[1] == NULL)
         return int_display_and_return(84, 2, "Invalid arguments ->", args);
     entity->mask |= COMP_UI;
-    entity->comp_ui.ui_mask = get_ui_mask(split[1]);
+    entity->comp_ui.ui_mask |= get_ui_mask(split[1]);
     return 0;
 }
 

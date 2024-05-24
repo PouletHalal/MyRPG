@@ -65,7 +65,7 @@ void sys_ui(win_t *window, world_t *world)
     sfRenderWindow_getDefaultView(window->window));
     for (int i = 0; i < ENTITY_COUNT; i++) {
         if ((world->entity[i].mask & COMP_UI) == COMP_UI &&
-            world->entity[i].comp_ui.ui_mask == world->ui_id) {
+            (world->entity[i].comp_ui.ui_mask & world->ui_id) == world->ui_id) {
             ui_events(window, world, &world->entity[i]);
             next_frame(&world->entity[i], world);
             sfRenderWindow_drawSprite(window->window,
@@ -75,4 +75,3 @@ void sys_ui(win_t *window, world_t *world)
     sfRenderWindow_setView(window->window, window->cam.view);
     sfRenderWindow_display(window->window);
 }
-

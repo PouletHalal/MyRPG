@@ -18,6 +18,16 @@
     #define RENDER_DISTANCE 600. * 600.
     #define DISPAWN_RANGE 800. * 800.
 
+typedef struct comp_ui_s {
+    int ui_mask;
+    int next_mask;
+    char *name;
+    sfText *text;
+    sfFont *font;
+    animation_t *hover;
+    animation_t *base;
+    char *func_name;
+} comp_ui_t;
 
 typedef struct entity_s {
     int mask;

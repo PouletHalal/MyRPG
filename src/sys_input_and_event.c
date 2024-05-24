@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "player.h"
 #include "inventory.h"
+#include "ui.h"
 
 sfBool is_key_pressed(entity_t *entity, sfKeyCode code)
 {
@@ -75,8 +76,10 @@ static void analyse_events(win_t *window, world_t *world)
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;
     }
-    if (world->key_down[sfKeyEscape])
+    if (world->key_down[sfKeyF8])
         sfRenderWindow_close(window->window);
+    if (world->key_down[sfKeyEscape])
+        world->ui_id = UI_PAUSE;
 }
 
 static void exec_input(world_t *world, entity_t *entity, win_t *window)
