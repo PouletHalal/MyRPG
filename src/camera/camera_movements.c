@@ -48,7 +48,8 @@ void move_to_destination(win_t *window)
     double sin = (dest.y - cam_center.y) / hyp;
 
     if (window->cam.is_moving == false ||
-    (abs(dest.x - cam_center.x)) <= 10 && (abs(dest.y - cam_center.y)) <= 10) {
+    (abs(dest.x - cam_center.x)) <= 10 && (abs(dest.y - cam_center.y)) <= 10){
+        window->cam.is_moving = false;
         return;
     }
     offset.x = cos * window->cam.offset.x;
@@ -68,6 +69,7 @@ void move_cam(win_t *window, map_list_t *map)
 
     if (is_right_size(cam_center, cam_size, map_size))
         return;
+    move_to_destination(window);
     while (cam_center.x - cam_size.x / 2 < 0)
         move_and_update(window->cam.view, (sfVector2f) {1, 0}, &cam_center);
     while (cam_center.x + cam_size.x / 2 > map_size.x)
@@ -78,5 +80,4 @@ void move_cam(win_t *window, map_list_t *map)
         move_and_update(window->cam.view, (sfVector2f) {0, -1}, &cam_center);
     if (is_right_size(cam_center, cam_size, map_size))
         return;
-    move_to_destination(window);
 }
