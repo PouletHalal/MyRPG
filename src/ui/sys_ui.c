@@ -48,9 +48,9 @@ static void next_frame(entity_t *entity, world_t *world)
 static void ui_events(win_t *win, world_t *world, entity_t *button)
 {
     if (is_mouse_over(sfMouse_getPositionRenderWindow(win->window), button)) {
-        play_animation(world, button, button->comp_ui.hover->index, true);
+        play_animation(world, button, button->comp_ui.hover->index, 1);
     } else {
-        return play_animation(world, button, button->comp_ui.base->index, true);
+        return play_animation(world, button, button->comp_ui.base->index, 1);
     }
     if (world->mouse_left_pressed == false)
         return;
@@ -75,4 +75,3 @@ void sys_ui(win_t *window, world_t *world)
     sfRenderWindow_setView(window->window, window->cam.view);
     sfRenderWindow_display(window->window);
 }
-

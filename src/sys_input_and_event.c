@@ -50,7 +50,8 @@ void put_back_item_if_inv_closed(world_t *world, entity_t *player)
     entity_t *mouse = &world->entity[mouse_id];
 
     if (mouse->comp_mouse.item_picked) {
-        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);}
+        drag_item_inv(player, mouse, mouse->comp_mouse.item_picked_i);
+    }
 }
 
 static void analyse_events(win_t *window, world_t *world)
@@ -68,9 +69,6 @@ static void analyse_events(win_t *window, world_t *world)
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
             put_back_item_if_inv_closed(world, player);
         }
-        if (world->key_pressed[sfKeyK])
-            create_item(world, (sfVector2f) {player->comp_position.position.x,
-            player->comp_position.position.y + 50}, rand() % world->item_list.nb_items);
     }
     if (event->type == sfEvtKeyReleased){
         world->key_down[event->key.code] = sfFalse;

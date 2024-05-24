@@ -22,7 +22,8 @@ int set_key_item_to_talk(world_t *world, entity_t *entity, char *args)
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
     temp = my_str_to_word_array(args, "\"");
     entity->comp_npc.need_key_item_to_talk = true;
-    entity->comp_npc.key_item_to_talk_id = get_item_id(world->item_list, temp[1]);
+    entity->comp_npc.key_item_to_talk_id = get_item_id(world->item_list,
+    temp[1]);
     free_array(temp);
     free_array(split);
     return 0;
@@ -37,7 +38,8 @@ int set_key_item_to_drop(world_t *world, entity_t *entity, char *args)
         return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
     temp = my_str_to_word_array(args, "\"");
     entity->comp_npc.need_key_item_to_drop = true;
-    entity->comp_npc.key_item_to_drop_id = get_item_id(world->item_list, temp[1]);
+    entity->comp_npc.key_item_to_drop_id = get_item_id(world->item_list,
+    temp[1]);
     free_array(temp);
     free_array(split);
     return 0;

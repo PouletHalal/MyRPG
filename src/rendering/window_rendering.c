@@ -34,6 +34,7 @@ void refresh_world(world_t *world, sfClock *clock,
     win_t *window)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];
+
     if (sfClock_getElapsedTime(clock).microseconds / 1e6 < 1. / 60.)
         return;
     sfClock_restart(clock);

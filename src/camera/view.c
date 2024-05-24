@@ -40,7 +40,8 @@ static bool is_resizable(win_t *window, world_t *world, sfVector2f diff)
     }
     if (diff.x > 0 && diff.y > 0) {
         world->map_list[world->map_id]->has_cam = true;
-        world->map_list[world->map_id]->cam_size = sfView_getSize(window->cam.view);
+        world->map_list[world->map_id]->cam_size =
+        sfView_getSize(window->cam.view);
         return true;
     }
     return false;
@@ -62,7 +63,8 @@ void resize_cam(win_t *window, map_list_t *map, world_t *world)
     window->cam.view_rect.width = cam_size.x;
     window->cam.view_rect.height = cam_size.y;
     world->map_list[world->map_id]->has_cam = true;
-    world->map_list[world->map_id]->cam_size = sfView_getSize(window->cam.view);
+    world->map_list[world->map_id]->cam_size =
+    sfView_getSize(window->cam.view);
 }
 
 void update_cam(win_t *window, entity_t *entity,
