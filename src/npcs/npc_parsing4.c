@@ -58,3 +58,33 @@ int set_takes_item(world_t *world, entity_t *entity, char *args)
     free_array(split);
     return 0;
 }
+
+int takes_item_dialog_id(world_t *world, entity_t *entity, char *args)
+{
+    char **split = my_str_to_word_array(args, " =\n");
+
+    if (split == NULL || split[1] == NULL)
+        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
+    entity->comp_npc.takes_item_dialog_id = atoi(split[1]);
+    if (entity->comp_npc.takes_item_dialog_id < 0) {
+        entity->comp_npc.takes_item_dialog_id = 0;
+        return int_display_and_return(84, 3, "Invalid dialog id: ",
+        split[1], "\n");
+    }
+    return 0;
+}
+
+int takes_item_sentence_id(world_t *world, entity_t *entity, char *args)
+{
+    char **split = my_str_to_word_array(args, " =\n");
+
+    if (split == NULL || split[1] == NULL)
+        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
+    entity->comp_npc.takes_item_sentence_id = atoi(split[1]);
+    if (entity->comp_npc.takes_item_sentence_id < 0) {
+        entity->comp_npc.takes_item_sentence_id = 0;
+        return int_display_and_return(84, 3, "Invalid dialog id: ",
+        split[1], "\n");
+    }
+    return 0;
+}
