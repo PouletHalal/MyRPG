@@ -56,7 +56,9 @@ static const move_names_t MOVE_NAMES[] =
 };
 
 enum spell {
+    SPELL_NONE,
     SPELL_DARK,
+    SPELL_FIRE_SPIRIT,
     SPELL_END
 };
 
@@ -85,15 +87,39 @@ typedef struct effect_names_s {
 
 static const effect_names_t EFFECT_NAMES[] =
 {
-    {"no_effect", NO_EFFECT},
+    {"empty", NO_EFFECT},
     {"burn", EFFECT_BURN},
     {NULL, NO_EFFECT},
 };
 
+typedef struct effect_types_s {
+    char *type_name;
+    enum effect_type effect;
+} effect_types_t;
+
+static const effect_types_t EFFECT_TYPES[] =
+{
+    {"damage", DAMAGE},
+    {"heal", HEAL},
+    {NULL, NO_EFFECT},
+};
+
+typedef struct spell_name_s {
+    char *spell_name;
+    enum spell spell_id;
+} spell_name_t;
+
+static const spell_name_t spell_name[] =
+{
+    {"dark", SPELL_DARK},
+    {"fire_spirit", SPELL_FIRE_SPIRIT},
+    {NULL, SPELL_NONE},
+};
 
 int get_target_id(char *name);
 int get_move_id(char *name);
 int get_effect_id(char *name);
+int get_effect_type(char *type_name);
 
 
 #endif /* !PLAYER_H_ */

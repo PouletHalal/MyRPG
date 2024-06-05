@@ -29,6 +29,7 @@ int set_item_defense(world_t *world, comp_item_t *item, char *args);
 int set_item_regen(world_t *world, comp_item_t *item, char *args);
 int set_item_mana(world_t *world, comp_item_t *item, char *args);
 int set_item_xp(world_t *world, comp_item_t *item, char *args);
+int set_item_spell(world_t *world, comp_item_t *item, char *args);
 
 item_ptr_func_t ITEM_FLAGS[] =
 {
@@ -45,6 +46,7 @@ item_ptr_func_t ITEM_FLAGS[] =
     {"regen", &set_item_regen},
     {"mana", &set_item_mana},
     {"xp", &set_item_xp},
+    {"spell", &set_item_spell},
     {NULL, NULL}
 };
 

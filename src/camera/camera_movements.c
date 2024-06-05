@@ -48,7 +48,8 @@ void move_to_destination(win_t *window)
     double sin = (dest.y - cam_center.y) / hyp;
 
     if (window->cam.is_moving == false ||
-    (abs(dest.x - cam_center.x)) <= 10 && (abs(dest.y - cam_center.y)) <= 32) {
+    (abs(dest.x - cam_center.x)) <= CAM_THRESHOLD &&
+        (abs(dest.y - cam_center.y)) <= CAM_THRESHOLD) {
         window->cam.is_moving = false;
         return;
     }

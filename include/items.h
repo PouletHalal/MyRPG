@@ -33,6 +33,7 @@ typedef struct comp_item_s {
     double drop_rate;
     tooltip_t tooltip;
     comp_stat_t stats;
+    enum spell spell_id;
 } comp_item_t;
 
 

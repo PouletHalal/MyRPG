@@ -62,3 +62,22 @@ int set_item_font(world_t *world, comp_item_t *item, char *args)
     sfText_setFont(item->tooltip.description_txt, item->tooltip.font);
     return 0;
 }
+
+static int get_spell_id(char *name)
+{
+    for (int i = 0; spell_name[i].spell_name != NULL; i++) {
+        if (strcmp(name, spell_name[i].spell_name) == 0)
+            return spell_name[i].spell_id;
+    }
+    return 0;
+}
+
+int set_item_spell(world_t *world, comp_item_t *item, char *args)
+{
+    char **split = my_str_to_word_array(args, "= \n\t");
+
+    if (split == NULL || split[1] == NULL)
+        return int_display_and_return(84, 3, "Invalid args: ", args, "\n");
+    item->spell_id = get_spell_id(split[1]);
+    return 0;
+}

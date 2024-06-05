@@ -72,6 +72,13 @@ static const sfVector2i inv_coords[28] = {
     {103, 74}, {122, 74}, {141, 74}, {160, 74}, {179, 74}
 };
 
+static const sfVector2i hotbar_coords[10] = {
+    {704 + 0 * 57, 903}, {704 + 1 * 57, 903}, {704 + 2 * 57, 903},
+    {704 + 3 * 57, 903}, {704 + 4 * 57, 903}, {704 + 5 * 57, 903},
+    {704 + 6 * 57, 903}, {704 + 7 * 57, 903}, {704 + 8 * 57, 903},
+    {704 + 9 * 57, 903},
+};
+
 typedef struct item_list_s {
     int nb_items;
     comp_item_t *items;
@@ -82,6 +89,8 @@ typedef struct comp_inventory_s {
     bool is_open;
     comp_item_t *items;
     sprite_t sprite;
+    sprite_t cursor_sprite;
+    int cursor_slot;
     sfVector2f scale;
     sfIntRect base_rect;
     bool is_visible;

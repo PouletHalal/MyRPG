@@ -12,7 +12,7 @@
     #include "window.h"
     #include "world.h"
 
-    #define CAM_THRESHOLD 10
+    #define CAM_THRESHOLD 20
 
 void set_destination(win_t *window, sfVector2f *destination);
 void init_view(win_t *window);

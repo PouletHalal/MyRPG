@@ -11,6 +11,7 @@
     #include "world.h"
 
 int set_effect_name(world_t *world, effect_t *effect, char *args);
+int set_effect_type(world_t *world, effect_t *effect, char *args);
 int set_effect_value(world_t *world, effect_t *effect, char *args);
 int set_base_tick_cooldown(world_t *world, effect_t *effect, char *args);
 int set_duration(world_t *world, effect_t *effect, char *args);
@@ -24,6 +25,7 @@ typedef struct effect_ptr_func_s {
 static const effect_ptr_func_t EFFECT_FLAG[] =
 {
     {"name", &set_effect_name},
+    {"type", &set_effect_type},
     {"value", &set_effect_value},
     {"base_tick_cooldown", &set_base_tick_cooldown},
     {"duration", &set_duration},

@@ -16,6 +16,24 @@ static void init_items(entity_t *entity)
     }
 }
 
+int init_select_cursor(world_t *world, entity_t *entity)
+{
+    comp_inventory_t *c_inv = &entity->comp_inventory;
+    sfFloatRect bounds = {0};
+
+    c_inv->cursor_sprite.sprite = sfSprite_create();
+    c_inv->cursor_sprite.texture = sfTexture_createFromFile(
+    "effect/inventory_select.png", NULL);
+    sfSprite_setTexture(c_inv->cursor_sprite.sprite,
+    c_inv->cursor_sprite.texture, sfTrue);
+    bounds = sfSprite_getGlobalBounds(c_inv->cursor_sprite.sprite);
+    sfSprite_setOrigin(c_inv->cursor_sprite.sprite,
+    (sfVector2f) {bounds.width / 2, bounds.height / 2});
+    sfSprite_setScale(c_inv->cursor_sprite.sprite,
+    (sfVector2f) {3, 3});
+    sfSprite_setPosition(c_inv->cursor_sprite.sprite, (sfVector2f){8, 74});
+}
+
 int init_inventory(world_t *world, entity_t *entity, int size)
 {
     sfFloatRect bounds = {0};
@@ -25,6 +43,7 @@ int init_inventory(world_t *world, entity_t *entity, int size)
     entity->comp_inventory.sprite.sprite = sfSprite_create();
     entity->comp_inventory.sprite.texture = sfTexture_createFromFile(
     "effect/inventory.png", NULL);
+    init_select_cursor(world, entity);
     sfSprite_setTexture(entity->comp_inventory.sprite.sprite,
     entity->comp_inventory.sprite.texture, sfTrue);
     entity->comp_inventory.items = malloc(sizeof(entity_t) * size);

@@ -27,6 +27,8 @@ static void mouse_inputs(win_t *window, world_t *world, entity_t *player)
 {
     sfEvent *event = &window->event;
 
+    player->comp_input.mouse_pos = 
+        sfMouse_getPositionRenderWindow(window->window);
     if (event->type == sfEvtMouseButtonPressed) {
         if (event->mouseButton.button == sfMouseLeft) {
             player->comp_input.mouse_left_down = true;

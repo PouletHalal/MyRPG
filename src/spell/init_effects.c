@@ -15,6 +15,17 @@
 #include "error_handling.h"
 #include "effect_parsing.h"
 
+int get_effect_type(char *type_name)
+{
+    if (type_name == NULL)
+        return 0;
+    for (int i = 0; EFFECT_TYPES[i].type_name != NULL; i++) {
+        if (strcmp(type_name, EFFECT_TYPES[i].type_name) == 0)
+            return EFFECT_TYPES[i].effect;
+    }
+    return 0;
+}
+
 static int get_effect_arg(world_t *world, effect_t *effect, char *line,
     char **split)
 {

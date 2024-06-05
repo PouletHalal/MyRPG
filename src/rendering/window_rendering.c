@@ -89,6 +89,7 @@ static void inventory_render(win_t *window, world_t *world, entity_t *player)
                 sfRenderWindow_drawSprite(window->window,
                 world->entity[i].comp_render.sprite, NULL);
         }
+    display_cursor(player, window, world);
 }
 
 static void hud_rendering(win_t *window, world_t *world, entity_t *player)

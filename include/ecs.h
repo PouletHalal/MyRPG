@@ -148,7 +148,7 @@ typedef struct comp_input_s {
     sfBool *key_down;
     bool mouse_left_down;
     bool mouse_right_down;
-    sfVector2f mouse_pos;
+    sfVector2i mouse_pos;
     void (*pressed_func[NB_KEYS])();
     void (*down_func[NB_KEYS])();
 } comp_input_t;

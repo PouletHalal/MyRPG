@@ -82,6 +82,24 @@ static void turn_on_items(entity_t *player, world_t *world)
         .comp_inventory.is_visible = true;
 }
 
+void display_cursor(entity_t *player, win_t *window, world_t *world)
+{
+    int slot = player->comp_inventory.cursor_slot;
+    int new_slot = -1;
+
+    if (player->comp_input.mouse_left_down)
+        new_slot = get_slot_in_hotbar(player, player->comp_input.mouse_pos);
+    if (new_slot >= 0 && new_slot <= 9)
+        slot = new_slot;
+    player->comp_inventory.cursor_slot = slot;
+    if (player->comp_inventory.is_open == false){
+        sfSprite_setPosition(player->comp_inventory.cursor_sprite.sprite,
+            (sfVector2f){704 + slot * 57, 903});
+        sfRenderWindow_drawSprite(window->window,
+            player->comp_inventory.cursor_sprite.sprite, NULL);
+    }
+}
+
 void display_inventory(win_t *window, world_t *world)
 {
     entity_t *player = &world->entity[find_comp(world, COMP_PLAYER)];

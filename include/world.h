@@ -103,6 +103,8 @@ int read_items_conf(world_t *world);
 void create_item(world_t *world, sfVector2f pos, int item_id);
 sfVector2f get_pos_from_slot(entity_t *entity, int slot);
 int get_slot_from_pos(entity_t *entity, sfVector2i mouse_pos);
+int get_slot_in_hotbar(entity_t *entity, sfVector2i mouse_pos);
+int get_spell_selected(entity_t *entity);
 bool drop_item(world_t *world, entity_t *item, sfVector2i mouse_pos, int i);
 bool is_mouse_over(sfVector2i pos, entity_t *entity);
 void read_animconf(world_t *world);
