@@ -94,7 +94,7 @@ void display_cursor(entity_t *player, win_t *window, world_t *world)
     player->comp_inventory.cursor_slot = slot;
     if (player->comp_inventory.is_open == false){
         sfSprite_setPosition(player->comp_inventory.cursor_sprite.sprite,
-            (sfVector2f){704 + slot * 57, 903});
+            (sfVector2f){704 + slot * 57, 938});
         sfRenderWindow_drawSprite(window->window,
             player->comp_inventory.cursor_sprite.sprite, NULL);
     }
