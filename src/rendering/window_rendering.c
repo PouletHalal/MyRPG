@@ -98,9 +98,9 @@ static void hud_rendering(win_t *window, world_t *world, entity_t *player)
 
     sfRenderWindow_setView(window->window,
     sfRenderWindow_getDefaultView(window->window));
-    display_dialogs(window, world);
     if (world->map_list[world->map_id]->display_hud == true)
         inventory_render(window, world, player);
+    display_dialogs(window, world);
     sfRenderWindow_setView(window->window, window->cam.view);
     sfRenderWindow_drawSprite(window->window, mouse->comp_render.sprite, NULL);
 }

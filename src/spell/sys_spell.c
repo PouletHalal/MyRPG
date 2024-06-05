@@ -59,7 +59,8 @@ entity_t *get_closest(entity_t *entity, world_t *world)
     int dist = 0;
 
     for (int i = 0; i < ENTITY_COUNT; ++i){
-        if (!is_targetable(&world->entity[i], world->map_id, entity))
+        if (!is_targetable(&world->entity[i], world->map_id, entity)
+            || is_in_memory(&entity->comp_spell.memory, &world->entity[i]))
             continue;
         dist = get_dist(entity, &world->entity[i]);
         if (dist < closest_dist){

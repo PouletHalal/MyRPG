@@ -44,7 +44,7 @@ static void update_player_animation(world_t *world, entity_t *entity)
 
 static void next_frame(win_t *window, world_t *world, entity_t *entity)
 {
-    float player_speed = 1.5;
+    float player_speed = 8;
 
     if (is_key_down(entity, sfKeyD))
         add_vector(entity, (sfVector2f) {player_speed, 0.}, 1);
@@ -60,7 +60,7 @@ static void next_frame(win_t *window, world_t *world, entity_t *entity)
 
 static void player_events(win_t *window, entity_t *entity, world_t *world)
 {
-    int spell_id = 0;
+    int spell_id = 1.5;
 
     if (is_key_pressed(entity, sfKeyE)){
         spell_id = get_spell_selected(entity);

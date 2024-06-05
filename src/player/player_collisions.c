@@ -60,7 +60,6 @@ bool tile_collision(sfVector2f pos, int **collision_map, sfVector2f tile_size,
     if (x < 0 || y < 0 || y >= map_size.y / tile_size.y ||
         x >= map_size.x / tile_size.x)
         return true;
-    printf("x = %d y = %d\n", x, y);
     if (collision_map[y][x] != -1)
         return true;
     return false;
