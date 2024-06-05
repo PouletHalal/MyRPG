@@ -36,15 +36,15 @@ static int get_layer_id(map_list_t *map_list, char const *name)
 static bool is_out_of_border(sfFloatRect bounds, sfVector2f offset,
     map_list_t *map_list)
 {
-    if (offset.y < 0 && bounds.top <= 0 + offset.y)
+    if (offset.y < 0 && bounds.top <= 0)
         return true;
     if (offset.y > 0 &&
-        bounds.top + bounds.height >= map_list->maps->size.y - offset.y)
+        bounds.top + bounds.height >= map_list->maps->size.y)
         return true;
-    if (offset.x < 0 && bounds.left <= 0 + offset.x)
+    if (offset.x < 0 && bounds.left <= 0)
         return true;
     if (offset.x > 0 &&
-        bounds.left + bounds.width >= map_list->maps->size.x - offset.x)
+        bounds.left + bounds.width >= map_list->maps->size.x)
         return true;
     return false;
 }
@@ -60,6 +60,7 @@ bool tile_collision(sfVector2f pos, int **collision_map, sfVector2f tile_size,
     if (x < 0 || y < 0 || y >= map_size.y / tile_size.y ||
         x >= map_size.x / tile_size.x)
         return true;
+    printf("x = %d y = %d\n", x, y);
     if (collision_map[y][x] != -1)
         return true;
     return false;

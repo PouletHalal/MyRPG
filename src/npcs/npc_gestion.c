@@ -10,12 +10,23 @@
 #include "npcs.h"
 #include "dialogs.h"
 
+static void take_item(entity_t *player, entity_t *npc)
+{
+    for (int i = 0; i < player->comp_inventory.size; ++i) {
+        if (player->comp_inventory.items[i].id ==
+            npc->comp_npc.key_item_to_talk_id)
+            player->comp_inventory.items[i].type_mask = 0;
+    }
+    return;
+}
+
 static bool need_item(world_t *world, entity_t *npc, entity_t *player)
 {
     if (npc->comp_npc.need_key_item_to_talk == false)
         return true;
     if (is_in_inv(world, player, npc->comp_npc.key_item_to_talk_id)) {
         npc->comp_npc.need_key_item_to_talk = false;
+        take_item(player, npc);
         return true;
     }
     return false;

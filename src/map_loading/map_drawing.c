@@ -76,7 +76,7 @@ void parse_map(map_t *map, char const *name, tileset_t *tileset)
         read_line(map, line, tileset, nb_lines);
         nb_lines += 1;
     }
-    map->csv_map[nb_lines - 1] = NULL;
+    map->csv_map[nb_lines] = NULL;
     free(line);
     fclose(stream);
 }
