@@ -125,8 +125,28 @@ void render_window(win_t *window, world_t *world)
 
     full_screen(world, window);
     sfRenderWindow_clear(window->window, sfBlack);
-    if (world->is_paused == false || world->ui_id != UI_NONE)
+    if (world->is_paused == false || world->ui_id != UI_NONE) {
+        sfRenderWindow_setView(window->window, sfRenderWindow_getDefaultView(window->window));
+        sfText *title = sfText_create();
+        sfText_setString(title, "Lost Memories");
+        sfFont *font = sfFont_createFromFile("fonts/karma-future.ttf");
+        sfText_setFont(title, font);
+        sfText_setCharacterSize(title, 100);
+        sfFloatRect title_bounds = sfText_getGlobalBounds(title);
+        sfText_setOrigin(title, (sfVector2f){title_bounds.width / 2, title_bounds.height / 2});
+        sfText_setPosition(title, (sfVector2f){1920 / 2.0, 300});
+        sfSprite *sprite = sfSprite_create();
+        sfSprite_setScale(sprite, (sfVector2f){0.833, 0.833});
+        sfTexture *texture = sfTexture_createFromFile("effect/background.png", NULL);
+        sfSprite_setTexture(sprite, texture, sfFalse);
+        sfRenderWindow_drawSprite(window->window, sprite, NULL);
+        sfRenderWindow_drawText(window->window, title, NULL);
+        sfSprite_destroy(sprite);
+        sfTexture_destroy(texture);
+        sfText_destroy(title);
+        sfFont_destroy(font);
         return;
+    }
     resize_cam(window, world->map_list[world->map_id], world);
     move_cam(window, world->map_list[world->map_id]);
     move_to_destination(window);
