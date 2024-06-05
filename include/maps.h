@@ -30,7 +30,7 @@ static const char PART_CONF[] = "maps/part.conf";
     #define PORTAL_CONF_NB_ARGS 9
     #define NPC_CONF_NB_ARGS 12
 
-static const sfVector2f DIALOG_BOX_POS = {WIDTH / 2, HEIGHT * 3 / 4};
+static const sfVector2f DIALOG_BOX_POS = {WIDTH / 2, HEIGHT * 2 / 3};
 
 typedef struct sprite_s {
     const sfTexture *texture;

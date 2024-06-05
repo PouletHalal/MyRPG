@@ -73,6 +73,8 @@ static void change_world(world_t *world, entity_t *entity, entity_t *portal)
         world->sound_volume * 0.3);
         sfSound_play(portal->comp_portal.comp_sound.sound.sound);
     }
+    for (int i = 0; i < entity->comp_inventory.size; i++)
+        world->entity[entity->comp_inventory.items[i].id_in_world].comp_position.world = portal->comp_portal.dest_id;
 }
 
 static sfBool check_if_portal(win_t *window, entity_t *entities[2],

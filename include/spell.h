@@ -59,6 +59,7 @@ enum spell {
     SPELL_NONE,
     SPELL_DARK,
     SPELL_FIRE_SPIRIT,
+    SPELL_PHOENIX,
     SPELL_END
 };
 
@@ -113,6 +114,7 @@ static const spell_name_t spell_name[] =
 {
     {"dark", SPELL_DARK},
     {"fire_spirit", SPELL_FIRE_SPIRIT},
+    {"phoenix", SPELL_PHOENIX},
     {NULL, SPELL_NONE},
 };
 

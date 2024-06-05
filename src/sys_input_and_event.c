@@ -68,7 +68,8 @@ static void analyse_events(win_t *window, world_t *world)
     if (event->type == sfEvtKeyPressed && event->key.code != -1){
         world->key_down[event->key.code] = sfTrue;
         world->key_pressed[event->key.code] = sfTrue;
-        if (world->key_pressed[sfKeyTab]) {
+        if (world->key_pressed[sfKeyTab] &&
+            world->map_list[world->map_id]->display_hud == true) {
             player->comp_inventory.is_open = !player->comp_inventory.is_open;
             put_back_item_if_inv_closed(world, player);
         }
